@@ -11,6 +11,7 @@ import java.time.DateTimeException
 import java.time.Instant
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.chrono.ChronoZonedDateTime
 import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
@@ -25,6 +26,7 @@ import java.time.temporal.TemporalField
 import java.time.temporal.TemporalUnit
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.time.temporal.ValueRange
+import java.time.zone.ZoneRules
 
 /**
  * A date-time with a time-zone in the Hijrah calendar system,
