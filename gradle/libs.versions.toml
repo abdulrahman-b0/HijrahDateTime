@@ -1,0 +1,27 @@
+[versions]
+junitJupiter = "5.11.1"
+kotlin = "2.0.20"
+slf4j = "2.0.13"
+truth = "1.4.4"
+serialization = "1.7.3"
+
+[libraries]
+
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+
+kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
+
+#Testing
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junitJupiter" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
+
+
+[plugins]
+#noinspection GradleDependency
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+
+[bundles]
