@@ -17,7 +17,9 @@ import java.time.temporal.TemporalQuery
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.time.temporal.ValueRange
 
-
+/**
+ * Represents a month-of-year in the Hijrah calendar system.
+ */
 enum class HijrahMonth(val value: Int) : TemporalAccessor, TemporalAdjuster {
 
     MUHARRAM(1),

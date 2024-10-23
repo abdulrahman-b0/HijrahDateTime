@@ -26,7 +26,46 @@ import java.time.temporal.TemporalUnit
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.time.temporal.ValueRange
 
+/**
+ * A date-time with a time-zone in the Hijrah calendar system,
+ * such as `1446-04-18T17:31:30+03:00 Asia/Riyadh`.
+ * 
+ * [ZonedHijrahDateTime] is an immutable representation of a date-time with a time-zone.
+ * This class stores all date and time fields, to a precision of nanoseconds,
+ * and a time-zone, with a zone offset used to handle ambiguous local date-times.
+ * For example, the value
+ * "2nd Shawwal 1445 at 13:45.30.123456789 +03:00 in the Asia/Riyadh time-zone"
+ * can be stored in a [ZonedHijrahDateTime].
+ * 
+ * This class handles conversion from the local time-line of [HijrahDateTime]
+ * to the instant time-line of [Instant].
+ * The difference between the two time-lines is the offset from UTC/Greenwich,
+ * represented by a [ZoneOffset].
+ *
+ * Converting between the two time-lines involves calculating the offset using the
+ * [ZoneRules] rules accessed from the [ZoneId].
+ * Obtaining the offset for an instant is simple, as there is exactly one valid
+ * offset for each instant.
+ * For Gaps, the general strategy is that if the local date-time falls in the
+ * middle of a Gap, then the resulting zoned date-time will have a local date-time
+ * shifted forwards by the length of the Gap, resulting in a date-time in the later
+ * offset, typically "summer" time.
+ *
+ * For Overlaps, the general strategy is that if the local date-time falls in the
+ * middle of an Overlap, then the previous offset will be retained. If there is no
+ * previous offset, or the previous offset is invalid, then the earlier offset is
+ * used, typically "summer" time.. Two additional methods,
+ * [withEarlierOffsetAtOverlap] and [withLaterOffsetAtOverlap],
+ * help manage the case of an overlap.
+ *
+ * In terms of design, this class should be viewed primarily as the combination
+ * of a [HijrahDateTime] and a [ZoneId]. The [ZoneOffset] is
+ * a vital, but secondary, piece of information, used to ensure that the class
+ * represents an instant, especially during a daylight savings overlap.
 
+ * This class is immutable and thread-safe.
+ *
+ */
 @JvmInline
 @Serializable(with = ZonedHijrahDateTimeSerializer::class)
 value class ZonedHijrahDateTime internal constructor(

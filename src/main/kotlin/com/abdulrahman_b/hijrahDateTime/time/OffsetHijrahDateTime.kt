@@ -31,6 +31,18 @@ import java.time.temporal.TemporalUnit
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.time.temporal.ValueRange
 
+/**
+ * A date-time with an offset from UTC/Greenwich in the Hijrah calendar system,
+ * such as `1446-12-03T10:15:30+01:00`.
+ * 
+ * [OffsetHijrahDateTime] is an immutable representation of a date-time with an offset.
+ * This class stores all date and time fields, to a precision of nanoseconds,
+ * as well as the offset from UTC/Greenwich. For example, the value
+ * "2nd Shawwal 1445 at 13:45.30.123456789 +02:00" can be stored in an [OffsetHijrahDateTime].
+
+ * This class is immutable and thread-safe.
+ *
+ **/
 @Serializable(with = OffsetHijrahDateTimeSerializer::class)
 class OffsetHijrahDateTime internal constructor(
     val dateTime: HijrahDateTime,

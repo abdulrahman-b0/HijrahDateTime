@@ -35,7 +35,7 @@ import java.time.zone.ZoneRules
 
 /**
  * A date-time without a time-zone in the Hijrah calendar system,
- * such as [1446-04-18T17:31:30].
+ * such as `1446-04-18T17:31:30`.
  *
  * [HijrahDateTime] is an immutable date-time object that represents a date-time,
  * often viewed as year-month-day-hour-minute-second. Other date and time fields,
