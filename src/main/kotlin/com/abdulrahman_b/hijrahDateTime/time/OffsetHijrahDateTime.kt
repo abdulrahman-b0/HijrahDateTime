@@ -19,7 +19,6 @@ import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoField
-import java.time.temporal.ChronoUnit
 import java.time.temporal.Temporal
 import java.time.temporal.TemporalAccessor
 import java.time.temporal.TemporalAdjuster
@@ -34,7 +33,7 @@ import java.time.temporal.ValueRange
 /**
  * A date-time with an offset from UTC/Greenwich in the Hijrah calendar system,
  * such as `1446-12-03T10:15:30+01:00`.
- * 
+ *
  * [OffsetHijrahDateTime] is an immutable representation of a date-time with an offset.
  * This class stores all date and time fields, to a precision of nanoseconds,
  * as well as the offset from UTC/Greenwich. For example, the value
@@ -44,25 +43,13 @@ import java.time.temporal.ValueRange
  *
  **/
 @Serializable(with = OffsetHijrahDateTimeSerializer::class)
-class OffsetHijrahDateTime internal constructor(
+class OffsetHijrahDateTime (
     val dateTime: HijrahDateTime,
     val offset: ZoneOffset
-) : Temporal, TemporalAdjuster, Comparable<OffsetHijrahDateTime>, java.io.Serializable {
+) : Temporal, TemporalAdjuster, Comparable<OffsetHijrahDateTime>, java.io.Serializable, HijrahTemporal<HijrahDateTime, OffsetHijrahDateTime>(dateTime) {
 
     @Serial
     private val serialVersionUid: Long = 1L
-
-    val year get() = get(ChronoField.YEAR)
-    val monthValue get() = get(ChronoField.MONTH_OF_YEAR)
-    val month get() = HijrahMonth.of(monthValue)
-    val dayOfYear get() = get(ChronoField.DAY_OF_YEAR)
-    val dayOfMonth get() = get(ChronoField.DAY_OF_MONTH)
-    val dayOfWeek get() = get(ChronoField.DAY_OF_WEEK)
-    val hour get() = get(ChronoField.HOUR_OF_DAY)
-    val minuteOfHour get() = get(ChronoField.MINUTE_OF_HOUR)
-    val secondOfMinute get() = get(ChronoField.SECOND_OF_MINUTE)
-    val nanoOfSecond get() = get(ChronoField.NANO_OF_SECOND)
-    val nanoOfDay get() = getLong(ChronoField.NANO_OF_DAY)
 
     /**
      * Checks if the specified field is supported.
@@ -74,7 +61,7 @@ class OffsetHijrahDateTime internal constructor(
      * @return true if this date-time can be queried for the field, false if not
      */
     override fun isSupported(field: TemporalField): Boolean {
-        return dateTime.isSupported(field) && field is ChronoField
+        return dateTime.isSupported(field)
     }
 
 
@@ -88,7 +75,7 @@ class OffsetHijrahDateTime internal constructor(
      * @return true if the unit can be added/subtracted, false if not
      */
     override fun isSupported(unit: TemporalUnit): Boolean {
-        return dateTime.isSupported(unit) && unit is ChronoUnit
+        return dateTime.isSupported(unit)
     }
 
     /**
@@ -244,186 +231,6 @@ class OffsetHijrahDateTime internal constructor(
         return OffsetHijrahDateTime(dateTime.with(field, newValue), offset)
     }
 
-    /**
-     *  Returns a copy of this date-time with the specified nano-of-second added.
-     *
-     *  This is equivalent to `plus(nanos, ChronoUnit.NANOS)`
-     *  @param nanos  the nano-of-second to set in the result, from 0 to 999,999,999
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested nanosecond, not null
-     */
-    fun plusNanos(nanos: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.plus(nanos, ChronoUnit.NANOS), offset)
-    }
-
-
-    /**
-     *  Returns a copy of this date-time with the specified second-of-minute added.
-     *
-     *  This is equivalent to `plus(seconds, ChronoUnit.SECONDS)`
-     *  @param seconds  the second-of-minute to set in the result, from 0 to 59
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested second, not null
-     */
-    fun plusSeconds(seconds: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.plus(seconds, ChronoUnit.SECONDS), offset)
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified minute-of-hour added.
-     *
-     *  This is equivalent to `plus(minutes, ChronoUnit.MINUTES)`
-     *  @param minutes  the minute-of-hour to set in the result, from 0 to 59
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested minute, not null
-     */
-    fun plusMinutes(minutes: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.plus(minutes, ChronoUnit.MINUTES), offset)
-    }
-
-
-    /**
-     *  Returns a copy of this date-time with the specified hour-of-day added.
-     *
-     *  This is equivalent to `plus(hours, ChronoUnit.HOURS)`
-     *  @param hours  the hour-of-day to set in the result, from 0 to 23
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested hour, not null
-     */
-    fun plusHours(hours: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.plus(hours, ChronoUnit.HOURS), offset)
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified day-of-month added.
-     *
-     *  This is equivalent to `plus(days, ChronoUnit.DAYS)`
-     *  @param days  the day-of-month to set in the result, from 1 to 31
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested day, not null
-     */
-    fun plusDays(days: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.plus(days, ChronoUnit.DAYS), offset)
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified week-of-year added.
-     *
-     *  This is equivalent to `plus(weeks, ChronoUnit.WEEKS)`
-     *  @param weeks  the week-of-year to set in the result, from 1 to 52 or 53
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested week, not null
-     */
-    fun plusWeeks(weeks: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.plus(weeks, ChronoUnit.WEEKS), offset)
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified month-of-year added.
-     *
-     *  This is equivalent to `plus(months, ChronoUnit.MONTHS)`
-     *  @param months  the month-of-year to set in the result, from 1 to 12
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested month, not null
-     */
-    fun plusMonths(months: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.plus(months, ChronoUnit.MONTHS), offset)
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified year added.
-     *
-     *  This is equivalent to `plus(years, ChronoUnit.YEARS)`
-     *  @param years  the year to set in the result
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested year, not null
-     */
-    fun plusYears(years: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.plus(years, ChronoUnit.YEARS), offset)
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified nano-of-second subtracted.
-     *
-     *  This is equivalent to `minus(nanos, ChronoUnit.NANOS)`
-     *  @param nanos  the nano-of-second to set in the result, from 0 to 999,999,999
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested nanosecond, not null
-     */
-    fun minusNanos(nanos: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.minus(nanos, ChronoUnit.NANOS), offset)
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified second-of-minute subtracted.
-     *
-     *  This is equivalent to `minus(seconds, ChronoUnit.SECONDS)`
-     *  @param seconds  the second-of-minute to set in the result, from 0 to 59
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested second, not null
-     */
-    fun minusSeconds(seconds: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.minus(seconds, ChronoUnit.SECONDS), offset)
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified minute-of-hour subtracted.
-     *
-     *  This is equivalent to `minus(minutes, ChronoUnit.MINUTES)`
-     *  @param minutes  the minute-of-hour to set in the result, from 0 to 59
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested minute, not null
-     */
-    fun minusMinutes(minutes: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.minus(minutes, ChronoUnit.MINUTES), offset)
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified hour-of-day subtracted.
-     *
-     *  This is equivalent to `minus(hours, ChronoUnit.HOURS)`
-     *  @param hours  the hour-of-day to set in the result, from 0 to 23
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested hour, not null
-     */
-    fun minusHours(hours: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.minus(hours, ChronoUnit.HOURS), offset)
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified day-of-month subtracted.
-     *
-     *  This is equivalent to `minus(days, ChronoUnit.DAYS)`
-     *  @param days  the day-of-month to set in the result, from 1 to 31
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested day, not null
-     */
-    fun minusDays(days: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.minus(days, ChronoUnit.DAYS), offset)
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified week-of-year subtracted.
-     *
-     *  This is equivalent to `minus(weeks, ChronoUnit.WEEKS)`
-     *  @param weeks  the week-of-year to set in the result, from 1 to 52 or 53
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested week, not null
-     */
-    fun minusWeeks(weeks: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.minus(weeks, ChronoUnit.WEEKS), offset)
-    }
-
-
-    /**
-     * Returns a copy of this date-time with the specified month-of-year subtracted.
-     *
-     * This is equivalent to `minus(months, ChronoUnit.MONTHS)`
-     * @param months the month-of-year to set in the result, from 1 to 12
-     * @return a [OffsetHijrahDateTime] based on this date-time with the requested month, not null
-     */
-    fun minusMonths(months: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.minus(months, ChronoUnit.MONTHS), offset)
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified year subtracted.
-     *
-     *  This is equivalent to `minus(years, ChronoUnit.YEARS)`
-     *  @param years  the year to set in the result
-     *  @return a [OffsetHijrahDateTime] based on this date-time with the requested year, not null
-     */
-    fun minusYears(years: Long): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.plus(years, ChronoUnit.YEARS), offset)
-    }
-
-
     fun toEpochSecond(): Long = dateTime.toEpochSecond(offset)
 
     override fun adjustInto(temporal: Temporal): Temporal {
@@ -479,8 +286,11 @@ class OffsetHijrahDateTime internal constructor(
         return "Hijrah-umalqura AH ${dateTime.format(HIJRAH_LOCAL_DATE_TIME)}$offset"
     }
 
+    override fun factory(temporal: HijrahDateTime): OffsetHijrahDateTime {
+        return OffsetHijrahDateTime(temporal, offset)
+    }
+
     override fun equals(other: Any?): Boolean {
-        if (this === other) return true
         if (other !is OffsetHijrahDateTime) return false
 
         if (dateTime != other.dateTime) return false
@@ -497,6 +307,7 @@ class OffsetHijrahDateTime internal constructor(
 
     companion object {
 
+        @JvmStatic
         fun now() = now(Clock.systemDefaultZone())
 
         /**
@@ -514,6 +325,7 @@ class OffsetHijrahDateTime internal constructor(
          * @param zone  the zone ID to use, not null
          * @return the current date-time using the system clock, not null
          */
+        @JvmStatic
         fun now(zone: ZoneId): OffsetHijrahDateTime {
             return now(Clock.system(zone))
         }
@@ -532,6 +344,7 @@ class OffsetHijrahDateTime internal constructor(
          * @param clock  the clock to use, not null
          * @return the current date-time, not null
          */
+        @JvmStatic
         fun now(clock: Clock): OffsetHijrahDateTime {
             val now = clock.instant() // called once
             return ofInstant(now, clock.zone.rules.getOffset(now))
@@ -549,6 +362,7 @@ class OffsetHijrahDateTime internal constructor(
          * @param offset  the zone offset, not null
          * @return the offset date-time, not null
          */
+        @JvmStatic
         fun of(date: HijrahDate, time: LocalTime, offset: ZoneOffset): OffsetHijrahDateTime {
             val dt = HijrahDateTime.of(date, time)
             return OffsetHijrahDateTime(dt, offset)
@@ -563,6 +377,7 @@ class OffsetHijrahDateTime internal constructor(
          * @param offset  the zone offset, not null
          * @return the offset date-time, not null
          */
+        @JvmStatic
         fun of(dateTime: HijrahDateTime, offset: ZoneOffset): OffsetHijrahDateTime {
             return OffsetHijrahDateTime(dateTime, offset)
         }
@@ -593,9 +408,11 @@ class OffsetHijrahDateTime internal constructor(
          * @throws DateTimeException if the value of any field is out of range, or
          * if the day-of-month is invalid for the month-year
          */
+        @JvmStatic
+        @JvmOverloads
         fun of(
             year: Int, month: Int, dayOfMonth: Int,
-            hour: Int, minute: Int, second: Int, nanoOfSecond: Int, offset: ZoneOffset
+            hour: Int, minute: Int, second: Int = 0, nanoOfSecond: Int = 0, offset: ZoneOffset
         ): OffsetHijrahDateTime {
             val dt = HijrahDateTime.of(year, month, dayOfMonth, hour, minute, second, nanoOfSecond)
             return OffsetHijrahDateTime(dt, offset)
@@ -616,6 +433,7 @@ class OffsetHijrahDateTime internal constructor(
          * @return the offset date-time, not null
          * @throws DateTimeException if the result exceeds the supported range
          */
+        @JvmStatic
         fun ofInstant(instant: Instant, zone: ZoneId): OffsetHijrahDateTime {
             val rules = zone.rules
             val offset = rules.getOffset(instant)
@@ -644,6 +462,7 @@ class OffsetHijrahDateTime internal constructor(
          * @return the offset date-time, not null
          * @throws DateTimeException if unable to convert to an `OffsetHijrahDateTime`
          */
+        @JvmStatic
         fun from(temporal: TemporalAccessor): OffsetHijrahDateTime {
             if (temporal is OffsetHijrahDateTime) {
                 return temporal
@@ -668,21 +487,21 @@ class OffsetHijrahDateTime internal constructor(
 
 
         //-----------------------------------------------------------------------
-        /**
-         * Obtains an instance of `OffsetHijrahDateTime` from a text string
-         * such as `1446-04-19T10:15:30+01:00`.
-         *
-         *
-         * The string must represent a valid date-time and is parsed using
-         * [HijrahDateTimeFormatters.HIJRAH_OFFSET_DATE_TIME]
-         *
-         * @param text  the text to parse such as "1446-04-19T10:15:30+01:00", not null
-         * @return the parsed offset date-time, not null
-         * @throws DateTimeParseException if the text cannot be parsed
-         */
-        fun parse(text: CharSequence): OffsetHijrahDateTime {
-            return parse(text, HijrahDateTimeFormatters.HIJRAH_OFFSET_DATE_TIME)
-        }
+//        /**
+//         * Obtains an instance of `OffsetHijrahDateTime` from a text string
+//         * such as `1446-04-19T10:15:30+01:00`.
+//         *
+//         *
+//         * The string must represent a valid date-time and is parsed using
+//         * [HijrahDateTimeFormatters.HIJRAH_OFFSET_DATE_TIME]
+//         *
+//         * @param text  the text to parse such as "1446-04-19T10:15:30+01:00", not null
+//         * @return the parsed offset date-time, not null
+//         * @throws DateTimeParseException if the text cannot be parsed
+//         */
+//        fun parse(text: CharSequence): OffsetHijrahDateTime {
+//            return parse(text, HijrahDateTimeFormatters.HIJRAH_OFFSET_DATE_TIME)
+//        }
 
         /**
          * Obtains an instance of `OffsetHijrahDateTime` from a text string using a specific formatter.
@@ -695,7 +514,9 @@ class OffsetHijrahDateTime internal constructor(
          * @return the parsed offset date-time, not null
          * @throws DateTimeParseException if the text cannot be parsed
          */
-        fun parse(text: CharSequence, formatter: DateTimeFormatter): OffsetHijrahDateTime {
+        @JvmOverloads
+        @JvmStatic
+        fun parse(text: CharSequence, formatter: DateTimeFormatter = HijrahDateTimeFormatters.HIJRAH_OFFSET_DATE_TIME): OffsetHijrahDateTime {
             requireHijrahChronologyFormatter(formatter)
             return formatter.parse(text, Companion::from)
         }
