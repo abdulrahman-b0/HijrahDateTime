@@ -28,17 +28,20 @@ import java.time.temporal.UnsupportedTemporalTypeException
 import java.time.temporal.ValueRange
 import java.time.zone.ZoneRules
 
+private typealias ChronoZonedHijrahDateTime = ChronoZonedDateTime<HijrahDate>
+private typealias ZonedHijrahDateTimeTemporal = HijrahTemporal<ChronoZonedHijrahDateTime, ZonedHijrahDateTime>
+
 /**
  * A date-time with a time-zone in the Hijrah calendar system,
  * such as `1446-04-18T17:31:30+03:00 Asia/Riyadh`.
- * 
+ *
  * [ZonedHijrahDateTime] is an immutable representation of a date-time with a time-zone.
  * This class stores all date and time fields, to a precision of nanoseconds,
  * and a time-zone, with a zone offset used to handle ambiguous local date-times.
  * For example, the value
  * "2nd Shawwal 1445 at 13:45.30.123456789 +03:00 in the Asia/Riyadh time-zone"
  * can be stored in a [ZonedHijrahDateTime].
- * 
+ *
  * This class handles conversion from the local time-line of [HijrahDateTime]
  * to the instant time-line of [Instant].
  * The difference between the two time-lines is the offset from UTC/Greenwich,
@@ -68,26 +71,14 @@ import java.time.zone.ZoneRules
  * This class is immutable and thread-safe.
  *
  */
-@JvmInline
+
 @Serializable(with = ZonedHijrahDateTimeSerializer::class)
-value class ZonedHijrahDateTime internal constructor(
-    private val dateTime: ChronoZonedDateTime<HijrahDate>
-): ChronoZonedDateTime<HijrahDate> by dateTime, java.io.Serializable {
+class ZonedHijrahDateTime internal constructor(private val dateTime: ChronoZonedHijrahDateTime):
+    ChronoZonedHijrahDateTime by dateTime, java.io.Serializable,
+    ZonedHijrahDateTimeTemporal(dateTime) {
 
-    @get:Serial
-    private val serialVersionUid get() = 1L
-
-    val year get() = get(ChronoField.YEAR)
-    val monthValue get() = get(ChronoField.MONTH_OF_YEAR)
-    val month get() = HijrahMonth.of(monthValue)
-    val dayOfYear get() = get(ChronoField.DAY_OF_YEAR)
-    val dayOfMonth get() = get(ChronoField.DAY_OF_MONTH)
-    val dayOfWeek get() = get(ChronoField.DAY_OF_WEEK)
-    val hour get() = get(ChronoField.HOUR_OF_DAY)
-    val minuteOfHour get() = get(ChronoField.MINUTE_OF_HOUR)
-    val secondOfMinute get() = get(ChronoField.SECOND_OF_MINUTE)
-    val nanoOfSecond get() = get(ChronoField.NANO_OF_SECOND)
-    val nanoOfDay get() = getLong(ChronoField.NANO_OF_DAY)
+    @Serial
+    private val serialVersionUid = 1L
 
     override fun range(field: TemporalField): ValueRange {
         return dateTime.range(field)
@@ -197,185 +188,6 @@ value class ZonedHijrahDateTime internal constructor(
         return dateTime.until(endExclusive, unit)
     }
 
-    /**
-     *  Returns a copy of this date-time with the specified nano-of-second added.
-     *
-     *  This is equivalent to `plus(nanos, ChronoUnit.NANOS)`
-     *  @param nanos  the nano-of-second to set in the result, from 0 to 999,999,999
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested nanosecond, not null
-     */
-    fun plusNanos(nanos: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.plus(nanos, ChronoUnit.NANOS))
-    }
-
-
-    /**
-     *  Returns a copy of this date-time with the specified second-of-minute added.
-     *
-     *  This is equivalent to `plus(seconds, ChronoUnit.SECONDS)`
-     *  @param seconds  the second-of-minute to set in the result, from 0 to 59
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested second, not null
-     */
-    fun plusSeconds(seconds: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.plus(seconds, ChronoUnit.SECONDS))
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified minute-of-hour added.
-     *
-     *  This is equivalent to `plus(minutes, ChronoUnit.MINUTES)`
-     *  @param minutes  the minute-of-hour to set in the result, from 0 to 59
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested minute, not null
-     */
-    fun plusMinutes(minutes: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.plus(minutes, ChronoUnit.MINUTES))
-    }
-
-
-    /**
-     *  Returns a copy of this date-time with the specified hour-of-day added.
-     *
-     *  This is equivalent to `plus(hours, ChronoUnit.HOURS)`
-     *  @param hours  the hour-of-day to set in the result, from 0 to 23
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested hour, not null
-     */
-    fun plusHours(hours: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.plus(hours, ChronoUnit.HOURS))
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified day-of-month added.
-     *
-     *  This is equivalent to `plus(days, ChronoUnit.DAYS)`
-     *  @param days  the day-of-month to set in the result, from 1 to 31
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested day, not null
-     */
-    fun plusDays(days: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.plus(days, ChronoUnit.DAYS))
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified week-of-year added.
-     *
-     *  This is equivalent to `plus(weeks, ChronoUnit.WEEKS)`
-     *  @param weeks  the week-of-year to set in the result, from 1 to 52 or 53
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested week, not null
-     */
-    fun plusWeeks(weeks: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.plus(weeks, ChronoUnit.WEEKS))
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified month-of-year added.
-     *
-     *  This is equivalent to `plus(months, ChronoUnit.MONTHS)`
-     *  @param months  the month-of-year to set in the result, from 1 to 12
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested month, not null
-     */
-    fun plusMonths(months: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.plus(months, ChronoUnit.MONTHS))
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified year added.
-     *
-     *  This is equivalent to `plus(years, ChronoUnit.YEARS)`
-     *  @param years  the year to set in the result
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested year, not null
-     */
-    fun plusYears(years: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.plus(years, ChronoUnit.YEARS))
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified nano-of-second subtracted.
-     *
-     *  This is equivalent to `minus(nanos, ChronoUnit.NANOS)`
-     *  @param nanos  the nano-of-second to set in the result, from 0 to 999,999,999
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested nanosecond, not null
-     */
-    fun minusNanos(nanos: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.minus(nanos, ChronoUnit.NANOS))
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified second-of-minute subtracted.
-     *
-     *  This is equivalent to `minus(seconds, ChronoUnit.SECONDS)`
-     *  @param seconds  the second-of-minute to set in the result, from 0 to 59
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested second, not null
-     */
-    fun minusSeconds(seconds: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.minus(seconds, ChronoUnit.SECONDS))
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified minute-of-hour subtracted.
-     *
-     *  This is equivalent to `minus(minutes, ChronoUnit.MINUTES)`
-     *  @param minutes  the minute-of-hour to set in the result, from 0 to 59
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested minute, not null
-     */
-    fun minusMinutes(minutes: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.minus(minutes, ChronoUnit.MINUTES))
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified hour-of-day subtracted.
-     *
-     *  This is equivalent to `minus(hours, ChronoUnit.HOURS)`
-     *  @param hours  the hour-of-day to set in the result, from 0 to 23
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested hour, not null
-     */
-    fun minusHours(hours: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.minus(hours, ChronoUnit.HOURS))
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified day-of-month subtracted.
-     *
-     *  This is equivalent to `minus(days, ChronoUnit.DAYS)`
-     *  @param days  the day-of-month to set in the result, from 1 to 31
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested day, not null
-     */
-    fun minusDays(days: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.minus(days, ChronoUnit.DAYS))
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified week-of-year subtracted.
-     *
-     *  This is equivalent to `minus(weeks, ChronoUnit.WEEKS)`
-     *  @param weeks  the week-of-year to set in the result, from 1 to 52 or 53
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested week, not null
-     */
-    fun minusWeeks(weeks: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.minus(weeks, ChronoUnit.WEEKS))
-    }
-
-
-    /**
-     * Returns a copy of this date-time with the specified month-of-year subtracted.
-     *
-     * This is equivalent to `minus(months, ChronoUnit.MONTHS)`
-     * @param months the month-of-year to set in the result, from 1 to 12
-     * @return a [ZonedHijrahDateTime] based on this date-time with the requested month, not null
-     */
-    fun minusMonths(months: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.minus(months, ChronoUnit.MONTHS))
-    }
-
-    /**
-     *  Returns a copy of this date-time with the specified year subtracted.
-     *
-     *  This is equivalent to `minus(years, ChronoUnit.YEARS)`
-     *  @param years  the year to set in the result
-     *  @return a [ZonedHijrahDateTime] based on this date-time with the requested year, not null
-     */
-    fun minusYears(years: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.plus(years, ChronoUnit.YEARS))
-    }
-
     override fun toLocalDateTime(): HijrahDateTime {
         return HijrahDateTime(dateTime.toLocalDateTime())
     }
@@ -395,9 +207,22 @@ value class ZonedHijrahDateTime internal constructor(
     override fun withZoneSameLocal(zone: ZoneId): ZonedHijrahDateTime {
         return ZonedHijrahDateTime(dateTime.withZoneSameLocal(zone))
     }
-    
+
+
+
     override fun toString(): String {
         return dateTime.toString()
+    }
+
+    override fun factory(temporal: ChronoZonedDateTime<HijrahDate>) = ZonedHijrahDateTime(temporal)
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is ZonedHijrahDateTime) return false
+        return dateTime == other.dateTime
+    }
+
+    override fun hashCode(): Int {
+        return dateTime.hashCode()
     }
 
     companion object {
@@ -420,7 +245,8 @@ value class ZonedHijrahDateTime internal constructor(
         }
 
         @JvmStatic
-        fun of(year: Int, month: Int, dayOfMonth: Int, hour: Int, minute: Int, second: Int, nanoOfSecond: Int, zoneId: ZoneId): ZonedHijrahDateTime {
+        @JvmOverloads
+        fun of(year: Int, month: Int, dayOfMonth: Int, hour: Int, minute: Int, second: Int = 0, nanoOfSecond: Int = 0, zoneId: ZoneId = ZoneId.systemDefault()) : ZonedHijrahDateTime {
             return ZonedHijrahDateTime(of(HijrahDate.of(year, month, dayOfMonth), LocalTime.of(hour, minute, second, nanoOfSecond), zoneId))
         }
 
@@ -435,10 +261,8 @@ value class ZonedHijrahDateTime internal constructor(
         }
 
         @JvmStatic
-        fun parse(text: CharSequence) = parse(text, HijrahDateTimeFormatters.HIJRAH_ZONED_DATE_TIME)
-
-        @JvmStatic
-        fun parse(text: CharSequence, formatter: DateTimeFormatter): ZonedHijrahDateTime {
+        @JvmOverloads
+        fun parse(text: CharSequence, formatter: DateTimeFormatter = HijrahDateTimeFormatters.HIJRAH_ZONED_DATE_TIME): ZonedHijrahDateTime {
             requireHijrahChronologyFormatter(formatter)
             return formatter.parse(text, Companion::from)
         }
