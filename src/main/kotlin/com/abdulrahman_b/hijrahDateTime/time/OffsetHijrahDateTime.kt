@@ -43,7 +43,7 @@ import java.time.temporal.ValueRange
  *
  **/
 @Serializable(with = OffsetHijrahDateTimeSerializer::class)
-class OffsetHijrahDateTime (
+class OffsetHijrahDateTime private constructor(
     val dateTime: HijrahDateTime,
     val offset: ZoneOffset
 ) : Temporal, TemporalAdjuster, Comparable<OffsetHijrahDateTime>, java.io.Serializable, HijrahTemporal<HijrahDateTime, OffsetHijrahDateTime>(dateTime) {

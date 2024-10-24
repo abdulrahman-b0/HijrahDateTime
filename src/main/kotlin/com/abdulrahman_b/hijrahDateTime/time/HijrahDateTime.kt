@@ -31,9 +31,6 @@ import java.time.temporal.UnsupportedTemporalTypeException
 import java.time.temporal.ValueRange
 import java.time.zone.ZoneRules
 
-private typealias ChronoHijrahDateTime = ChronoLocalDateTime<HijrahDate>
-private typealias HijrahDateTimeTemporal = HijrahTemporal<ChronoHijrahDateTime, HijrahDateTime>
-
 /**
  * A date-time without a time-zone in the Hijrah calendar system,
  * such as `1446-04-18T17:31:30`.
@@ -56,8 +53,10 @@ private typealias HijrahDateTimeTemporal = HijrahTemporal<ChronoHijrahDateTime, 
  */
 
 @Serializable(with = HijrahDateTimeSerializer::class)
-class HijrahDateTime internal constructor(private val dateTime: ChronoHijrahDateTime) : ChronoHijrahDateTime by dateTime,
-    java.io.Serializable, HijrahDateTimeTemporal(dateTime) {
+class HijrahDateTime internal constructor(private val dateTime: ChronoLocalDateTime<HijrahDate>) :
+    ChronoLocalDateTime<HijrahDate> by dateTime,
+    java.io.Serializable,
+    HijrahTemporal<ChronoLocalDateTime<HijrahDate>, HijrahDateTime>(dateTime) {
 
     @Serial
     private val serialVersionUid = 1L

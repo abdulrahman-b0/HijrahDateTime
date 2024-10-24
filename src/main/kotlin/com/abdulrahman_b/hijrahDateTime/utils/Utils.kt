@@ -1,3 +1,4 @@
+@file:JvmName("-Utils")
 package com.abdulrahman_b.hijrahDateTime.utils
 
 import java.time.chrono.HijrahChronology
@@ -13,8 +14,10 @@ internal fun requireHijrahChronologyFormatter(formatter: DateTimeFormatter) {
 }
 
 internal fun requireHijrahTemporal(temporal: Temporal) {
-    if (temporal.query(TemporalQueries.chronology()) !is HijrahChronology)
-        unsupported("adjustment of non HijrahChronology temporal is not supported. Temporal was $temporal with chronology was ${temporal.query(TemporalQueries.chronology())}")
+    val chronology = temporal.query(TemporalQueries.chronology())
+    if (chronology !is HijrahChronology)
+        throw UnsupportedTemporalTypeException(
+            "adjustment of non HijrahChronology temporal is not supported. Temporal was $temporal with chronology was $chronology"
+        )
 }
 
-private fun unsupported(message: String): Nothing = throw UnsupportedTemporalTypeException(message)

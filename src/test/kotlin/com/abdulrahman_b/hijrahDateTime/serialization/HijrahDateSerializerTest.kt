@@ -2,7 +2,7 @@ package com.abdulrahman_b.hijrahDateTime.serialization
 
 import com.abdulrahman_b.hijrahDateTime.extensions.dayOfMonth
 import com.abdulrahman_b.hijrahDateTime.extensions.monthValue
-import com.github.abdulrahman_b.serializers.HijrahDateSerializer
+import com.abdulrahman_b.hijrahDateTime.serializers.HijrahDateSerializer
 import com.abdulrahman_b.hijrahDateTime.extensions.year
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject

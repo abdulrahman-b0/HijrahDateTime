@@ -18,17 +18,17 @@ import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoField
 
 
-val HijrahDate.year: Int get() = get(ChronoField.YEAR)
+inline val HijrahDate.year: Int get() = get(ChronoField.YEAR)
 
-val HijrahDate.monthValue: Int get() = get(ChronoField.MONTH_OF_YEAR)
+inline val HijrahDate.monthValue: Int get() = get(ChronoField.MONTH_OF_YEAR)
 
-val HijrahDate.month: HijrahMonth get() = HijrahMonth.of(monthValue)
+inline val HijrahDate.month: HijrahMonth get() = HijrahMonth.of(monthValue)
 
-val HijrahDate.dayOfYear: Int get() = get(ChronoField.DAY_OF_YEAR)
+inline val HijrahDate.dayOfYear: Int get() = get(ChronoField.DAY_OF_YEAR)
 
-val HijrahDate.dayOfMonth: Int get() = get(ChronoField.DAY_OF_MONTH)
+inline val HijrahDate.dayOfMonth: Int get() = get(ChronoField.DAY_OF_MONTH)
 
-val HijrahDate.dayOfWeek: Int get() = get(ChronoField.DAY_OF_WEEK)
+inline val HijrahDate.dayOfWeek: Int get() = get(ChronoField.DAY_OF_WEEK)
 
 /**
  * Obtains an [OffsetHijrahDateTime] with the specified [OffsetTime].

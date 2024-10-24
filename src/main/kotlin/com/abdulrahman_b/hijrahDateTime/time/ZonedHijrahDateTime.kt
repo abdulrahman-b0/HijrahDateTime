@@ -17,7 +17,6 @@ import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoField
-import java.time.temporal.ChronoUnit
 import java.time.temporal.Temporal
 import java.time.temporal.TemporalAccessor
 import java.time.temporal.TemporalAdjuster
@@ -27,9 +26,6 @@ import java.time.temporal.TemporalUnit
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.time.temporal.ValueRange
 import java.time.zone.ZoneRules
-
-private typealias ChronoZonedHijrahDateTime = ChronoZonedDateTime<HijrahDate>
-private typealias ZonedHijrahDateTimeTemporal = HijrahTemporal<ChronoZonedHijrahDateTime, ZonedHijrahDateTime>
 
 /**
  * A date-time with a time-zone in the Hijrah calendar system,
@@ -73,9 +69,12 @@ private typealias ZonedHijrahDateTimeTemporal = HijrahTemporal<ChronoZonedHijrah
  */
 
 @Serializable(with = ZonedHijrahDateTimeSerializer::class)
-class ZonedHijrahDateTime internal constructor(private val dateTime: ChronoZonedHijrahDateTime):
-    ChronoZonedHijrahDateTime by dateTime, java.io.Serializable,
-    ZonedHijrahDateTimeTemporal(dateTime) {
+class ZonedHijrahDateTime internal constructor(private val dateTime: ChronoZonedDateTime<HijrahDate>):
+    ChronoZonedDateTime<HijrahDate> by dateTime,
+    java.io.Serializable,
+    HijrahTemporal<ChronoZonedDateTime<HijrahDate>, ZonedHijrahDateTime>(
+        dateTime
+    ) {
 
     @Serial
     private val serialVersionUid = 1L
