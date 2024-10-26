@@ -8,6 +8,7 @@ import java.time.DateTimeException
 import java.time.Duration
 import java.time.LocalTime
 import java.time.chrono.ChronoLocalDateTime
+import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoField
@@ -359,10 +360,18 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
     fun withYear(year: Int): Impl = with(ChronoField.YEAR, year.toLong())
 
     /**
+     * Formats this date-time using the specified formatter.
+     * By default, the formatter is the recommended formatter for the Hijrah calendar, which is obtained from [HijrahFormatters.getRecommendedFormatter].
      *
+     * If you want to use a custom formatter, you can pass it as an argument. But, note that the formatter chronology must be a [HijrahChronology],
+     * you can set the chronology using the [DateTimeFormatter.withChronology] method. Otherwise, an exception is thrown.
+     * @param formatter the formatter to use, by default it is the recommended formatter for the Hijrah calendar
+     * @return the formatted date-time string, not null
+     * @throws IllegalArgumentException if the formatter chronology is not a [HijrahChronology]
+     * @see HijrahFormatters.getRecommendedFormatter
      */
     @JvmOverloads
-    open fun format(formatter: DateTimeFormatter = HijrahFormatters.getRecommendedFormatter(temporal)): String { //TODO: add docs
+    open fun format(formatter: DateTimeFormatter = HijrahFormatters.getRecommendedFormatter(temporal)): String {
         requireHijrahChronologyFormatter(formatter)
         return formatter.format(temporal)
     }
