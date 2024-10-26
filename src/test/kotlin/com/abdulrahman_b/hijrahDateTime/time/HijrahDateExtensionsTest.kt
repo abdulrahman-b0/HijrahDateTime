@@ -1,10 +1,13 @@
 package com.abdulrahman_b.hijrahDateTime.time
 
+import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.datesUntil
 import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.dayOfMonth
 import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.dayOfWeek
 import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.dayOfYear
+import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.minusDays
 import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.month
 import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.monthValue
+import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.plusDays
 import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.year
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
@@ -16,7 +19,7 @@ import java.time.ZoneOffset
 import java.time.chrono.HijrahDate
 import java.time.temporal.ChronoUnit
 
-class HijrahDateExtensionsKtTest {
+class HijrahDateExtensionsTest {
 
     private val hijrahDate = HijrahDate.of(1446, 2, 5)
 
@@ -107,6 +110,68 @@ class HijrahDateExtensionsKtTest {
             val parsedHijrahDate = HijrahDates.parse(text)
 
             assertEquals(hijrahDate, parsedHijrahDate)
+        }
+    }
+
+    @Nested
+    @DisplayName("Arithmetic Operations")
+    inner class ArithmeticOperationsTest {
+        @Test
+        @DisplayName("HijrahDate is added properly")
+        fun plus() {
+            val expectedHijrahDate = hijrahDate.plusDays(1)
+            val obtainedHijrahDate = HijrahDate.of(1446, 2, 6)
+
+            assertEquals(expectedHijrahDate, obtainedHijrahDate)
+        }
+
+        @Test
+        @DisplayName("HijrahDate is subtracted properly")
+        fun minus() {
+            val expectedHijrahDate = hijrahDate.minusDays(1)
+            val obtainedHijrahDate = HijrahDate.of(1446, 2, 4)
+
+            assertEquals(expectedHijrahDate, obtainedHijrahDate)
+        }
+
+        @Test
+        @DisplayName("Difference between two HijrahDates is calculated properly")
+        fun until() {
+            val otherHijrahDate = hijrahDate.plus(1, ChronoUnit.DAYS)
+            val expected = 1L
+            val obtained = hijrahDate.until(otherHijrahDate, ChronoUnit.DAYS)
+
+            assertEquals(expected, obtained)
+        }
+
+        @Test
+        @DisplayName("Difference between two HijrahDates is calculated properly")
+        fun until2() {
+            val otherHijrahDate = hijrahDate.plus(1, ChronoUnit.DAYS)
+            val expected = 1L
+            val obtained = hijrahDate.until(otherHijrahDate, ChronoUnit.DAYS)
+
+            assertEquals(expected, obtained)
+        }
+
+        @Test
+        @DisplayName("Dates sequence from HijrahDate to another HijrahDate is generated properly")
+        fun datesUntilWithoutStep() {
+            val otherHijrahDate = hijrahDate.plus(3, ChronoUnit.DAYS)
+            val expected = listOf(hijrahDate, hijrahDate.plusDays(1), hijrahDate.plusDays(2))
+            val obtained = hijrahDate.datesUntil(otherHijrahDate).toList()
+
+            assertEquals(expected, obtained.toList())
+        }
+
+        @Test
+        @DisplayName("Stepped dates sequence from date to another is generated properly")
+        fun datesUntilWithStep() {
+            val otherHijrahDate = hijrahDate.plus(3, ChronoUnit.DAYS)
+            val expected = listOf(hijrahDate, hijrahDate.plusDays(2))
+            val obtained = hijrahDate.datesUntil(otherHijrahDate, 2).toList()
+
+            assertEquals(expected, obtained.toList())
         }
     }
 
