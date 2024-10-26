@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.abdulrahman-b"
-version = "1.0-SNAPSHOT"
+version = "1.0-alpha01"
 
 repositories {
     mavenCentral()

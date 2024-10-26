@@ -1,6 +1,6 @@
 package com.abdulrahman_b.hijrahDateTime.time
 
-import com.abdulrahman_b.hijrahDateTime.formats.HijrahDateTimeFormatters
+import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -87,7 +87,7 @@ class ZonedHijrahDateTimeTest {
         @DisplayName("ZonedHijrahDateTime is formatted properly")
         fun hijrahDateTimeIsFormattedProperly() {
             val expected = "1446-02-05T12:43:18+03:00[Asia/Riyadh]"
-            val actual = zonedHijrahDateTime.format(HijrahDateTimeFormatters.HIJRAH_ZONED_DATE_TIME)
+            val actual = zonedHijrahDateTime.format(HijrahFormatters.HIJRAH_ZONED_DATE_TIME)
             assertEquals(expected, actual)
         }
 
@@ -428,9 +428,9 @@ class ZonedHijrahDateTimeTest {
         }
 
         @Test
-        @DisplayName("ZonedHijrahDateTime.toLocalDateTime returns the correct HijrahDateTime instance")
+        @DisplayName("ZonedHijrahDateTime.toHijrahDateTime returns the correct HijrahDateTime instance")
         fun toLocalDateTime() {
-            val hijrahDateTime = zonedHijrahDateTime.toLocalDateTime()
+            val hijrahDateTime = zonedHijrahDateTime.toHijrahDateTime()
 
             val expected = HijrahDateTime.of(1446, 2, 5, 12, 43, 18)
 

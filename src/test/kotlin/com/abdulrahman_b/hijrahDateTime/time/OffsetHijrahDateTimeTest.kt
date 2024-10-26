@@ -1,6 +1,6 @@
 package com.abdulrahman_b.hijrahDateTime.time
 
-import com.abdulrahman_b.hijrahDateTime.formats.HijrahDateTimeFormatters
+import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -79,7 +79,7 @@ class OffsetHijrahDateTimeTest {
         @DisplayName("OffsetHijrahDateTime is formatted properly")
         fun hijrahDateTimeIsFormattedProperly() {
             val expected = "1446-02-05T12:43:18+03:00"
-            val actual = offsetHijrahDateTime.format(HijrahDateTimeFormatters.HIJRAH_OFFSET_DATE_TIME)
+            val actual = offsetHijrahDateTime.format(HijrahFormatters.HIJRAH_OFFSET_DATE_TIME)
             assertEquals(expected, actual)
         }
 
@@ -87,7 +87,7 @@ class OffsetHijrahDateTimeTest {
         @DisplayName("OffsetHijrahDateTime is parsed properly")
         fun hijrahDateTimeIsParsedProperly() {
             val text = "1446-02-05T12:43:18+03:00"
-            val parsedHijrahDateTime = OffsetHijrahDateTime.parse(text, HijrahDateTimeFormatters.HIJRAH_OFFSET_DATE_TIME)
+            val parsedHijrahDateTime = OffsetHijrahDateTime.parse(text, HijrahFormatters.HIJRAH_OFFSET_DATE_TIME)
 
             assertEquals(offsetHijrahDateTime, parsedHijrahDateTime)
         }

@@ -1,6 +1,6 @@
 package com.abdulrahman_b.hijrahDateTime.time
 
-import com.abdulrahman_b.hijrahDateTime.formats.HijrahDateTimeFormatters
+import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -32,21 +32,16 @@ class HijrahDateTimeTest {
             val zoneId = ZoneOffset.of("+03:00")
             val zonedHijrahDateTime = hijrahDateTime.atZone(zoneId)
             
-            assertEquals(hijrahDateTime, zonedHijrahDateTime.toLocalDateTime())
+            assertEquals(hijrahDateTime, zonedHijrahDateTime.toHijrahDateTime())
         }
 
         @Test
         @DisplayName("HijrahDateTime with zone offset is obtained properly")
         fun currentZonedTimeObtainedProperly() {
 
-            fun normalizeSecondsAndNanos(hijrahDateTime: HijrahDateTime): HijrahDateTime {
-                return hijrahDateTime.minus((hijrahDateTime.nanoOfSecond.nanoseconds + hijrahDateTime.secondOfMinute.seconds).toJavaDuration())
-            }
 
-            val hijrahDateTime =
-                HijrahDateTime.now(ZoneOffset.of("+03:00")).let(::normalizeSecondsAndNanos)
-            val utcHijrahDateTime =
-                HijrahDateTime.now(Clock.systemUTC()).let(::normalizeSecondsAndNanos)
+            val hijrahDateTime = HijrahDateTime.now(ZoneOffset.of("+03:00")).truncatedTo(ChronoUnit.SECONDS)
+            val utcHijrahDateTime = HijrahDateTime.now(Clock.systemUTC()).truncatedTo(ChronoUnit.SECONDS)
 
             assertEquals(hijrahDateTime.minus(3, ChronoUnit.HOURS), utcHijrahDateTime)
         }
@@ -89,7 +84,7 @@ class HijrahDateTimeTest {
         @DisplayName("HijrahDateTime is formatted properly")
         fun hijrahDateTimeIsFormattedProperly() {
             val expected = "1446-02-05T12:43:18"
-            val actual = hijrahDateTime.format(HijrahDateTimeFormatters.HIJRAH_LOCAL_DATE_TIME)
+            val actual = hijrahDateTime.format(HijrahFormatters.HIJRAH_DATE_TIME)
             assertEquals(expected, actual)
         }
 

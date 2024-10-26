@@ -1,8 +1,8 @@
 package com.abdulrahman_b.hijrahDateTime.serializers
 
-import com.abdulrahman_b.hijrahDateTime.extensions.dayOfMonth
-import com.abdulrahman_b.hijrahDateTime.extensions.monthValue
-import com.abdulrahman_b.hijrahDateTime.extensions.year
+import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.dayOfMonth
+import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.monthValue
+import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.year
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encoding.Decoder

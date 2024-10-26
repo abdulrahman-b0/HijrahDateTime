@@ -17,7 +17,7 @@ import java.time.temporal.Temporal
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.util.Locale
 
-object HijrahDateTimeFormatters {
+object HijrahFormatters {
 
     /**
      * The Hijrah date formatter that formats or parses a date without an
@@ -41,7 +41,7 @@ object HijrahDateTimeFormatters {
      * other calendar systems are correctly converted.
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
-    val HIJRAH_LOCAL_DATE: DateTimeFormatter = DateTimeFormatterBuilder()
+    val HIJRAH_DATE: DateTimeFormatter = DateTimeFormatterBuilder()
         .appendValue(ChronoField.YEAR, 4, 10, SignStyle.EXCEEDS_PAD)
         .appendLiteral('-')
         .appendValue(ChronoField.MONTH_OF_YEAR, 2)
@@ -52,7 +52,7 @@ object HijrahDateTimeFormatters {
 
     val HIJRAH_ZONED_DATE: DateTimeFormatter = DateTimeFormatterBuilder()
         .parseCaseInsensitive()
-        .append(HIJRAH_LOCAL_DATE)
+        .append(HIJRAH_DATE)
         .optionalStart()
         .appendOffsetId()
         .toFormatter(ResolverStyle.STRICT, HijrahChronology.INSTANCE)
@@ -60,7 +60,7 @@ object HijrahDateTimeFormatters {
 
     val HIJRAH_OFFSET_DATE: DateTimeFormatter = DateTimeFormatterBuilder()
         .parseCaseInsensitive()
-        .append(HIJRAH_LOCAL_DATE)
+        .append(HIJRAH_DATE)
         .appendOffsetId()
         .toFormatter(ResolverStyle.STRICT, HijrahChronology.INSTANCE)
 
@@ -72,22 +72,22 @@ object HijrahDateTimeFormatters {
      * This returns an immutable formatter capable of formatting and parsing
      * the hijrah date-time format.
      * The format consists of:
-     * * The [HIJRAH_LOCAL_DATE] formatter
+     * * The [HIJRAH_DATE] formatter
      * * The letter 'T'. Parsing is case insensitive.
      * * The [ISO_LOCAL_TIME]
      * The returned formatter has a chronology of Hijrah set to ensure dates in
      * other calendar systems are correctly converted.
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
-    val HIJRAH_LOCAL_DATE_TIME: DateTimeFormatter = DateTimeFormatterBuilder()
+    val HIJRAH_DATE_TIME: DateTimeFormatter = DateTimeFormatterBuilder()
         .parseCaseInsensitive()
-        .append(HIJRAH_LOCAL_DATE)
+        .append(HIJRAH_DATE)
         .appendLiteral('T')
         .append(ISO_LOCAL_TIME)
         .toFormatter(ResolverStyle.STRICT, HijrahChronology.INSTANCE)
 
     val HIJRAH_ZONED_DATE_TIME: DateTimeFormatter = DateTimeFormatterBuilder()
-        .append(HIJRAH_LOCAL_DATE_TIME)
+        .append(HIJRAH_DATE_TIME)
         .optionalStart()
         .appendOffsetId()
         .optionalStart()
@@ -100,7 +100,7 @@ object HijrahDateTimeFormatters {
 
     val HIJRAH_OFFSET_DATE_TIME: DateTimeFormatter = DateTimeFormatterBuilder()
         .parseCaseInsensitive()
-        .append(HIJRAH_LOCAL_DATE_TIME)
+        .append(HIJRAH_DATE_TIME)
         .parseLenient()
         .appendOffsetId()
         .parseStrict()
@@ -113,8 +113,8 @@ object HijrahDateTimeFormatters {
     @Throws(UnsupportedTemporalTypeException::class)
     fun getRecommendedFormatter(temporal: Temporal): DateTimeFormatter {
         return when (temporal) {
-            is HijrahDate -> HIJRAH_LOCAL_DATE
-            is HijrahDateTime -> HIJRAH_LOCAL_DATE_TIME
+            is HijrahDate -> HIJRAH_DATE
+            is HijrahDateTime -> HIJRAH_DATE_TIME
             is ZonedHijrahDateTime -> HIJRAH_ZONED_DATE_TIME
             is OffsetHijrahDateTime -> HIJRAH_OFFSET_DATE_TIME
             else -> throw UnsupportedTemporalTypeException("Unsupported temporal type: $temporal")

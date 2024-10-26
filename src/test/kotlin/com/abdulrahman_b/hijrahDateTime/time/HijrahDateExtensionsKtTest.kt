@@ -1,13 +1,11 @@
-package com.abdulrahman_b.hijrahDateTime
+package com.abdulrahman_b.hijrahDateTime.time
 
-import com.abdulrahman_b.hijrahDateTime.extensions.HijrahDateFactory
-import com.abdulrahman_b.hijrahDateTime.time.HijrahMonth
-import com.abdulrahman_b.hijrahDateTime.extensions.dayOfMonth
-import com.abdulrahman_b.hijrahDateTime.extensions.dayOfWeek
-import com.abdulrahman_b.hijrahDateTime.extensions.dayOfYear
-import com.abdulrahman_b.hijrahDateTime.extensions.month
-import com.abdulrahman_b.hijrahDateTime.extensions.monthValue
-import com.abdulrahman_b.hijrahDateTime.extensions.year
+import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.dayOfMonth
+import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.dayOfWeek
+import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.dayOfYear
+import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.month
+import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.monthValue
+import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.year
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -74,7 +72,7 @@ class HijrahDateExtensionsKtTest {
         @DisplayName("HijrahDate is obtained from epoch day properly")
         fun ofEpochDay() {
             val epochDay = hijrahDate.toEpochDay()
-            val obtainedHijrahDate = HijrahDateFactory.ofEpochDay(epochDay)
+            val obtainedHijrahDate = HijrahDates.ofEpochDay(epochDay)
 
             assertEquals(hijrahDate, obtainedHijrahDate)
         }
@@ -84,7 +82,7 @@ class HijrahDateExtensionsKtTest {
         fun ofYearDay() {
             val year = hijrahDate.year
             val dayOfYear = hijrahDate.dayOfYear
-            val obtainedHijrahDate = HijrahDateFactory.ofYearDay(year, dayOfYear)
+            val obtainedHijrahDate = HijrahDates.ofYearDay(year, dayOfYear)
 
             assertEquals(hijrahDate, obtainedHijrahDate)
         }
@@ -94,10 +92,10 @@ class HijrahDateExtensionsKtTest {
         fun ofInstant() {
             val instant = hijrahDate.atTime(LocalTime.of(0, 0,)).toInstant(ZoneOffset.UTC)
 
-            var obtainedHijrahDate = HijrahDateFactory.ofInstant(instant, ZoneOffset.UTC)
+            var obtainedHijrahDate = HijrahDates.ofInstant(instant, ZoneOffset.UTC)
             assertEquals(hijrahDate, obtainedHijrahDate)
 
-            obtainedHijrahDate = HijrahDateFactory.ofInstant(instant, ZoneOffset.of("-03:00"))
+            obtainedHijrahDate = HijrahDates.ofInstant(instant, ZoneOffset.of("-03:00"))
             assertEquals(hijrahDate.minus(1, ChronoUnit.DAYS), obtainedHijrahDate)
 
         }
@@ -106,7 +104,7 @@ class HijrahDateExtensionsKtTest {
         @DisplayName("HijrahDate is parsed properly")
         fun parse() {
             val text = "1446-02-05"
-            val parsedHijrahDate = HijrahDateFactory.parse(text)
+            val parsedHijrahDate = HijrahDates.parse(text)
 
             assertEquals(hijrahDate, parsedHijrahDate)
         }

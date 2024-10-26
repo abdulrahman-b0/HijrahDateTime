@@ -1,8 +1,10 @@
-package com.abdulrahman_b.hijrahDateTime.extensions
+package com.abdulrahman_b.hijrahDateTime.time
 
-import com.abdulrahman_b.hijrahDateTime.formats.HijrahDateTimeFormatters.HIJRAH_OFFSET_DATE_TIME
-import com.abdulrahman_b.hijrahDateTime.formats.HijrahDateTimeFormatters.HIJRAH_ZONED_DATE_TIME
-import com.abdulrahman_b.hijrahDateTime.time.ZonedHijrahDateTime
+import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters.HIJRAH_OFFSET_DATE_TIME
+import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters.HIJRAH_ZONED_DATE_TIME
+import com.abdulrahman_b.hijrahDateTime.time.Instants.atHijrahOffset
+import com.abdulrahman_b.hijrahDateTime.time.Instants.atHijrahZone
+import com.abdulrahman_b.hijrahDateTime.time.Instants.toHijrahString
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 

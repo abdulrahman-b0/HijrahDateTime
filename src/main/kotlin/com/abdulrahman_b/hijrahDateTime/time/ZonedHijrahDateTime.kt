@@ -1,7 +1,7 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 package com.abdulrahman_b.hijrahDateTime.time
 
-import com.abdulrahman_b.hijrahDateTime.formats.HijrahDateTimeFormatters
+import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
 import com.abdulrahman_b.hijrahDateTime.serializers.ZonedHijrahDateTimeSerializer
 import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronologyFormatter
 import kotlinx.serialization.Serializable
@@ -69,149 +69,106 @@ import java.time.zone.ZoneRules
  */
 
 @Serializable(with = ZonedHijrahDateTimeSerializer::class)
-class ZonedHijrahDateTime internal constructor(private val dateTime: ChronoZonedDateTime<HijrahDate>):
-    ChronoZonedDateTime<HijrahDate> by dateTime,
-    java.io.Serializable,
-    HijrahTemporal<ChronoZonedDateTime<HijrahDate>, ZonedHijrahDateTime>(
-        dateTime
-    ) {
+open class ZonedHijrahDateTime internal constructor(
+    private val dateTime: ChronoZonedDateTime<HijrahDate>
+): DateTimeTemporal<ChronoZonedDateTime<HijrahDate>, ZonedHijrahDateTime>(dateTime), Comparable<ZonedHijrahDateTime>, java.io.Serializable {
+
+    val zone: ZoneId get() = dateTime.zone
+    val offset: ZoneOffset get() = dateTime.offset
+    val chronology: HijrahChronology get() = dateTime.chronology as HijrahChronology
 
     @Serial
     private val serialVersionUid = 1L
 
-    override fun range(field: TemporalField): ValueRange {
-        return dateTime.range(field)
-    }
+    override fun truncatedTo(unit: TemporalUnit) = of(toHijrahDateTime().truncatedTo(unit), zone)
+    override fun toHijrahDate(): HijrahDate = dateTime.toLocalDate()
+    override fun toLocalTime(): LocalTime = dateTime.toLocalTime()
+    override fun isEqual(other: ZonedHijrahDateTime) = dateTime.isEqual(other.dateTime)
+    override fun isBefore(other: ZonedHijrahDateTime) = dateTime.isBefore(other.dateTime)
+    override fun isAfter(other: ZonedHijrahDateTime) = dateTime.isAfter(other.dateTime)
+    override fun range(field: TemporalField): ValueRange = dateTime.range(field)
+    override fun compareTo(other: ZonedHijrahDateTime) = dateTime.compareTo(other.dateTime)
+    fun toHijrahDateTime() = HijrahDateTime(dateTime.toLocalDateTime())
 
     /**
-     * Returns an object of the same type as this object with the specified period added.
+     * Returns a copy of `this` date-time changing the zone offset to the earlier of the two valid offsets at a local time-line overlap.
      *
-     * This method returns a new object based on this one with the specified period added.
-     * For example, on a [HijrahDate], this could be used to add a number of years, months or days.
-     * The returned object will have the same observable type as this object.
-
-     * @param amountToAdd  the amount of the specified unit to add, may be negative
-     * @param unit  the unit of the amount to add, not null
-     * @return an object of the same type with the specified period added, not null
-     * @throws DateTimeException if the unit cannot be added
-     * @throws UnsupportedTemporalTypeException if the unit is not supported
-     * @throws ArithmeticException if numeric overflow occurs
+     * This method only has any effect when the local time-line overlaps, such as at an autumn daylight savings cutover.
+     * In this scenario, there are two valid offsets for the local date-time. Calling this method will return a zoned date-time with the earlier of the two selected.
+     * If this method is called when it is not an overlap, this is returned.
+     * This instance is immutable and unaffected by this method call.
+     * @return a [ZonedHijrahDateTime] based on this date-time with the earlier offset, not null
+     * @throws DateTimeException – if no rules are valid for this date-time
      */
-    override fun plus(amountToAdd: Long, unit: TemporalUnit): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.plus(amountToAdd, unit))
-    }
+    fun withEarlierOffsetAtOverlap() = ZonedHijrahDateTime(dateTime.withEarlierOffsetAtOverlap())
 
     /**
-     * Returns an object of the same type as this object with the specified period subtracted.
+     * Returns a copy of this date-time changing the zone offset to theclater of the two valid offsets at a local time-line overlap.
      *
-     * This method returns a new object based on this one with the specified period subtracted.
-     * For example, on a [HijrahDate], this could be used to add a number of years, months or days.
-     * The returned object will have the same observable type as this object.
-
-     * @param amountToSubtract  the amount of the specified unit to add, may be negative
-     * @param unit  the unit of the amount to add, not null
-     * @return an object of the same type with the specified period added, not null
-     * @throws DateTimeException if the unit cannot be added
-     * @throws UnsupportedTemporalTypeException if the unit is not supported
-     * @throws ArithmeticException if numeric overflow occurs
+     * This method only has any effect when the local time-line overlaps, such as
+     * at an autumn daylight savings cutover. In this scenario, there are two
+     * valid offsets for the local date-time. Calling this method will return
+     * a zoned date-time with the later of the two selected.
+     *
+     * If this method is called when it is not an overlap, `this` is returned.
+     *
+     * This instance is immutable and unaffected by this method call.
+     *
+     * @return a [ChronoZonedDateTime] based on this date-time with the later offset, not null
+     * @throws DateTimeException if no rules can be found for the zone
+     * @throws DateTimeException if no rules are valid for this date-time
      */
-    override fun minus(amountToSubtract: Long, unit: TemporalUnit): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.minus(amountToSubtract, unit))
-    }
-
-
-    override fun plus(amount: TemporalAmount): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.plus(amount))
-    }
-
-    override fun minus(amount: TemporalAmount): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.minus(amount))
-    }
-
+    fun withLaterOffsetAtOverlap() = ZonedHijrahDateTime(dateTime.withLaterOffsetAtOverlap())
 
     /**
-     * Returns an adjusted object of the same type as this object with the adjustment made.
+     * Returns a copy of this date-time with a different time-zone,
+     * retaining the instant.
      *
-     * This adjusts this date-time according to the rules of the specified adjuster.
-     * A simple adjuster might simply set the one of the fields, such as the year field.
-     * A more complex adjuster might set the date to the last day of the month.
-     * A selection of common adjustments is provided in [java.time.temporal.TemporalAdjusters].
-     * These include finding the "last day of the month" and "next Wednesday".
-     * The adjuster is responsible for handling special cases, such as the varying
-     * lengths of month and leap years.
+     * This method changes the time-zone and retains the instant.
+     * This normally results in a change to the local date-time.
      *
-     * Some example code indicating how and why this method is used:
-     * ```
-     *      date = date.with(HijrahMonth.JUMADA_AL_THANI);        // most key classes implement TemporalAdjuster
-     *      date = date.with(lastDayOfMonth());  // static import from Adjusters
-     *      date = date.with(next(WEDNESDAY));   // static import from Adjusters and DayOfWeek
-     *```
-
-     * @param adjuster  the adjuster to use, not null
-     * @return an object of the same type with the specified adjustment made, not null
-     * @throws DateTimeException if unable to make the adjustment
-     * @throws ArithmeticException if numeric overflow occurs
+     * This method is based on retaining the same instant, thus gaps and overlaps
+     * in the local time-line have no effect on the result.
+     *
+     * To change the offset while keeping the local time,
+     * use [withZoneSameLocal].
+     *
+     * @param zone  the time-zone to change to, not null
+     * @return a [ChronoZonedDateTime] based on this date-time with the requested zone, not null
+     * @throws DateTimeException if the result exceeds the supported date range
      */
-    override fun with(adjuster: TemporalAdjuster): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.with(adjuster))
-    }
+    fun withZoneSameInstant(zone: ZoneId) = ZonedHijrahDateTime(dateTime.withZoneSameInstant(zone))
+
+    fun toInstant(): Instant = dateTime.toInstant()
+
+    fun toEpochSecond(): Long = dateTime.toEpochSecond()
 
     /**
-     * Returns an object of the same type as this object with the specified field altered.
+     * Returns a copy of this date-time with a different time-zone,
+     * retaining the local date-time if possible.
      *
-     * This returns a new object based on this one with the value for the specified field changed.
-     * For example, on a [HijrahDate], this could be used to set the year, month or day-of-month.
-     * The returned object will have the same observable type as this object.
-
-     * If the field is not a [ChronoField], then the result of this method
-     * is obtained by invoking {@code TemporalField.adjustInto(Temporal, long)}
-     * passing `this` as the first argument.
-
-     * @param field  the field to set in the result, not null
-     * @param newValue  the new value of the field in the result
-     * @return an object of the same type with the specified field set, not null
-     * @throws DateTimeException if the field cannot be set
-     * @throws UnsupportedTemporalTypeException if the field is not supported
-     * @throws ArithmeticException if numeric overflow occurs
+     * This method changes the time-zone and retains the local date-time.
+     * The local date-time is only changed if it is invalid for the new zone.
+     *
+     * To change the zone and adjust the local date-time,
+     * use [withZoneSameInstant].
+     *
+     * This instance is immutable and unaffected by this method call.
+     *
+     * @param zone  the time-zone to change to, not null
+     * @return a {@code ChronoZonedDateTime} based on this date-time with the requested zone, not null
      */
-    override fun with(field: TemporalField, newValue: Long): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.with(field, newValue))
-    }
+    fun withZoneSameLocal(zone: ZoneId) = ZonedHijrahDateTime(dateTime.withZoneSameLocal(zone))
 
-    override fun format(formatter: DateTimeFormatter): String {
-        requireHijrahChronologyFormatter(formatter)
-        return dateTime.format(formatter)
-    }
+    /**
+     * Obtains an instance of [OffsetHijrahDateTime] from this date-time.
+     * This creates an [OffsetHijrahDateTime] with the same local date-time and offset.
+     *
+     * @return an OffsetHijrahDateTime representing the same local date-time and offset
+     */
+    fun toOffsetDateTime() = OffsetHijrahDateTime.of(toHijrahDateTime(), offset)
 
-    override fun until(endExclusive: Temporal, unit: TemporalUnit): Long {
-        return dateTime.until(endExclusive, unit)
-    }
-
-    override fun toLocalDateTime(): HijrahDateTime {
-        return HijrahDateTime(dateTime.toLocalDateTime())
-    }
-
-    override fun withEarlierOffsetAtOverlap(): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.withEarlierOffsetAtOverlap())
-    }
-
-    override fun withLaterOffsetAtOverlap(): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.withLaterOffsetAtOverlap())
-    }
-
-    override fun withZoneSameInstant(zone: ZoneId): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.withZoneSameInstant(zone))
-    }
-
-    override fun withZoneSameLocal(zone: ZoneId): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.withZoneSameLocal(zone))
-    }
-
-
-
-    override fun toString(): String {
-        return dateTime.toString()
-    }
+    override fun toString() = dateTime.toString()
 
     override fun factory(temporal: ChronoZonedDateTime<HijrahDate>) = ZonedHijrahDateTime(temporal)
 
@@ -220,9 +177,7 @@ class ZonedHijrahDateTime internal constructor(private val dateTime: ChronoZoned
         return dateTime == other.dateTime
     }
 
-    override fun hashCode(): Int {
-        return dateTime.hashCode()
-    }
+    override fun hashCode() = dateTime.hashCode()
 
     companion object {
 
@@ -235,7 +190,7 @@ class ZonedHijrahDateTime internal constructor(private val dateTime: ChronoZoned
 
         @JvmStatic
         fun of(hijrahDateTime: HijrahDateTime, zoneId: ZoneId): ZonedHijrahDateTime {
-            return ZonedHijrahDateTime(hijrahDateTime.atZone(zoneId))
+            return hijrahDateTime.atZone(zoneId)
         }
 
         @JvmStatic
@@ -246,7 +201,7 @@ class ZonedHijrahDateTime internal constructor(private val dateTime: ChronoZoned
         @JvmStatic
         @JvmOverloads
         fun of(year: Int, month: Int, dayOfMonth: Int, hour: Int, minute: Int, second: Int = 0, nanoOfSecond: Int = 0, zoneId: ZoneId = ZoneId.systemDefault()) : ZonedHijrahDateTime {
-            return ZonedHijrahDateTime(of(HijrahDate.of(year, month, dayOfMonth), LocalTime.of(hour, minute, second, nanoOfSecond), zoneId))
+            return of(HijrahDate.of(year, month, dayOfMonth), LocalTime.of(hour, minute, second, nanoOfSecond), zoneId)
         }
 
         @JvmStatic
@@ -261,7 +216,7 @@ class ZonedHijrahDateTime internal constructor(private val dateTime: ChronoZoned
 
         @JvmStatic
         @JvmOverloads
-        fun parse(text: CharSequence, formatter: DateTimeFormatter = HijrahDateTimeFormatters.HIJRAH_ZONED_DATE_TIME): ZonedHijrahDateTime {
+        fun parse(text: CharSequence, formatter: DateTimeFormatter = HijrahFormatters.HIJRAH_ZONED_DATE_TIME): ZonedHijrahDateTime {
             requireHijrahChronologyFormatter(formatter)
             return formatter.parse(text, Companion::from)
         }

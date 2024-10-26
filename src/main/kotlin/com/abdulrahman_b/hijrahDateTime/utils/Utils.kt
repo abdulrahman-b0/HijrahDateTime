@@ -13,7 +13,7 @@ internal fun requireHijrahChronologyFormatter(formatter: DateTimeFormatter) {
     }
 }
 
-internal fun requireHijrahTemporal(temporal: Temporal) {
+internal fun requireHijrahChronology(temporal: Temporal) {
     val chronology = temporal.query(TemporalQueries.chronology())
     if (chronology !is HijrahChronology)
         throw UnsupportedTemporalTypeException(
