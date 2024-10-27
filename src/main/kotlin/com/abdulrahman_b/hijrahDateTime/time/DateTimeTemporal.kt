@@ -7,7 +7,6 @@ import java.io.Serial
 import java.time.DateTimeException
 import java.time.Duration
 import java.time.LocalTime
-import java.time.chrono.ChronoLocalDateTime
 import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
@@ -347,7 +346,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      * Returns a copy of this date-time with the specified day-of-week set.
      *
      * This is equivalent to `with(ChronoField.DAY_OF_WEEK, dayOfWeek)`
-     * @param dayOfWeek the day-of-week to set in the result, from 1 to 7
+     * @param month the month-of-year to set in the result, from 1 to 12
      */
     fun withMonth(month: Int): Impl = with(ChronoField.MONTH_OF_YEAR, month.toLong())
 
@@ -355,7 +354,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      * Returns a copy of this date-time with the specified month-of-year set.
      *
      * This is equivalent to `with(ChronoField.MONTH_OF_YEAR, month)`
-     * @param month the month-of-year to set in the result, from 1 to 12
+     * @param year the year to set in the result, from 1 to 12
      */
     fun withYear(year: Int): Impl = with(ChronoField.YEAR, year.toLong())
 
