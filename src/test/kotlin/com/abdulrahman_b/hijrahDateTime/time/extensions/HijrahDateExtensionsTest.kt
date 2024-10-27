@@ -1,14 +1,16 @@
-package com.abdulrahman_b.hijrahDateTime.time
+package com.abdulrahman_b.hijrahDateTime.time.extensions
 
-import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.datesUntil
-import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.dayOfMonth
-import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.dayOfWeek
-import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.dayOfYear
-import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.minusDays
-import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.month
-import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.monthValue
-import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.plusDays
-import com.abdulrahman_b.hijrahDateTime.time.HijrahDates.year
+import com.abdulrahman_b.hijrahDateTime.time.HijrahMonth
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.datesUntil
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.dayOfMonth
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.dayOfWeek
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.dayOfYear
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.minusDays
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.month
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.monthValue
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.plusDays
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.toInstant
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.year
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -173,6 +175,15 @@ class HijrahDateExtensionsTest {
 
             assertEquals(expected, obtained.toList())
         }
+    }
+
+    @Test
+    @DisplayName("HijrahDate is converted to Instant properly")
+    fun toInstant() {
+        val instant = hijrahDate.toInstant(ZoneOffset.UTC)
+        val obtainedHijrahDate = HijrahDates.ofInstant(instant, ZoneOffset.UTC)
+
+        assertEquals(hijrahDate, obtainedHijrahDate)
     }
 
 

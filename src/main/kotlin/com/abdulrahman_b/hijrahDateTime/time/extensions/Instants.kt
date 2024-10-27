@@ -1,8 +1,10 @@
 @file:JvmName("InstantUtils")
 
-package com.abdulrahman_b.hijrahDateTime.time
+package com.abdulrahman_b.hijrahDateTime.time.extensions
 
 import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
+import com.abdulrahman_b.hijrahDateTime.time.OffsetHijrahDateTime
+import com.abdulrahman_b.hijrahDateTime.time.ZonedHijrahDateTime
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset

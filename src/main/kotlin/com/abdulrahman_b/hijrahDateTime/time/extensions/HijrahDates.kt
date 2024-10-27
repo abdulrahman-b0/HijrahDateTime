@@ -1,7 +1,11 @@
 @file:Suppress("MemberVisibilityCanBePrivate", "unused")
-package com.abdulrahman_b.hijrahDateTime.time
+package com.abdulrahman_b.hijrahDateTime.time.extensions
 
 import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
+import com.abdulrahman_b.hijrahDateTime.time.HijrahDateTime
+import com.abdulrahman_b.hijrahDateTime.time.HijrahMonth
+import com.abdulrahman_b.hijrahDateTime.time.OffsetHijrahDateTime
+import com.abdulrahman_b.hijrahDateTime.time.ZonedHijrahDateTime
 import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronologyFormatter
 import java.time.DateTimeException
 import java.time.Instant
@@ -9,6 +13,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.OffsetTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
@@ -189,6 +194,17 @@ object HijrahDates {
     fun HijrahDate.atTime(offsetTime: OffsetTime): OffsetHijrahDateTime {
         val datetime = HijrahDateTime.of(this, offsetTime.toLocalTime())
         return OffsetHijrahDateTime.of(datetime, offsetTime.offset)
+    }
+
+    /**
+     * Obtains an [OffsetHijrahDateTime] with the specified [ZoneOffset].
+     * The time is set to midnight, 00:00.
+     *
+     * @param offset the offset to use, not null
+     * @return the offset date-time, not null
+     */
+    fun HijrahDate.toInstant(offset: ZoneOffset): Instant {
+        return atStartOfDay(offset).toInstant()
     }
 
 
