@@ -14,7 +14,7 @@ plugins {
 
 
 group = "com.abdulrahman-b"
-version = "1.0.0-alpha.1"
+version = "1.0.0-alpha.2"
 
 java {
     withJavadocJar()
