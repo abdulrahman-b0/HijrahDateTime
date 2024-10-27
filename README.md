@@ -8,6 +8,8 @@ HijrahDateTime is a Kotlin/JVM library that is built on top of java.time to faci
 
 See [Using in your projects](#using-in-your-projects) for the instructions how to setup a dependency in your project.
 
+
+
 ## Purpose
 
 The Java.time API provides a comprehensive set of classes for working with date and time and shortcuts for working with them, abstracting the complexity of the date and time calculations.
@@ -18,13 +20,19 @@ However, the Hijrah calendar is the main calendar used in daily life in the Isla
 The HijrahDateTime library aims to fill this gap and provide a comprehensive set of classes and functions to work with the Hijrah calendar effectively, and to provide shortcuts for working with the Hijrah calendar as there are for the ISO calendar in the java.time API.
 Abstracting the work with the Hijrah calendar, and providing shortcuts for working with it, will make it easier to work with the Hijrah calendar, and will make the development process faster and more efficient, and will reduce the complexity of the code, by the well of Allah.
 
+
+
+
 ## Types
 
 The library provides a basic set of types for working with date and time:
 
 - `HijrahDateTime` to represent hijrah date and time components without a reference to the particular time zone. It's similar to java `LocalDateTime` except that it uses the `HijrahDate` instead of `LocalDate`.
+
 - `ZonedHijrahDateTime` to represent hijrah date and time components with a reference to the particular time zone. It's similar to java `ZonedDateTime` except that it uses the `HijrahDateTime` instead of `LocalDateTime`.
+
 - `OffsetHijrahDateTime` to represent hijrah date and time components with a fixed offset from UTC. It's similar to java `OffsetDateTime` except that it uses the `HijrahDateTime` instead of `LocalDateTime`.
+
 - `HijrahMonth` to represent the hijrah months in a descriptive way.
 
 
@@ -35,6 +43,9 @@ For java developers, use can access those extensions by using the `HijrahDates` 
 
 More extensions to the java.time classes are planned to be added in the next releases, by the well of Allah.
 
+
+
+
 ## Hijrah Formatters
 
 ### Built-in formatters
@@ -43,14 +54,21 @@ The library provides `HijrahFormats` singleton object, which has a set of built-
 Some of those formatters are:
 
 - `HIJRAH_DATE` to parse and format the hijrah date in the format `yyyy-MM-dd`, which the main format for the `HijrahDate` class. For example, `1446-10-12`.
+
 - `HIJRAH_DATE_TIME` to parse and format the hijrah date and time in the format `yyyy-MM-ddTHH:mm:ss`, which the main format for the `HijrahDateTime` class. For example, `1446-10-12T12:30:00`.
+
 - `HIJRAH_OFFSET_DATE_TIME` to parse and format the hijrah date and time with the offset in the format `yyyy-MM-ddTHH:mm:ssZ`, which the main format for the `OffsetHijrahDateTime` class. For example, `1446-10-12T12:30:00+03:00`.
+
 - `HIJRAH_ZONED_DATE_TIME` to parse and format the hijrah date and time with the time zone in the format `yyyy-MM-ddTHH:mm:ss[.SSS]Z`, which the main format for the `ZonedHijrahDateTime` class. For example, `1446-10-12T12:30:00+03:00[Asia/Riyadh]`.
+
+
 
 ### Working with other string formats
 
 When some data needs to be formatted in some format, you can define your own format, either by using the `DateTimeFormatterBuilder` class or by using the `DateTimeFormatter.ofPattern()`.
 For example:
+
+
 
 #### Using the `DateTimeFormatterBuilder` class
 
@@ -90,6 +108,9 @@ val date: HijrahDate = dateFormat.parse("1446/10/12", HijrahDate::from)
 println(date.format(dateFormat)) // "1446/10/12"
 ```
 
+
+
+
 ## Serialization
 
 ### Using kotlinx.serialization
@@ -97,9 +118,14 @@ println(date.format(dateFormat)) // "1446/10/12"
 The library provides serialization support with kotlinx.serialization library. Simply, all the new datetime classes are serializable by default.
 For `HijrahDate` class, since it's java built-in class, the library provides a custom serializer for it; Which is `HijrahDateSerializer`. Use it to serialize and deserialize the `HijrahDate` class.
 
+
+
 ### Using java serialization
 
 The library provides serialization support with java serialization. You can serialize and deserialize the datetime classes using the java serialization API without any additional configuration.
+
+
+
 
 ## Using in your projects
 
@@ -108,6 +134,7 @@ The library provides serialization support with java serialization. You can seri
 
 
 The library is published to Maven Central.
+
 
 ### Gradle
 
