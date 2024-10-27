@@ -56,7 +56,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
         return temporal.isSupported(unit)
     }
     
-    override fun plus(amount: TemporalAmount): Impl = typedFactory(temporal.plus(amount))
+    override operator fun plus(amount: TemporalAmount): Impl = typedFactory(temporal.plus(amount))
 
     /**
      * Returns an object of the same type as this object with the specified period added.
@@ -74,7 +74,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      */
     override fun plus(amountToAdd: Long, unit: TemporalUnit): Impl = typedFactory(temporal.plus(amountToAdd, unit))
 
-    override fun minus(amount: TemporalAmount): Impl = typedFactory(temporal.plus(amount))
+    override operator fun minus(amount: TemporalAmount): Impl = typedFactory(temporal.plus(amount))
 
     /**
      * Returns an object of the same type as this object with the specified period subtracted.
@@ -387,7 +387,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      * @param other  the other date-time, not null
      * @return the duration between this date-time and the specified date-time, not null
      */
-    fun until(other: Temporal): Duration = Duration.between(temporal, other)
+    infix fun until(other: Temporal): Duration = Duration.between(temporal, other)
 
 
     /**
@@ -409,7 +409,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      * @throws DateTimeException if unable to truncate
      * @throws UnsupportedTemporalTypeException if the unit is not supported
      */
-    abstract fun truncatedTo(unit: TemporalUnit): Impl
+    abstract infix fun truncatedTo(unit: TemporalUnit): Impl
 
     /**
      * Checks if this date-time is after the specified date-time ignoring the chronology.
@@ -421,7 +421,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      * @param other  the other date-time to compare to, not null
      * @return true if this is after the specified date-time
      */
-    abstract fun isAfter(other: Impl): Boolean
+    abstract infix fun isAfter(other: Impl): Boolean
 
     /**
      * Checks if this date-time is before the specified date-time ignoring the chronology.
@@ -433,7 +433,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      * @param other  the other date-time to compare to, not null
      * @return true if this is before the specified date-time
      */
-    abstract fun isBefore(other: Impl): Boolean
+    abstract infix fun isBefore(other: Impl): Boolean
 
     /**
      * Checks if this date-time is equal to the specified date-time ignoring the chronology.
@@ -445,7 +445,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      * @param other  the other date-time to compare to, not null
      * @return true if the underlying date-time is equal to the specified date-time
      */
-    abstract fun isEqual(other: Impl): Boolean
+    abstract infix fun isEqual(other: Impl): Boolean
 
     /**
      * Gets the hijrah date part of this date-time.
