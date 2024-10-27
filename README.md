@@ -46,7 +46,7 @@ The library provides a set of extensions for the java.time APIs to facilitate th
 - the library provides extensions for the `Instant` to integrate it with this library's classes and functions.
 - the library provides extensions for the `LocalDate` class to convert it to `HijrahDate`. Same for other classes.
 
-For java developers, use can access those extensions by using the `HijrahDates`, `Instants`, `DateTimesConversions` singleton objects.
+For java developers, you can access those extensions by using the `HijrahDates`, `Instants`, `DateTimesConversions` singleton objects.
 More extensions to the java.time classes are planned to be added in the next releases, by the well of Allah.
 
 
@@ -70,7 +70,7 @@ Some of those formatters are:
 
 ### Working with other string formats
 
-When some data needs to be formatted in some format, you can define your own format, either by using the `DateTimeFormatterBuilder` class or by using the `DateTimeFormatter.ofPattern()`.
+When some data needs to be formatted in another format, you can define your own format, either by using the `DateTimeFormatterBuilder` class or by using the `DateTimeFormatter.ofPattern()`.
 For example:
 
 
