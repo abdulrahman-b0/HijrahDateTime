@@ -62,3 +62,6 @@ bin/
 /.idea/studiobot.xml
 /.idea/vcs.xml
 /.idea/workspace.xml
+/publish.properties
+/HijrahDateTime_signing_private_key.pgp
+/HijrahDateTime_signing_public_key.pgp
