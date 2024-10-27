@@ -25,7 +25,9 @@ Abstracting the work with the Hijrah calendar, and providing shortcuts for worki
 
 ## Types
 
-The library provides a basic set of types for working with date and time:
+### Classes
+
+The library provides a basic set of classes for working with date and time:
 
 - `HijrahDateTime` to represent hijrah date and time components without a reference to the particular time zone. It's similar to java `LocalDateTime` except that it uses the `HijrahDate` instead of `LocalDate`.
 
@@ -38,11 +40,14 @@ The library provides a basic set of types for working with date and time:
 
 ### Extensions
 
-The library provides a set of extensions for the `HijrahDate` and `Instant` classes to facilitate the work on hijrah dates and times.
-For java developers, use can access those extensions by using the `HijrahDates` and `Instants` singleton objects.
+The library provides a set of extensions for the java.time APIs to facilitate the work on hijrah dates and times. For example:
 
+- the library provides extensions for the `HijrahDate` to integrate it with this library's classes and functions.
+- the library provides extensions for the `Instant` to integrate it with this library's classes and functions.
+- the library provides extensions for the `LocalDate` class to convert it to `HijrahDate`. Same for other classes.
+
+For java developers, use can access those extensions by using the `HijrahDates`, `Instants`, `DateTimesConversions` singleton objects.
 More extensions to the java.time classes are planned to be added in the next releases, by the well of Allah.
-
 
 
 
@@ -146,13 +151,18 @@ repositories {
 }
 ```
 
-```kotlin
+
+- Add a dependency to the `dependencies` block:
+
+#### Using Gradle Kotlin DSL
+```kotlin build.gradle.kts
 dependencies {
     implementation("com.abdulrahman-b:HijrahDateTime:1.0.0-alpha.2")
 }
 ```
 
-```groovy
+#### Using Gradle Groovy DSL
+```groovy build.gradle
 dependencies {
     implementation 'com.abdulrahman-b:HijrahDateTime:1.0.0-alpha.2'
 }
@@ -160,9 +170,9 @@ dependencies {
 
 ### Maven
 
-Add a dependency to the `<dependencies>` element.
+Add a dependency to the `<dependencies>` element:
 
-```xml
+```xml pom.xml
 <dependency>
     <groupId>com.abdulrahman-b</groupId>
     <artifactId>HijrahDateTime</artifactId>
