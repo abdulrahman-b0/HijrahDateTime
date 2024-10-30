@@ -23,6 +23,23 @@ import java.time.temporal.ChronoUnit
 
 object HijrahDates {
 
+    val MIN: HijrahDate by lazy {
+        val yearRange = HijrahChronology.INSTANCE.range(ChronoField.YEAR)
+        HijrahDate.of(yearRange.minimum.toInt(), 1, 1)
+    }
+
+    val MAX: HijrahDate by lazy {
+        val yearRange = HijrahChronology.INSTANCE.range(ChronoField.YEAR)
+        try {
+            HijrahDate.of(yearRange.maximum.toInt(), 12, 30)
+        } catch (e: DateTimeException) {
+            HijrahDate.of(yearRange.maximum.toInt(), 12, 29)
+        }
+    }
+
+    val EPOCH: HijrahDate by lazy {
+        ofEpochDay(0)
+    }
 
     inline val HijrahDate.year: Int get() = get(ChronoField.YEAR)
 

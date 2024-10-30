@@ -4,6 +4,8 @@ package com.abdulrahman_b.hijrahDateTime.time
 
 import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
 import com.abdulrahman_b.hijrahDateTime.serializers.HijrahDateTimeSerializer
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.atStartOfDay
 import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronology
 import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronologyFormatter
 import kotlinx.serialization.Serializable
@@ -309,6 +311,10 @@ class HijrahDateTime internal constructor(
             requireHijrahChronologyFormatter(formatter)
             return formatter.parse(text, Companion::from)
         }
+
+        val MIN = HijrahDateTime(HijrahDates.MIN.atTime(LocalTime.MIN))
+        val MAX = HijrahDateTime(HijrahDates.MAX.atTime(LocalTime.MAX))
+        val EPOCH = HijrahDates.EPOCH.atStartOfDay()
 
     }
 
