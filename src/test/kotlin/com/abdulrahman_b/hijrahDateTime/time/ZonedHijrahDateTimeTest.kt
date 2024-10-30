@@ -439,4 +439,59 @@ class ZonedHijrahDateTimeTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("Comparison")
+    inner class ComparisonTest {
+
+        @Test
+        @DisplayName("Earlier instance is before the later one")
+        fun earlierInstanceIsBeforeTheLaterOne() {
+            val hijrahDateTime2 = zonedHijrahDateTime.plusNanos(1)
+
+            assertTrue(zonedHijrahDateTime.isBefore(hijrahDateTime2))
+        }
+
+        @Test
+        @DisplayName("Later instance is after the earlier one")
+        fun laterInstanceIsAfterTheEarlierOne() {
+            val hijrahDateTime2 = zonedHijrahDateTime.minusNanos(1)
+
+            assertTrue(zonedHijrahDateTime.isAfter(hijrahDateTime2))
+        }
+
+        @Test
+        @DisplayName("Same instances are actually equal")
+        fun instancesAreEqual() {
+            val hijrahDateTime2 = ZonedHijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0, ZoneId.of("Asia/Riyadh"))
+
+            assertTrue(zonedHijrahDateTime.isEqual(hijrahDateTime2))
+        }
+
+        @Test
+        @DisplayName("Earlier instance with different zone is before the later one")
+        fun earlierInstanceWithDifferentZoneIsBeforeTheLaterOne() {
+            val hijrahDateTime2 = zonedHijrahDateTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai")).plusNanos(1)
+            assertTrue(zonedHijrahDateTime.isBefore(hijrahDateTime2))
+        }
+
+        @Test
+        @DisplayName("Later instance with different zone is after the earlier one")
+        fun laterInstanceWithDifferentZoneIsAfterTheEarlierOne() {
+            val hijrahDateTime2 = zonedHijrahDateTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai")).minusNanos(1)
+
+            assertTrue(zonedHijrahDateTime.isAfter(hijrahDateTime2))
+        }
+
+        @Test
+        @DisplayName("Same instances with different zones are actually equal")
+        fun equalInstancesWithDifferentZoneAreActuallyEqual() {
+            val hijrahDateTime2 = zonedHijrahDateTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai"))
+
+            assertTrue(zonedHijrahDateTime.isEqual(hijrahDateTime2))
+        }
+
+    }
+
+
 }

@@ -407,4 +407,51 @@ class OffsetHijrahDateTimeTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("Comparison")
+    inner class ComparisonTest {
+
+        @Test
+        @DisplayName("Later instance is after the earlier instance")
+        fun isAfter() {
+            val hijrahDateTime2 = OffsetHijrahDateTime.of(1446, 2, 5, 12, 43, 17, 0, ZoneOffset.of("+03:00"))
+            assertTrue(offsetHijrahDateTime.isAfter(hijrahDateTime2))
+        }
+
+        @Test
+        @DisplayName("Earlier instance is before the later instance")
+        fun isBefore() {
+            val hijrahDateTime2 = OffsetHijrahDateTime.of(1446, 2, 5, 12, 43, 19, 0, ZoneOffset.of("+03:00"))
+            assertTrue(offsetHijrahDateTime.isBefore(hijrahDateTime2))
+        }
+
+        @Test
+        @DisplayName("Equal instances are equal")
+        fun isEqual() {
+            val hijrahDateTime2 = OffsetHijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0, ZoneOffset.of("+03:00"))
+            assertTrue(offsetHijrahDateTime.isEqual(hijrahDateTime2))
+        }
+
+        @Test
+        @DisplayName("Earlier instance with different offset is before the later instance")
+        fun isBeforeWithDifferentOffset() {
+            val hijrahDateTime2 = offsetHijrahDateTime.withOffsetSameInstant(ZoneOffset.of("+04:00")).plusNanos(1)
+            assertTrue(offsetHijrahDateTime.isBefore(hijrahDateTime2))
+        }
+
+        @Test
+        @DisplayName("Later instance with different offset is after the earlier instance")
+        fun isAfterWithDifferentOffset() {
+            val hijrahDateTime2 = offsetHijrahDateTime.withOffsetSameInstant(ZoneOffset.of("+02:00")).minusNanos(1)
+            assertTrue(offsetHijrahDateTime.isAfter(hijrahDateTime2))
+        }
+
+        @Test
+        @DisplayName("Equal instances with different offset are equal")
+        fun isEqualWithDifferentOffset() {
+            val hijrahDateTime2 = offsetHijrahDateTime.withOffsetSameInstant(ZoneOffset.of("+02:00"))
+            assertTrue(offsetHijrahDateTime.isEqual(hijrahDateTime2))
+        }
+    }
 }

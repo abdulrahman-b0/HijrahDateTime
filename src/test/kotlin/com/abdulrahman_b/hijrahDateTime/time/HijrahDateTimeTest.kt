@@ -1,12 +1,16 @@
 package com.abdulrahman_b.hijrahDateTime.time
 
 import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertDoesNotThrow
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
-
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.time.Clock
+import java.time.DateTimeException
+import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -14,9 +18,6 @@ import java.time.ZoneOffset
 import java.time.chrono.HijrahDate
 import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
-import kotlin.time.Duration.Companion.nanoseconds
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.toJavaDuration
 
 class HijrahDateTimeTest {
 
@@ -31,7 +32,7 @@ class HijrahDateTimeTest {
         fun atZone() {
             val zoneId = ZoneOffset.of("+03:00")
             val zonedHijrahDateTime = hijrahDateTime.atZone(zoneId)
-            
+
             assertEquals(hijrahDateTime, zonedHijrahDateTime.toHijrahDateTime())
         }
 
@@ -40,8 +41,10 @@ class HijrahDateTimeTest {
         fun currentZonedTimeObtainedProperly() {
 
 
-            val hijrahDateTime = HijrahDateTime.now(ZoneOffset.of("+03:00")).truncatedTo(ChronoUnit.SECONDS)
-            val utcHijrahDateTime = HijrahDateTime.now(Clock.systemUTC()).truncatedTo(ChronoUnit.SECONDS)
+            val hijrahDateTime =
+                HijrahDateTime.now(ZoneOffset.of("+03:00")).truncatedTo(ChronoUnit.SECONDS)
+            val utcHijrahDateTime =
+                HijrahDateTime.now(Clock.systemUTC()).truncatedTo(ChronoUnit.SECONDS)
 
             assertEquals(hijrahDateTime.minus(3, ChronoUnit.HOURS), utcHijrahDateTime)
         }
@@ -64,7 +67,10 @@ class HijrahDateTimeTest {
         @DisplayName("HijrahDateTime.ofEpochSecond is obtained properly")
         fun ofEpochSecond() {
             val epochSecond = hijrahDateTime.toEpochSecond(ZoneOffset.UTC)
-            assertEquals(hijrahDateTime, HijrahDateTime.ofEpochSecond(epochSecond, 0, ZoneOffset.UTC))
+            assertEquals(
+                hijrahDateTime,
+                HijrahDateTime.ofEpochSecond(epochSecond, 0, ZoneOffset.UTC)
+            )
         }
 
         @Test
@@ -96,8 +102,6 @@ class HijrahDateTimeTest {
 
             assertEquals(hijrahDateTime, parsedHijrahDateTime)
         }
-
-
 
 
     }
@@ -154,6 +158,7 @@ class HijrahDateTimeTest {
         @DisplayName("HijrahDateTime.dayOfWeek returns correct value")
         fun getDayOfWeek() {
             assertEquals(5, hijrahDateTime.dayOfWeek)
+            assertEquals(DayOfWeek.FRIDAY, DayOfWeek.of(hijrahDateTime.dayOfWeek))
         }
 
         @Test
@@ -214,10 +219,10 @@ class HijrahDateTimeTest {
             assertEquals(1447, newHijrahDateTime.year)
 
             val combinedNewDateTime = hijrahDateTime.plus(5, ChronoUnit.MINUTES)
-                .plus(1, ChronoUnit.HOURS)
-                .plus(1, ChronoUnit.DAYS)
-                .plus(1, ChronoUnit.MONTHS)
-                .plus(1, ChronoUnit.YEARS)
+                .plusHours(1)
+                .plusDays(1)
+                .plusMonths(1)
+                .plusYears(1)
 
             val expectedDateTime = HijrahDateTime.of(1447, 3, 6, 13, 48, 18)
 
@@ -259,26 +264,30 @@ class HijrahDateTimeTest {
         @Test
         @DisplayName("HijrahDateTime.with adjusts the specified field properly")
         fun with() {
-            var newHijrahDateTime = hijrahDateTime.with(ChronoField.MINUTE_OF_HOUR, 55)
+            var newHijrahDateTime = hijrahDateTime.withMinute(55)
             assertEquals(55, newHijrahDateTime.minuteOfHour)
 
-            newHijrahDateTime = hijrahDateTime.with(ChronoField.HOUR_OF_DAY, 15)
+            newHijrahDateTime = hijrahDateTime.withHour(15)
             assertEquals(15, newHijrahDateTime.hour)
 
-            newHijrahDateTime = hijrahDateTime.with(ChronoField.DAY_OF_MONTH, 10)
+            newHijrahDateTime = hijrahDateTime.withDayOfMonth(10)
             assertEquals(10, newHijrahDateTime.dayOfMonth)
 
-            newHijrahDateTime = hijrahDateTime.with(ChronoField.MONTH_OF_YEAR, 3)
+            newHijrahDateTime = hijrahDateTime.withMonth(3)
             assertEquals(3, newHijrahDateTime.monthValue)
 
-            newHijrahDateTime = hijrahDateTime.with(ChronoField.YEAR, 1447)
+            newHijrahDateTime = hijrahDateTime.withYear(1447)
             assertEquals(1447, newHijrahDateTime.year)
         }
 
         @Test
         @DisplayName("HijrahDateTime.range returns the correct range for the specified field")
         fun range() {
-            var range = hijrahDateTime.range(ChronoField.MONTH_OF_YEAR)
+            var range = hijrahDateTime.range(ChronoField.YEAR)
+            assertEquals(1300, range.minimum)
+            assertEquals(1600, range.maximum)
+
+            range = hijrahDateTime.range(ChronoField.MONTH_OF_YEAR)
             assertEquals(1, range.minimum)
             assertEquals(12, range.maximum)
 
@@ -341,8 +350,6 @@ class HijrahDateTimeTest {
     }
 
 
-
-
     @Nested
     @DisplayName("Field Support")
     inner class FieldSupportTest {
@@ -352,19 +359,23 @@ class HijrahDateTimeTest {
 
         @Test
         @DisplayName("ChronoField.MONTH_OF_YEAR is supported")
-        fun monthFieldIsSupported() = assertTrue(hijrahDateTime.isSupported(ChronoField.MONTH_OF_YEAR))
+        fun monthFieldIsSupported() =
+            assertTrue(hijrahDateTime.isSupported(ChronoField.MONTH_OF_YEAR))
 
         @Test
         @DisplayName("ChronoField.DAY_OF_YEAR is supported")
-        fun dayOfYearFieldIsSupported() = assertTrue(hijrahDateTime.isSupported(ChronoField.DAY_OF_YEAR))
+        fun dayOfYearFieldIsSupported() =
+            assertTrue(hijrahDateTime.isSupported(ChronoField.DAY_OF_YEAR))
 
         @Test
         @DisplayName("ChronoField.DAY_OF_MONTH is supported")
-        fun dayOfMonthFieldIsSupported() = assertTrue(hijrahDateTime.isSupported(ChronoField.DAY_OF_MONTH))
+        fun dayOfMonthFieldIsSupported() =
+            assertTrue(hijrahDateTime.isSupported(ChronoField.DAY_OF_MONTH))
 
         @Test
         @DisplayName("ChronoField.DAY_OF_WEEK is supported")
-        fun dayOfWeekFieldIsSupported() = assertTrue(hijrahDateTime.isSupported(ChronoField.DAY_OF_WEEK))
+        fun dayOfWeekFieldIsSupported() =
+            assertTrue(hijrahDateTime.isSupported(ChronoField.DAY_OF_WEEK))
 
         @Test
         @DisplayName("ChronoField.HOUR_OF_DAY is supported")
@@ -372,19 +383,114 @@ class HijrahDateTimeTest {
 
         @Test
         @DisplayName("ChronoField.MINUTE_OF_HOUR is supported")
-        fun minuteFieldIsSupported() = assertTrue(hijrahDateTime.isSupported(ChronoField.MINUTE_OF_HOUR))
+        fun minuteFieldIsSupported() =
+            assertTrue(hijrahDateTime.isSupported(ChronoField.MINUTE_OF_HOUR))
 
         @Test
         @DisplayName("ChronoField.SECOND_OF_MINUTE is supported")
-        fun secondFieldIsSupported() = assertTrue(hijrahDateTime.isSupported(ChronoField.SECOND_OF_MINUTE))
+        fun secondFieldIsSupported() =
+            assertTrue(hijrahDateTime.isSupported(ChronoField.SECOND_OF_MINUTE))
 
         @Test
         @DisplayName("ChronoField.NANO_OF_SECOND is supported")
-        fun nanoSecondFieldIsSupported() = assertTrue(hijrahDateTime.isSupported(ChronoField.NANO_OF_SECOND))
+        fun nanoSecondFieldIsSupported() =
+            assertTrue(hijrahDateTime.isSupported(ChronoField.NANO_OF_SECOND))
 
         @Test
         @DisplayName("ChronoField.SECOND_OF_DAY is supported")
-        fun secondOfDayFieldIsSupported() = assertTrue(hijrahDateTime.isSupported(ChronoField.SECOND_OF_DAY))
+        fun secondOfDayFieldIsSupported() =
+            assertTrue(hijrahDateTime.isSupported(ChronoField.SECOND_OF_DAY))
 
     }
+
+    @Nested
+    @DisplayName("Comparison")
+    inner class ComparisonTest {
+
+        @Test
+        @DisplayName("earlier HijrahDateTime is before later HijrahDateTime")
+        fun earlierHijrahDateTimeIsBeforeLaterHijrahDateTime() {
+            val laterHijrahDateTime = hijrahDateTime.plusNanos(1)
+            assertTrue(hijrahDateTime.isBefore(laterHijrahDateTime))
+        }
+
+        @Test
+        @DisplayName("later HijrahDateTime is after earlier HijrahDateTime")
+        fun laterHijrahDateTimeIsAfterEarlierHijrahDateTime() {
+            val earlierHijrahDateTime = hijrahDateTime.minusNanos(1)
+            assertTrue(hijrahDateTime.isAfter(earlierHijrahDateTime))
+        }
+
+        @Test
+        @DisplayName("HijrahDateTime is equal to itself")
+        fun hijrahDateTimeIsEqualToItself() {
+            assertTrue(hijrahDateTime.isEqual(hijrahDateTime))
+        }
+    }
+
+    @Nested
+    @DisplayName("Invalid values")
+    inner class InvalidValuesTest {
+        @Test
+        @DisplayName("Invalid day of month throws exception")
+        fun invalidDayOfMonthThrowsException() {
+            assertThrows<Exception> {
+                HijrahDateTime.of(1446, 2, 31, 12, 43, 18)
+            }
+        }
+
+        @Test
+        @DisplayName("Invalid month throws exception")
+        fun invalidMonthThrowsException() {
+            assertThrows<Exception> {
+                HijrahDateTime.of(1446, 13, 5, 12, 43, 18)
+            }
+        }
+
+        @Test
+        @DisplayName("Invalid hour throws exception")
+        fun invalidHourThrowsException() {
+            assertThrows<Exception> {
+                HijrahDateTime.of(1446, 2, 5, 24, 43, 18)
+            }
+        }
+
+        @Test
+        @DisplayName("Invalid minute throws exception")
+        fun invalidMinuteThrowsException() {
+            assertThrows<Exception> {
+                HijrahDateTime.of(1446, 2, 5, 12, 60, 18)
+            }
+        }
+
+        @Test
+        @DisplayName("Invalid second throws exception")
+        fun invalidSecondThrowsException() {
+            assertThrows<Exception> {
+                HijrahDateTime.of(1446, 2, 5, 12, 43, 60)
+            }
+        }
+
+        @Test
+        @DisplayName("Out of range year throws exception")
+        fun outOfRangeYearThrowsException() {
+            assertThrows<DateTimeException> {
+                HijrahDateTime.of(1299, 2, 5, 12, 43, 18)
+            }
+
+            assertThrows<DateTimeException> {
+                HijrahDateTime.of(1601, 2, 5, 12, 43, 18)
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Epoch datetime is 1389-10-22T00:00:00")
+    fun epochDayIsCalculatedProperly() {
+        val actual = HijrahDateTime.EPOCH
+        val expectedEpochDatetime = HijrahDateTime.of(1389, 10, 22, 0, 0, 0)
+
+        assertEquals(expectedEpochDatetime, actual)
+    }
+
 }
