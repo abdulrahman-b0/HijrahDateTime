@@ -30,7 +30,7 @@ object HijrahFormatters {
      * The format consists of:
      *
      * * Four digits or more for the [ChronoField.YEAR] year.
-     * Years in the range 0000 to 9999 will be pre-padded by zero to ensure four digits.
+     * Years in the range 1300 to 1600 that is pre-padded by zero to ensure four digits.
      * Years outside that range will have a prefixed positive or negative symbol.
      * * A dash
      * * Two digits for the [ChronoField.MONTH_OF_YEAR] month-of-year.
@@ -44,7 +44,7 @@ object HijrahFormatters {
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
     val HIJRAH_DATE: DateTimeFormatter = DateTimeFormatterBuilder()
-        .appendValue(ChronoField.YEAR, 4, 10, SignStyle.EXCEEDS_PAD)
+        .appendValue(ChronoField.YEAR, 4, 4, SignStyle.EXCEEDS_PAD)
         .appendLiteral('-')
         .appendValue(ChronoField.MONTH_OF_YEAR, 2)
         .appendLiteral('-')
