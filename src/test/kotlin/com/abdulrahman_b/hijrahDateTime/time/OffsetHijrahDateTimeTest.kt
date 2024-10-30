@@ -8,6 +8,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
+import java.time.DateTimeException
 import java.time.Duration
 import java.time.LocalTime
 import java.time.OffsetDateTime
@@ -453,5 +455,19 @@ class OffsetHijrahDateTimeTest {
             val hijrahDateTime2 = offsetHijrahDateTime.withOffsetSameInstant(ZoneOffset.of("+02:00"))
             assertTrue(offsetHijrahDateTime.isEqual(hijrahDateTime2))
         }
+    }
+
+    @Nested
+    @DisplayName("Invalid Values")
+    inner class InvalidValues {
+
+        @Test
+        @DisplayName("Invalid zone offset throws exception")
+        fun invalidZoneOffsetThrowsException() {
+            assertThrows<DateTimeException> {
+                OffsetHijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0, ZoneOffset.of("03:00"))
+            }
+        }
+
     }
 }

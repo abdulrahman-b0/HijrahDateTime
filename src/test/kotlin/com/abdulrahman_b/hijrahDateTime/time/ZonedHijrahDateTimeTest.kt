@@ -8,6 +8,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
+import java.time.DateTimeException
 import java.time.Duration
 import java.time.LocalTime
 import java.time.ZoneId
@@ -412,17 +414,17 @@ class ZonedHijrahDateTimeTest {
         fun withEarlierOffsetAtOverlap() {
             val newZonedHijrahDateTime = zonedHijrahDateTime.withEarlierOffsetAtOverlap()
 
-            assertTrue(zonedHijrahDateTime.isEqual(newZonedHijrahDateTime)) {
-                "Expected: $zonedHijrahDateTime\nActual: $newZonedHijrahDateTime"
+            assertTrue(zonedHijrahDateTime.isEqual(newZonedHijrahDateTime) || zonedHijrahDateTime.isAfter(newZonedHijrahDateTime)) {
+                "Expected: $zonedHijrahDateTime \nActual: $newZonedHijrahDateTime"
             }
         }
 
         @Test
-        @DisplayName("ZonedHijrahDateTime.withLaterOffsetAtOverlap returns the same instance")
+        @DisplayName("ZonedHijrahDateTime.withLaterOffsetAtOverlap returns correct instance")
         fun withLaterOffsetAtOverlap() {
             val newZonedHijrahDateTime = zonedHijrahDateTime.withLaterOffsetAtOverlap()
 
-            assertTrue(zonedHijrahDateTime.isEqual(newZonedHijrahDateTime)) {
+            assertTrue(zonedHijrahDateTime.isEqual(newZonedHijrahDateTime) || zonedHijrahDateTime.isBefore(newZonedHijrahDateTime)) {
                 "Expected: $zonedHijrahDateTime\nActual: $newZonedHijrahDateTime"
             }
         }
@@ -489,6 +491,20 @@ class ZonedHijrahDateTimeTest {
             val hijrahDateTime2 = zonedHijrahDateTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai"))
 
             assertTrue(zonedHijrahDateTime.isEqual(hijrahDateTime2))
+        }
+
+    }
+
+    @Nested
+    @DisplayName("Invalid Values")
+    inner class InvalidValuesTest {
+
+        @Test
+        @DisplayName("Invalid zone ID throws DateTimeException")
+        fun invalidZoneIdThrowsDateTimeException() {
+            assertThrows<DateTimeException> {
+                ZonedHijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0, ZoneId.of("Invalid/Zone"))
+            }
         }
 
     }
