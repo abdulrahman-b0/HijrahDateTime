@@ -2,7 +2,7 @@
 
 [![Kotlin Alpha](https://kotl.in/badges/beta.svg)]()
 [![Kotlin](https://img.shields.io/badge/kotlin-2.0-blue.svg?logo=kotlin)]()
-[![Java](https://img.shields.io/badge/java-17-orange.svg?logo=java)]()
+[![Java](https://img.shields.io/badge/java-14-orange.svg?logo=java)]()
 
 HijrahDateTime is a Kotlin/JVM library that is built on top of java.time to facilitates work with Hijrah date and time APIs.
 
@@ -183,4 +183,4 @@ Add a dependency to the `<dependencies>` element:
 ## Building
 
 The library is compatible with the Kotlin Standard Library not lower than `2.0`.
-The library also requires JDK 17 to build classes and to run tests, since it relies on the Java Time API features, which are introduced in JDK 17.
+The library also requires JDK 14 or higher to build and run the dependencies.
