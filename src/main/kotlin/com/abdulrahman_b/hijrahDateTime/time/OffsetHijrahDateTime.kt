@@ -4,6 +4,7 @@ package com.abdulrahman_b.hijrahDateTime.time
 import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
 import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters.HIJRAH_DATE_TIME
 import com.abdulrahman_b.hijrahDateTime.serializers.OffsetHijrahDateTimeSerializer
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates
 import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronology
 import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronologyFormatter
 import kotlinx.serialization.Serializable
@@ -143,6 +144,10 @@ class OffsetHijrahDateTime private constructor(
         return OffsetHijrahDateTime(dateTime.with(field, newValue), offset)
     }
 
+    /**
+     * Converts this date-time to the number of seconds from the epoch
+     * @return the number of seconds from the epoch.
+     */
     fun toEpochSecond(): Long = dateTime.toEpochSecond(offset)
 
     override fun adjustInto(temporal: Temporal): Temporal {
@@ -167,6 +172,7 @@ class OffsetHijrahDateTime private constructor(
         return cmp
     }
 
+    /** Returns the time part of this date-time. */
     fun toOffsetTime(): OffsetTime {
         return dateTime.toLocalTime().atOffset(offset)
     }
@@ -177,6 +183,25 @@ class OffsetHijrahDateTime private constructor(
 
     override fun toHijrahDate(): HijrahDate  = dateTime.toHijrahDate()
 
+    /**
+     * Returns a copy of this [OffsetHijrahDateTime] with the specified offset ensuring
+     * that the result is at the same instant.
+     *
+     * This method returns an object with the specified [ZoneOffset] and a [HijrahDateTime]
+     * adjusted by the difference between the two offsets.
+     * This will result in the old and new objects representing the same instant.
+     * This is useful for finding the local time in a different offset.
+     * For example, if this time represents `1446-12-03T10:30+02:00` and the offset specified is
+     * `+03:00`, then this method returns `1446-12-03T11:30+03:00`.
+     *
+     * To change the offset without adjusting the local time use [withOffsetSameLocal].
+     *
+     * This instance is immutable and unaffected by this method call.
+     *
+     * @param offset  the zone offset to change to, not null
+     * @return an [OffsetHijrahDateTime] based on this date-time with the requested offset, not null
+     * @throws DateTimeException if the result exceeds the supported date range
+     */
     fun withOffsetSameInstant(offset: ZoneOffset): OffsetHijrahDateTime {
         if (offset == this.offset) {
             return this
@@ -186,16 +211,42 @@ class OffsetHijrahDateTime private constructor(
         return OffsetHijrahDateTime(adjusted, offset)
     }
 
+    /**
+     * Returns a copy of this [OffsetHijrahDateTime] with the specified offset ensuring
+     * that the result has the same local date-time.
+     *
+     * This method returns an object with the same [HijrahDateTime] and the specified [ZoneOffset].
+     * No calculation is needed or performed.
+     * For example, if this time represents `1446-12-03T10:30+02:00` and the offset specified is
+     * `+03:00`, then this method return `1446-12-03T10:30+03:00`.
+     *
+     * To take into account the difference between the offsets, and adjust the time fields,
+     * use [withOffsetSameInstant].
+     *
+     * This instance is immutable and unaffected by this method call.
+     *
+     * @param offset  the zone offset to change to, not null
+     * @return an [OffsetHijrahDateTime] based on this date-time with the requested offset, not null
+     */
     fun withOffsetSameLocal(offset: ZoneOffset): OffsetHijrahDateTime {
         return if (offset == this.offset) {
             this
         } else OffsetHijrahDateTime(dateTime, offset)
     }
 
+    /** Returns a copy of this date-time with the specified zoned id. */
     fun toZonedHijrahDateTime(zone: ZoneId): ZonedHijrahDateTime {
         return ZonedHijrahDateTime.of(dateTime, zone)
     }
 
+    /**
+     * Converts this date-time to an [Instant].
+     *
+     * This returns an [Instant] representing the same point on the
+     * time-line as this date-time.
+     *
+     * @return an [Instant] representing the same instant, not null
+     */
     fun toInstant(): Instant = dateTime.toInstant(offset)
 
 
@@ -241,7 +292,7 @@ class OffsetHijrahDateTime private constructor(
          * Obtains the current date-time from the system clock in the specified time-zone.
          *
          *
-         * This will query the [system clock][Clock.system] to obtain the current date-time.
+         * This will query the system clock [Clock.system] to obtain the current date-time.
          * Specifying the time-zone avoids dependence on the default time-zone.
          * The offset will be calculated from the specified time-zone.
          *
@@ -280,9 +331,9 @@ class OffsetHijrahDateTime private constructor(
 
         //-----------------------------------------------------------------------
         /**
-         * Obtains an instance of `OffsetHijrahDateTime` from a date, time and offset.
+         * Obtains an instance of [OffsetHijrahDateTime] from a date, time and offset.
          *
-         * This creates an offset date-time with the specified local date, time and offset.
+         * This creates an offset date-time with the specified hijrah date, time and offset.
          *
          * @param date  the local date, not null
          * @param time  the local time, not null
@@ -296,9 +347,9 @@ class OffsetHijrahDateTime private constructor(
         }
 
         /**
-         * Obtains an instance of `OffsetHijrahDateTime` from a date-time and offset.
+         * Obtains an instance of [OffsetHijrahDateTime] from a date-time and offset.
          *
-         * This creates an offset date-time with the specified local date-time and offset.
+         * This creates an offset date-time with the specified hijrah date-time and offset.
          *
          * @param dateTime  the local date-time, not null
          * @param offset  the zone offset, not null
@@ -310,7 +361,7 @@ class OffsetHijrahDateTime private constructor(
         }
 
         /**
-         * Obtains an instance of `OffsetHijrahDateTime` from a year, month, day,
+         * Obtains an instance of [OffsetHijrahDateTime] from a year, month, day,
          * hour, minute, second, nanosecond and offset.
          *
          *
@@ -319,13 +370,13 @@ class OffsetHijrahDateTime private constructor(
          *
          * This method exists primarily for writing test cases.
          * Non test-code will typically use other methods to create an offset time.
-         * `OffsetHijrahDateTime` has five additional convenience variants of the
+         * [OffsetHijrahDateTime] has five additional convenience variants of the
          * equivalent factory method taking fewer arguments.
          * They are not provided here to reduce the footprint of the API.
          *
-         * @param year  the year to represent, from MIN_YEAR to MAX_YEAR
-         * @param month  the month-of-year to represent, from 1 (January) to 12 (December)
-         * @param dayOfMonth  the day-of-month to represent, from 1 to 31
+         * @param year  the year to represent, from [HijrahDates.MIN_YEAR] to [HijrahDates.MAX_YEAR]
+         * @param month  the month-of-year to represent, from 1 to 12
+         * @param dayOfMonth  the day-of-month to represent, from 1 to 29-30
          * @param hour  the hour-of-day to represent, from 0 to 23
          * @param minute  the minute-of-hour to represent, from 0 to 59
          * @param second  the second-of-minute to represent, from 0 to 59
@@ -348,7 +399,7 @@ class OffsetHijrahDateTime private constructor(
 
         //-----------------------------------------------------------------------
         /**
-         * Obtains an instance of `OffsetHijrahDateTime` from an `Instant` and zone ID.
+         * Obtains an instance of [OffsetHijrahDateTime] from an [Instant] and zone ID.
          *
          *
          * This creates an offset date-time with the same instant as that specified.
@@ -356,7 +407,7 @@ class OffsetHijrahDateTime private constructor(
          * offset for each instant.
          *
          * @param instant  the instant to create the date-time from, not null
-         * @param zone  the time-zone, which may be an offset, not null
+         * @param offset  the time-zone, which may be an offset, not null
          * @return the offset date-time, not null
          * @throws DateTimeException if the result exceeds the supported range
          */
@@ -368,23 +419,23 @@ class OffsetHijrahDateTime private constructor(
 
         //-----------------------------------------------------------------------
         /**
-         * Obtains an instance of `OffsetHijrahDateTime` from a temporal object.
+         * Obtains an instance of [OffsetHijrahDateTime] from a temporal object.
          *
          * This obtains an offset date-time based on the specified temporal.
-         * A `TemporalAccessor` represents an arbitrary set of date and time information,
-         * which this factory converts to an instance of `OffsetHijrahDateTime`.
+         * A [TemporalAccessor] represents an arbitrary set of date and time information,
+         * which this factory converts to an instance of [OffsetHijrahDateTime].
          *
-         * The conversion will first obtain a `ZoneOffset` from the temporal object.
-         * It will then try to obtain a `OffsetHijrahDateTime`, falling back to an `Instant` if necessary.
-         * The result will be the combination of `ZoneOffset` with either
-         * with `OffsetHijrahDateTime` or `Instant`.
+         * The conversion will first obtain a [ZoneOffset] from the temporal object.
+         * It will then try to obtain a [OffsetHijrahDateTime], falling back to an [Instant] if necessary.
+         * The result will be the combination of [ZoneOffset] with either
+         * with [OffsetHijrahDateTime] or [Instant].
 
          * This method matches the signature of the functional interface [TemporalQuery]
-         * allowing it to be used as a query via method reference, `OffsetHijrahDateTime::from`.
+         * allowing it to be used as a query via method reference, [OffsetHijrahDateTime.from].
          *
          * @param temporal  the temporal object to convert, not null
          * @return the offset date-time, not null
-         * @throws DateTimeException if unable to convert to an `OffsetHijrahDateTime`
+         * @throws DateTimeException if unable to convert to an [OffsetHijrahDateTime]
          */
         @JvmStatic
         fun from(temporal: TemporalAccessor): OffsetHijrahDateTime {
@@ -412,7 +463,7 @@ class OffsetHijrahDateTime private constructor(
         //-----------------------------------------------------------------------
 
         /**
-         * Obtains an instance of `OffsetHijrahDateTime` from a text string using a specific formatter.
+         * Obtains an instance of [OffsetHijrahDateTime] from a text string using a specific formatter.
          *
          *
          * The text is parsed using the formatter, returning a date-time.
@@ -431,7 +482,7 @@ class OffsetHijrahDateTime private constructor(
 
 
         /**
-         * Compares this `HijrahOffsetHijrahDateTime` to another date-time.
+         * Compares this [OffsetHijrahDateTime] to another date-time.
          * The comparison is based on the instant.
          *
          * @param datetime1  the first date-time to compare, not null

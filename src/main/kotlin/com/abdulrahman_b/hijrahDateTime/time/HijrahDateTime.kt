@@ -195,6 +195,8 @@ class HijrahDateTime internal constructor(
          *
          * @param date  the Hijrah date, not null
          * @param time  the local time, not null
+         *
+         * @return the hijrah date-time, not null
          */
         @JvmStatic
         fun of(date: HijrahDate, time: LocalTime): HijrahDateTime {
@@ -209,14 +211,14 @@ class HijrahDateTime internal constructor(
          * day-of-month, hour, minute, second and nanosecond.
          * The day must be valid for the year and month, otherwise an exception will be thrown.
          *
-         * @param year  the year to represent, from MIN_YEAR to MAX_YEAR
-         * @param month  the month-of-year to represent, not null
-         * @param dayOfMonth  the day-of-month to represent, from 1 to 31
-         * @param hour  the hour-of-day to represent, from 0 to 23
-         * @param minute  the minute-of-hour to represent, from 0 to 59
-         * @param second  the second-of-minute to represent, from 0 to 59
-         * @param nanoOfSecond  the nano-of-second to represent, from 0 to 999,999,999
-         * @return the local date-time, not null
+         * @param year  the year to represent, from [HijrahDates.MIN_YEAR] to [HijrahDates.MAX_YEAR]
+         * @param month  the month-of-year to represent, from 1 to 12, not null
+         * @param dayOfMonth  the day-of-month to represent, from 1 to 29-30, not null
+         * @param hour  the hour-of-day to represent, from 0 to 23, not null
+         * @param minute  the minute-of-hour to represent, from 0 to 59, not null
+         * @param second  the second-of-minute to represent, from 0 to 59, not null
+         * @param nanoOfSecond  the nano-of-second to represent, from 0 to 999,999,999, not null
+         * @return the hijrah date-time, not null
          * @throws DateTimeException if the value of any field is out of range,
          *  or if the day-of-month is invalid for the month-year
          */
@@ -250,7 +252,7 @@ class HijrahDateTime internal constructor(
          * allowing it to be used as a query via method reference, [HijrahDateTime.from].
          *
          * @param temporal  the temporal object to convert, not null
-         * @return the local date-time, not null
+         * @return the hijrah date-time, not null
          * @throws DateTimeException if unable to convert to a [HijrahDateTime]
          */
         @JvmStatic
@@ -267,7 +269,7 @@ class HijrahDateTime internal constructor(
          *
          * @param instant  the instant to create the date-time from, not null
          * @param zoneId  the time-zone, which may be an offset, not null
-         * @return the local date-time, not null
+         * @return the hijrah date-time, not null
          * @throws DateTimeException if the result exceeds the supported range
          */
         @JvmStatic
@@ -282,7 +284,7 @@ class HijrahDateTime internal constructor(
          * @param  nanoOfSecond the nanosecond within the second, from 0 to 999,999,999
          * @param  zoneOffset the zone offset, not null
          *
-         * @return the local date-time, not null
+         * @return the hijrah date-time, not null
          * @throws DateTimeException if the result exceeds the supported range
          */
         @JvmStatic
@@ -312,8 +314,13 @@ class HijrahDateTime internal constructor(
             return formatter.parse(text, Companion::from)
         }
 
+        /** The minimum supported [HijrahDateTime] */
         val MIN = HijrahDateTime(HijrahDates.MIN.atTime(LocalTime.MIN))
+
+        /** The maximum supported [HijrahDateTime] */
         val MAX = HijrahDateTime(HijrahDates.MAX.atTime(LocalTime.MAX))
+
+        /** The epoch in [HijrahDateTime] */
         val EPOCH = HijrahDates.EPOCH.atStartOfDay()
 
     }

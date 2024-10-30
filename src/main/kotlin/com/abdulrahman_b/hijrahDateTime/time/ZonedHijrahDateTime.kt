@@ -3,6 +3,7 @@ package com.abdulrahman_b.hijrahDateTime.time
 
 import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
 import com.abdulrahman_b.hijrahDateTime.serializers.ZonedHijrahDateTimeSerializer
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates
 import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronologyFormatter
 import kotlinx.serialization.Serializable
 import java.io.Serial
@@ -16,14 +17,11 @@ import java.time.chrono.ChronoZonedDateTime
 import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoField
-import java.time.temporal.Temporal
+import java.time.format.DateTimeParseException
 import java.time.temporal.TemporalAccessor
-import java.time.temporal.TemporalAdjuster
-import java.time.temporal.TemporalAmount
 import java.time.temporal.TemporalField
+import java.time.temporal.TemporalQuery
 import java.time.temporal.TemporalUnit
-import java.time.temporal.UnsupportedTemporalTypeException
 import java.time.temporal.ValueRange
 import java.time.zone.ZoneRules
 
@@ -139,8 +137,20 @@ open class ZonedHijrahDateTime internal constructor(
      */
     fun withZoneSameInstant(zone: ZoneId) = ZonedHijrahDateTime(dateTime.withZoneSameInstant(zone))
 
+    /**
+     * Converts this date-time to an [Instant].
+     *
+     * This returns an [Instant] representing the same point on the
+     * time-line as this date-time.
+     *
+     * @return an [Instant] representing the same instant, not null
+     */
     fun toInstant(): Instant = dateTime.toInstant()
 
+    /**
+     * Converts this date-time to the number of seconds from the epoch
+     * @return the number of seconds from the epoch.
+     */
     fun toEpochSecond(): Long = dateTime.toEpochSecond()
 
     /**
@@ -183,37 +193,156 @@ open class ZonedHijrahDateTime internal constructor(
 
         @JvmStatic
         fun now() = ofInstant(Instant.now(), ZoneId.systemDefault())
+
+        /**
+         * Obtains the current date-time from the system clock in the specified time-zone.
+         *
+         *
+         * This will query the system clock [Clock.system] to obtain the current date-time.
+         * Specifying the time-zone avoids dependence on the default time-zone.
+         * The offset will be calculated from the specified time-zone.
+         *
+         *
+         * Using this method will prevent the ability to use an alternate clock for testing
+         * because the clock is hard-coded.
+         *
+         * @param zoneId  the zone ID to use, not null
+         * @return the current date-time using the system clock, not null
+         */
         @JvmStatic
         fun now(zoneId: ZoneId) = ofInstant(Instant.now(), zoneId)
+
+        /**
+         * Obtains the current date-time from the specified clock.
+         *
+         *
+         * This will query the specified clock to obtain the current date-time.
+         * The offset will be calculated from the time-zone in the clock.
+         *
+         *
+         * Using this method allows the use of an alternate clock for testing.
+         * The alternate clock may be introduced using [dependency injection][Clock].
+         *
+         * @param clock  the clock to use, not null
+         * @return the current date-time, not null
+         */
         @JvmStatic
         fun now(clock: Clock) = now(clock.zone)
 
+        /**
+         * Obtains an instance of [ZonedHijrahDateTime] from a date-time and zone id.
+         *
+         * This creates a zoned date-time with the specified local date-time and zone id.
+         *
+         * @param hijrahDateTime  the local date-time, not null
+         * @param zoneId  the zone offset, not null
+         * @return the zoned date-time, not null
+         */
         @JvmStatic
         fun of(hijrahDateTime: HijrahDateTime, zoneId: ZoneId): ZonedHijrahDateTime {
             return hijrahDateTime.atZone(zoneId)
         }
 
+        /**
+         * Obtains an instance of [ZonedHijrahDateTime] from a date, time and offset.
+         *
+         * This creates an offset date-time with the specified local date, time and offset.
+         *
+         * @param date  the hijrah date, not null
+         * @param time  the local time, not null
+         * @param zoneId  the zone id, not null
+         * @return the zoned date-time, not null
+         */
         @JvmStatic
         fun of(date: HijrahDate, time: LocalTime, zoneId: ZoneId): ZonedHijrahDateTime {
             return ZonedHijrahDateTime(date.atTime(time).atZone(zoneId))
         }
 
+        /**
+         * Obtains an instance of [ZonedHijrahDateTime] from a year, month, day,
+         * hour, minute, second, nanosecond and offset.
+         *
+         *
+         * This creates a zoned date-time with the seven specified fields.
+         *
+         *
+         * This method exists primarily for writing test cases.
+         * Non test-code will typically use other methods to create an offset time.
+         * [ZonedHijrahDateTime] has five additional convenience variants of the
+         * equivalent factory method taking fewer arguments.
+         * They are not provided here to reduce the footprint of the API.
+         *
+         * @param year  the year to represent, from [HijrahDates.MIN_YEAR] to [HijrahDates.MAX_YEAR]
+         * @param month  the month-of-year to represent, from 1 to 12, not null
+         * @param dayOfMonth  the day-of-month to represent, from 1 to 29-30, not null
+         * @param hour  the hour-of-day to represent, from 0 to 23, not null
+         * @param minute  the minute-of-hour to represent, from 0 to 59, not null
+         * @param second  the second-of-minute to represent, from 0 to 59, not null
+         * @param nanoOfSecond  the nano-of-second to represent, from 0 to 999,999,999, not null
+         * @param zoneId  the zone id, not null
+         * @return the offset date-time, not null
+         * @throws DateTimeException if the value of any field is out of range, or
+         * if the day-of-month is invalid for the month-year
+         */
         @JvmStatic
         @JvmOverloads
         fun of(year: Int, month: Int, dayOfMonth: Int, hour: Int, minute: Int, second: Int = 0, nanoOfSecond: Int = 0, zoneId: ZoneId = ZoneId.systemDefault()) : ZonedHijrahDateTime {
             return of(HijrahDate.of(year, month, dayOfMonth), LocalTime.of(hour, minute, second, nanoOfSecond), zoneId)
         }
 
+        /**
+         * Obtains an instance of [ZonedHijrahDateTime] from a temporal object.
+         *
+         * This obtains an offset date-time based on the specified temporal.
+         * A [TemporalAccessor] represents an arbitrary set of date and time information,
+         * which this factory converts to an instance of [ZonedHijrahDateTime].
+         *
+         * The conversion will first obtain a [ZoneOffset] from the temporal object.
+         * It will then try to obtain a [ZonedHijrahDateTime], falling back to an [Instant] if necessary.
+         * The result will be the combination of [ZoneOffset] with either
+         * with [ZonedHijrahDateTime] or [Instant].
+
+         * This method matches the signature of the functional interface [TemporalQuery]
+         * allowing it to be used as a query via method reference, [ZonedHijrahDateTime.from].
+         *
+         * @param temporalAccessor  the temporal object to convert, not null
+         * @return the offset date-time, not null
+         * @throws DateTimeException if unable to convert to an [ZonedHijrahDateTime]
+         */
         @JvmStatic
         fun from(temporalAccessor: TemporalAccessor): ZonedHijrahDateTime {
             return ZonedHijrahDateTime(HijrahChronology.INSTANCE.zonedDateTime(temporalAccessor))
         }
 
+        /**
+         * Obtains an instance of [ZonedHijrahDateTime] from an [Instant] and zone ID.
+         *
+         *
+         * This creates an offset date-time with the same instant as that specified.
+         * Finding the offset from UTC/Greenwich is simple as there is only one valid
+         * offset for each instant.
+         *
+         * @param instant  the instant to create the date-time from, not null
+         * @param zoneId  the time-zone, which may be an offset, not null
+         * @return the offset date-time, not null
+         * @throws DateTimeException if the result exceeds the supported range
+         */
         @JvmStatic
         fun ofInstant(instant: Instant, zoneId: ZoneId): ZonedHijrahDateTime {
             return ZonedHijrahDateTime(HijrahChronology.INSTANCE.zonedDateTime(instant, zoneId))
         }
 
+        /**
+         * Obtains an instance of [ZonedHijrahDateTime] from a text string using a specific formatter.
+         *
+         *
+         * The text is parsed using the formatter, returning a date-time.
+         *
+         * @param text  the text to parse, not null
+         * @param formatter  the formatter to use, not null
+         * @return the parsed offset date-time, not null
+         * @throws DateTimeParseException if the text cannot be parsed
+         */
         @JvmStatic
         @JvmOverloads
         fun parse(text: CharSequence, formatter: DateTimeFormatter = HijrahFormatters.HIJRAH_ZONED_DATE_TIME): ZonedHijrahDateTime {

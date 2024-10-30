@@ -5,6 +5,7 @@ package com.abdulrahman_b.hijrahDateTime.formats
 import com.abdulrahman_b.hijrahDateTime.time.HijrahDateTime
 import com.abdulrahman_b.hijrahDateTime.time.OffsetHijrahDateTime
 import com.abdulrahman_b.hijrahDateTime.time.ZonedHijrahDateTime
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.chrono.HijrahChronology
@@ -30,7 +31,7 @@ object HijrahFormatters {
      * The format consists of:
      *
      * * Four digits or more for the [ChronoField.YEAR] year.
-     * Years in the range 1300 to 1600 that is pre-padded by zero to ensure four digits.
+     * Years in the range [HijrahDates.MIN_YEAR] to [HijrahDates.MAX_YEAR] that is pre-padded by zero to ensure four digits.
      * Years outside that range will have a prefixed positive or negative symbol.
      * * A dash
      * * Two digits for the [ChronoField.MONTH_OF_YEAR] month-of-year.
