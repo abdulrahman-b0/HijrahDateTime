@@ -145,7 +145,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      *  Returns a copy of this date-time with the specified nano-of-second added.
      *
      *  This is equivalent to `plus(nanos, ChronoUnit.NANOS)`
-     *  @param nanos  the nano-of-second to set in the result, from 0 to 999,999,999
+     *  @param nanos  the nano-of-second to set in the result
      *  @return the same type of this object based on this date-time with the requested nanosecond, not null
      */
     fun plusNanos(nanos: Long): Impl = plus(nanos, ChronoUnit.NANOS)
@@ -155,7 +155,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      *  Returns a copy of this date-time with the specified second-of-minute added.
      *
      *  This is equivalent to `plus(seconds, ChronoUnit.SECONDS)`
-     *  @param seconds  the second-of-minute to set in the result, from 0 to 59
+     *  @param seconds  the second-of-minute to set in the result
      *  @return the same type of this object based on this date-time plus the requested second, not null
      */
     fun plusSeconds(seconds: Long): Impl = plus(seconds, ChronoUnit.SECONDS)
@@ -164,7 +164,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      *  Returns a copy of this date-time with the specified minute-of-hour added.
      *
      *  This is equivalent to `plus(minutes, ChronoUnit.MINUTES)`
-     *  @param minutes  the minute-of-hour to set in the result, from 0 to 59
+     *  @param minutes  the minute-of-hour to set in the result
      *  @return the same type of this object based on this date-time plus the requested minute, not null
      */
     fun plusMinutes(minutes: Long): Impl = plus(minutes, ChronoUnit.MINUTES)
@@ -174,7 +174,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      *  Returns a copy of this date-time with the specified hour-of-day added.
      *
      *  This is equivalent to `plus(hours, ChronoUnit.HOURS)`
-     *  @param hours  the hour-of-day to set in the result, from 0 to 23
+     *  @param hours  the hour-of-day to set in the result
      *  @return the same type of this object based on this date-time plus the requested hour, not null
      */
     fun plusHours(hours: Long): Impl = plus(hours, ChronoUnit.HOURS)
@@ -183,7 +183,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      *  Returns a copy of this date-time with the specified day-of-month added.
      *
      *  This is equivalent to `plus(days, ChronoUnit.DAYS)`
-     *  @param days  the day-of-month to set in the result, from 1 to 31
+     *  @param days  the day-of-month to set in the result
      *  @return the same type of this object based on this date-time plus the requested day, not null
      */
     fun plusDays(days: Long): Impl = plus(days, ChronoUnit.DAYS)
@@ -192,7 +192,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      *  Returns a copy of this date-time with the specified week-of-year added.
      *
      *  This is equivalent to `plus(weeks, ChronoUnit.WEEKS)`
-     *  @param weeks  the week-of-year to set in the result, from 1 to 52 or 53
+     *  @param weeks  the week-of-year to set in the result
      *  @return the same type of this object based on this date-time plus the requested week, not null
      */
     fun plusWeeks(weeks: Long): Impl = plus(weeks, ChronoUnit.WEEKS)
@@ -201,7 +201,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      *  Returns a copy of this date-time with the specified month-of-year added.
      *
      *  This is equivalent to `plus(months, ChronoUnit.MONTHS)`
-     *  @param months  the month-of-year to set in the result, from 1 to 12
+     *  @param months  the month-of-year to set in the result
      *  @return the same type of this object based on this date-time plus the requested month, not null
      */
     fun plusMonths(months: Long): Impl = plus(months, ChronoUnit.MONTHS)
@@ -220,7 +220,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      *  Returns a copy of this date-time with the specified nano-of-second subtracted.
      *
      *  This is equivalent to `minus(nanos, ChronoUnit.NANOS)`
-     *  @param nanos  the nano-of-second to set in the result, from 0 to 999,999,999
+     *  @param nanos  the nano-of-second to set in the result
      *  @return the same type of this object based on this date-time minus the requested nanosecond, not null
      */
     fun minusNanos(nanos: Long): Impl = minus(nanos, ChronoUnit.NANOS)
@@ -229,7 +229,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      *  Returns a copy of this date-time with the specified second-of-minute subtracted.
      *
      *  This is equivalent to `minus(seconds, ChronoUnit.SECONDS)`
-     *  @param seconds  the second-of-minute to set in the result, from 0 to 59
+     *  @param seconds  the second-of-minute to set in the result
      *  @return the same type of this object based on this date-time minus the requested second, not null
      */
     fun minusSeconds(seconds: Long): Impl = minus(seconds, ChronoUnit.SECONDS)
@@ -238,7 +238,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      *  Returns a copy of this date-time with the specified minute-of-hour subtracted.
      *
      *  This is equivalent to `minus(minutes, ChronoUnit.MINUTES)`
-     *  @param minutes  the minute-of-hour to set in the result, from 0 to 59
+     *  @param minutes  the minute-of-hour to set in the result
      *  @return the same type of this object based on this date-time minus the requested minute, not null
      */
     fun minusMinutes(minutes: Long): Impl = minus(minutes, ChronoUnit.MINUTES)
@@ -247,7 +247,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      *  Returns a copy of this date-time with the specified hour-of-day subtracted.
      *
      *  This is equivalent to `minus(hours, ChronoUnit.HOURS)`
-     *  @param hours  the hour-of-day to set in the result, from 0 to 23
+     *  @param hours  the hour-of-day to set in the result
      *  @return the same type of this object based on this date-time minus the requested hour, not null
      */
     fun minusHours(hours: Long): Impl = minus(hours, ChronoUnit.HOURS)
@@ -256,7 +256,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      *  Returns a copy of this date-time with the specified day-of-month subtracted.
      *
      *  This is equivalent to `minus(days, ChronoUnit.DAYS)`
-     *  @param days  the day-of-month to set in the result, from 1 to 31
+     *  @param days  the day-of-month to set in the result
      *  @return the same type of this object based on this date-time minus the requested day, not null
      */
     fun minusDays(days: Long): Impl = minus(days, ChronoUnit.DAYS)
@@ -265,7 +265,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      *  Returns a copy of this date-time with the specified week-of-year subtracted.
      *
      *  This is equivalent to `minus(weeks, ChronoUnit.WEEKS)`
-     *  @param weeks  the week-of-year to set in the result, from 1 to 52 or 53
+     *  @param weeks  the week-of-year to set in the result.
      *  @return the same type of this object based on this date-time minus the requested week, not null
      */
     fun minusWeeks(weeks: Long): Impl  = minus(weeks, ChronoUnit.WEEKS)
@@ -275,7 +275,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      * Returns a copy of this date-time with the specified month-of-year subtracted.
      *
      * This is equivalent to `minus(months, ChronoUnit.MONTHS)`
-     * @param months the month-of-year to set in the result, from 1 to 12
+     * @param months the month-of-year to set in the result
      * @return the same type of this object based on this date-time minus the requested month, not null
      */
     fun minusMonths(months: Long): Impl  = minus(months, ChronoUnit.MONTHS)
@@ -345,7 +345,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
     /**
      * Returns a copy of this date-time with the specified day-of-week set.
      *
-     * This is equivalent to `with(ChronoField.DAY_OF_WEEK, dayOfWeek)`
+     * This is equivalent to `with(ChronoField.MONTH, month)`
      * @param month the month-of-year to set in the result, from 1 to 12
      */
     fun withMonth(month: Int): Impl = with(ChronoField.MONTH_OF_YEAR, month.toLong())
@@ -353,8 +353,8 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
     /**
      * Returns a copy of this date-time with the specified month-of-year set.
      *
-     * This is equivalent to `with(ChronoField.MONTH_OF_YEAR, month)`
-     * @param year the year to set in the result, from 1 to 12
+     * This is equivalent to `with(ChronoField.YEAR, month)`
+     * @param year the year to set in the result, ranges from 1300 to 1600
      */
     fun withYear(year: Int): Impl = with(ChronoField.YEAR, year.toLong())
 
