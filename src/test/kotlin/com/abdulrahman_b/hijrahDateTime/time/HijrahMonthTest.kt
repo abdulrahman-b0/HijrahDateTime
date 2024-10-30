@@ -5,8 +5,16 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.time.DateTimeException
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
 import java.time.temporal.ChronoField
+import java.time.temporal.ChronoUnit
+import java.time.temporal.IsoFields
+import java.time.temporal.JulianFields
+import java.time.temporal.TemporalQueries
 import java.time.temporal.UnsupportedTemporalTypeException
 
 class HijrahMonthTest {
@@ -29,15 +37,14 @@ class HijrahMonthTest {
     @DisplayName("Day of month chrono field is not supported")
     fun monthChronoFieldIsNotSupported() {
         assertFalse(HijrahMonth.SAFAR.isSupported(ChronoField.DAY_OF_MONTH))
+        assertFalse(HijrahMonth.SAFAR.isSupported(JulianFields.JULIAN_DAY))
     }
 
     @Test
     @DisplayName("HijrahMonth is ranged properly")
     fun range() {
-
         assertEquals(1, HijrahMonth.SAFAR.range(ChronoField.MONTH_OF_YEAR).minimum)
         assertEquals(12, HijrahMonth.SAFAR.range(ChronoField.MONTH_OF_YEAR).maximum)
-
     }
 
     @Test
@@ -59,6 +66,9 @@ class HijrahMonthTest {
         assertThrows<UnsupportedTemporalTypeException> {
             HijrahMonth.SAFAR.getLong(ChronoField.YEAR)
         }
+        assertThrows<UnsupportedTemporalTypeException> {
+            HijrahMonth.SAFAR.getLong(IsoFields.WEEK_BASED_YEAR)
+        }
     }
 
     @Test
@@ -66,6 +76,14 @@ class HijrahMonthTest {
     fun query() {
         assertEquals(HijrahMonth.SAFAR, HijrahMonth.SAFAR.query(HijrahMonth::from))
         assertEquals(HijrahMonth.JUMADA_AL_AWWAL, HijrahDate.of(1443, 5, 15).query(HijrahMonth::from))
+        assertEquals(HijrahMonth.RABI_AL_THANI, LocalDate.of(2024, 10, 30).query(HijrahMonth::from))
+        assertThrows<DateTimeException> {
+            DayOfWeek.FRIDAY.query(HijrahMonth::from)
+        }
+        assertEquals(HijrahMonth.SAFAR.query(TemporalQueries.chronology()), HijrahChronology.INSTANCE)
+        assertEquals(HijrahMonth.RAJAB.query(TemporalQueries.precision()), ChronoUnit.MONTHS)
+        assertNull(HijrahMonth.SAFAR.query(TemporalQueries.localDate()))
+        assertNull(HijrahMonth.SAFAR.query(TemporalQueries.zone()))
     }
 
     @Test

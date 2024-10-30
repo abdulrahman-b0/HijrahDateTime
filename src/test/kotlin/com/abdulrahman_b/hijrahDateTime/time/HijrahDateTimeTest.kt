@@ -3,6 +3,7 @@ package com.abdulrahman_b.hijrahDateTime.time
 import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -16,13 +17,15 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
+import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
+import java.time.chrono.HijrahEra
 import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 
 class HijrahDateTimeTest {
 
-    private val hijrahDateTime = HijrahDateTime.of(1446, 2, 5, 12, 43, 18)
+    private val hijrahDateTime = HijrahDateTime.of(1446, 2, 5, 12, 43, 18, 100)
 
     @Nested
     @DisplayName("Factory Methods")
@@ -54,14 +57,14 @@ class HijrahDateTimeTest {
         @DisplayName("HijrahDateTime.of HijrahDate and LocalTime is obtained properly")
         fun ofHijrahDateAndLocalTime() {
             val hijrahDate = HijrahDate.of(1446, 2, 5)
-            val localTime = LocalTime.of(12, 43, 18)
+            val localTime = LocalTime.of(12, 43, 18, 100)
             assertEquals(hijrahDateTime, HijrahDateTime.of(hijrahDate, localTime))
         }
 
         @Test
         @DisplayName("HijrahDateTime.of individual fields is obtained properly")
         fun ofYearMonthDayHourMinuteSecondNanoOfSecond() {
-            assertEquals(hijrahDateTime, HijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0))
+            assertEquals(hijrahDateTime, HijrahDateTime.of(1446, 2, 5, 12, 43, 18, 100))
         }
 
         @Test
@@ -70,7 +73,7 @@ class HijrahDateTimeTest {
             val epochSecond = hijrahDateTime.toEpochSecond(ZoneOffset.UTC)
             assertEquals(
                 hijrahDateTime,
-                HijrahDateTime.ofEpochSecond(epochSecond, 0, ZoneOffset.UTC)
+                HijrahDateTime.ofEpochSecond(epochSecond, 100, ZoneOffset.UTC)
             )
         }
 
@@ -79,6 +82,47 @@ class HijrahDateTimeTest {
         fun ofInstant() {
             val instant = hijrahDateTime.toInstant(ZoneOffset.UTC)
             assertEquals(hijrahDateTime, HijrahDateTime.ofInstant(instant, ZoneOffset.UTC))
+        }
+
+        @Test
+        @DisplayName("Invalid day of month throws exception")
+        fun invalidDayOfMonthThrowsException() {
+            assertThrows<Exception> {
+                HijrahDateTime.of(1446, 2, 31, 12, 43, 18, 100)
+            }
+        }
+
+        @Test
+        @DisplayName("Invalid month throws exception")
+        fun invalidMonthThrowsException() {
+            assertThrows<Exception> {
+                HijrahDateTime.of(1446, 13, 5, 12, 43, 18, 100)
+            }
+        }
+
+        @Test
+        @DisplayName("Invalid or out of range throws exception")
+        fun invalidOrOutOfRangeFactoryValuesThrows() {
+            assertThrows<Exception> {
+                HijrahDateTime.of(1446, 2, 5, 24, 43, 18, 100)
+            }
+
+            assertThrows<Exception> {
+                HijrahDateTime.of(1446, 2, 5, 12, 60, 18, 100)
+            }
+
+            assertThrows<Exception> {
+                HijrahDateTime.of(1446, 2, 5, 12, 43, 60, 100)
+            }
+
+            assertThrows<DateTimeException> {
+                HijrahDateTime.of(1299, 2, 5, 12, 43, 18, 100)
+            }
+
+            assertThrows<DateTimeException> {
+                HijrahDateTime.of(1601, 2, 5, 12, 43, 18, 100)
+            }
+
         }
 
     }
@@ -90,20 +134,26 @@ class HijrahDateTimeTest {
         @Test
         @DisplayName("HijrahDateTime is formatted properly")
         fun hijrahDateTimeIsFormattedProperly() {
-            val expected = "1446-02-05T12:43:18"
-            val actual = hijrahDateTime.format(HijrahFormatters.HIJRAH_DATE_TIME)
+            val expected = "1446-02-05T12:43:18.0000001"
+            var actual = hijrahDateTime.format(HijrahFormatters.HIJRAH_DATE_TIME)
             assertEquals(expected, actual)
+
+            actual = hijrahDateTime.format()
+            assertEquals(expected, actual)
+
+            actual = hijrahDateTime.format(HijrahFormatters.HIJRAH_DATE)
+            assertEquals("1446-02-05", actual)
+
         }
 
         @Test
         @DisplayName("HijrahDateTime is parsed properly")
         fun hijrahDateTimeIsParsedProperly() {
-            val text = "1446-02-05T12:43:18"
+            val text = "1446-02-05T12:43:18.0000001"
             val parsedHijrahDateTime = HijrahDateTime.parse(text)
 
             assertEquals(hijrahDateTime, parsedHijrahDateTime)
         }
-
 
     }
 
@@ -183,7 +233,7 @@ class HijrahDateTimeTest {
         @Test
         @DisplayName("HijrahDateTime.nanoOfSecond returns correct value")
         fun getNanoOfSecond() {
-            assertEquals(0, hijrahDateTime.nanoOfSecond)
+            assertEquals(100, hijrahDateTime.nanoOfSecond)
         }
 
         @Test
@@ -204,7 +254,13 @@ class HijrahDateTimeTest {
         @DisplayName("HijrahDateTime.plus adds the specified amount properly")
         fun plus() {
 
-            var newHijrahDateTime = hijrahDateTime.plus(Duration.ofMinutes(5))
+            var newHijrahDateTime = hijrahDateTime.plusNanos(5)
+            assertEquals(105, newHijrahDateTime.nanoOfSecond)
+
+            newHijrahDateTime = hijrahDateTime.plusSeconds(5)
+            assertEquals(23, newHijrahDateTime.secondOfMinute)
+
+            newHijrahDateTime = hijrahDateTime.plus(Duration.ofMinutes(5))
             assertEquals(48, newHijrahDateTime.minuteOfHour)
 
             newHijrahDateTime = hijrahDateTime.plus(Duration.ofHours(1))
@@ -219,13 +275,16 @@ class HijrahDateTimeTest {
             newHijrahDateTime = hijrahDateTime.plus(1, ChronoUnit.YEARS)
             assertEquals(1447, newHijrahDateTime.year)
 
-            val combinedNewDateTime = hijrahDateTime.plus(5, ChronoUnit.MINUTES)
+            val combinedNewDateTime = hijrahDateTime
+                .plusNanos(5)
+                .plusSeconds(5)
+                .plusMinutes(5)
                 .plusHours(1)
                 .plusDays(1)
                 .plusMonths(1)
                 .plusYears(1)
 
-            val expectedDateTime = HijrahDateTime.of(1447, 3, 6, 13, 48, 18)
+            val expectedDateTime = HijrahDateTime.of(1447, 3, 6, 13, 48, 23, 105)
 
             assertEquals(expectedDateTime, combinedNewDateTime)
 
@@ -236,13 +295,19 @@ class HijrahDateTimeTest {
         @DisplayName("HijrahDateTime.minus subtracts the specified amount properly")
         fun minus() {
 
-            var newHijrahDateTime = hijrahDateTime.minus(5, ChronoUnit.MINUTES)
+            var newHijrahDateTime = hijrahDateTime.minusNanos(5)
+            assertEquals(95, newHijrahDateTime.nanoOfSecond)
+
+            newHijrahDateTime = hijrahDateTime.minusSeconds(5)
+            assertEquals(13, newHijrahDateTime.secondOfMinute)
+
+            newHijrahDateTime = hijrahDateTime.minusMinutes(5)
             assertEquals(38, newHijrahDateTime.minuteOfHour)
 
-            newHijrahDateTime = hijrahDateTime.minus(1, ChronoUnit.HOURS)
+            newHijrahDateTime = hijrahDateTime.minusHours(1)
             assertEquals(11, newHijrahDateTime.hour)
 
-            newHijrahDateTime = hijrahDateTime.minus(1, ChronoUnit.DAYS)
+            newHijrahDateTime = hijrahDateTime.minusDays(1)
             assertEquals(4, newHijrahDateTime.dayOfMonth)
 
             newHijrahDateTime = hijrahDateTime.minus(1, ChronoUnit.MONTHS)
@@ -251,34 +316,18 @@ class HijrahDateTimeTest {
             newHijrahDateTime = hijrahDateTime.minus(1, ChronoUnit.YEARS)
             assertEquals(1445, newHijrahDateTime.year)
 
-            val combinedNewDateTime = hijrahDateTime.minus(5, ChronoUnit.MINUTES)
+            val combinedNewDateTime = hijrahDateTime
+                .minusNanos(5)
+                .minus(5, ChronoUnit.SECONDS)
+                .minus(5, ChronoUnit.MINUTES)
                 .minus(1, ChronoUnit.HOURS)
                 .minus(1, ChronoUnit.DAYS)
                 .minus(1, ChronoUnit.MONTHS)
                 .minus(1, ChronoUnit.YEARS)
 
-            val expectedDateTime = HijrahDateTime.of(1445, 1, 4, 11, 38, 18)
+            val expectedDateTime = HijrahDateTime.of(1445, 1, 4, 11, 38, 13, 95)
 
             assertEquals(expectedDateTime, combinedNewDateTime)
-        }
-
-        @Test
-        @DisplayName("HijrahDateTime.with adjusts the specified field properly")
-        fun with() {
-            var newHijrahDateTime = hijrahDateTime.withMinute(55)
-            assertEquals(55, newHijrahDateTime.minuteOfHour)
-
-            newHijrahDateTime = hijrahDateTime.withHour(15)
-            assertEquals(15, newHijrahDateTime.hour)
-
-            newHijrahDateTime = hijrahDateTime.withDayOfMonth(10)
-            assertEquals(10, newHijrahDateTime.dayOfMonth)
-
-            newHijrahDateTime = hijrahDateTime.withMonth(3)
-            assertEquals(3, newHijrahDateTime.monthValue)
-
-            newHijrahDateTime = hijrahDateTime.withYear(1447)
-            assertEquals(1447, newHijrahDateTime.year)
         }
 
         @Test
@@ -320,30 +369,33 @@ class HijrahDateTimeTest {
         @Test
         @DisplayName("HijrahDateTime.until returns the correct duration between two HijrahDateTime instances")
         fun until() {
-            var hijrahDateTime2 = HijrahDateTime.of(1446, 2, 5, 12, 43, 23)
-            var duration = hijrahDateTime.until(hijrahDateTime2, ChronoUnit.SECONDS)
-            assertEquals(5, duration)
+            var hijrahDateTime2 = HijrahDateTime.of(1446, 2, 5, 12, 43, 23, 100)
+            var durationValue = hijrahDateTime.until(hijrahDateTime2, ChronoUnit.SECONDS)
+            assertEquals(5, durationValue)
 
-            hijrahDateTime2 = HijrahDateTime.of(1446, 2, 5, 12, 44, 18)
-            duration = hijrahDateTime.until(hijrahDateTime2, ChronoUnit.MINUTES)
-            assertEquals(1, duration)
+            val duration = hijrahDateTime.until(hijrahDateTime2)
+            assertEquals(duration, Duration.ofSeconds(durationValue))
 
-            hijrahDateTime2 = HijrahDateTime.of(1446, 2, 5, 13, 43, 18)
-            duration = hijrahDateTime.until(hijrahDateTime2, ChronoUnit.HOURS)
-            assertEquals(1, duration)
+            hijrahDateTime2 = HijrahDateTime.of(1446, 2, 5, 12, 44, 18, 100)
+            durationValue = hijrahDateTime.until(hijrahDateTime2, ChronoUnit.MINUTES)
+            assertEquals(1, durationValue)
+
+            hijrahDateTime2 = HijrahDateTime.of(1446, 2, 5, 13, 43, 18, 100)
+            durationValue = hijrahDateTime.until(hijrahDateTime2, ChronoUnit.HOURS)
+            assertEquals(1, durationValue)
 
 
-            hijrahDateTime2 = HijrahDateTime.of(1446, 2, 6, 12, 43, 18)
-            duration = hijrahDateTime.until(hijrahDateTime2, ChronoUnit.DAYS)
-            assertEquals(1, duration)
+            hijrahDateTime2 = HijrahDateTime.of(1446, 2, 6, 12, 43, 18, 100)
+            durationValue = hijrahDateTime.until(hijrahDateTime2, ChronoUnit.DAYS)
+            assertEquals(1, durationValue)
 
-            hijrahDateTime2 = HijrahDateTime.of(1447, 2, 5, 12, 43, 18)
-            duration = hijrahDateTime.until(hijrahDateTime2, ChronoUnit.MONTHS)
-            assertEquals(12, duration)
+            hijrahDateTime2 = HijrahDateTime.of(1447, 2, 5, 12, 43, 18, 100)
+            durationValue = hijrahDateTime.until(hijrahDateTime2, ChronoUnit.MONTHS)
+            assertEquals(12, durationValue)
 
-            hijrahDateTime2 = HijrahDateTime.of(1447, 2, 5, 12, 43, 18)
-            duration = hijrahDateTime.until(hijrahDateTime2, ChronoUnit.YEARS)
-            assertEquals(1, duration)
+            hijrahDateTime2 = HijrahDateTime.of(1447, 2, 5, 12, 43, 18, 100)
+            durationValue = hijrahDateTime.until(hijrahDateTime2, ChronoUnit.YEARS)
+            assertEquals(1, durationValue)
 
         }
 
@@ -413,6 +465,7 @@ class HijrahDateTimeTest {
         fun earlierHijrahDateTimeIsBeforeLaterHijrahDateTime() {
             val laterHijrahDateTime = hijrahDateTime.plusNanos(1)
             assertTrue(hijrahDateTime.isBefore(laterHijrahDateTime))
+            assertEquals(hijrahDateTime.compareTo(laterHijrahDateTime), -1)
         }
 
         @Test
@@ -420,111 +473,145 @@ class HijrahDateTimeTest {
         fun laterHijrahDateTimeIsAfterEarlierHijrahDateTime() {
             val earlierHijrahDateTime = hijrahDateTime.minusNanos(1)
             assertTrue(hijrahDateTime.isAfter(earlierHijrahDateTime))
+            assertEquals(hijrahDateTime.compareTo(earlierHijrahDateTime), 1)
         }
 
         @Test
         @DisplayName("HijrahDateTime is equal to itself")
         fun hijrahDateTimeIsEqualToItself() {
             assertTrue(hijrahDateTime.isEqual(hijrahDateTime))
-        }
-    }
-
-    @Nested
-    @DisplayName("Invalid values")
-    inner class InvalidValuesTest {
-        @Test
-        @DisplayName("Invalid day of month throws exception")
-        fun invalidDayOfMonthThrowsException() {
-            assertThrows<Exception> {
-                HijrahDateTime.of(1446, 2, 31, 12, 43, 18)
-            }
-        }
-
-        @Test
-        @DisplayName("Invalid month throws exception")
-        fun invalidMonthThrowsException() {
-            assertThrows<Exception> {
-                HijrahDateTime.of(1446, 13, 5, 12, 43, 18)
-            }
-        }
-
-        @Test
-        @DisplayName("Invalid hour throws exception")
-        fun invalidHourThrowsException() {
-            assertThrows<Exception> {
-                HijrahDateTime.of(1446, 2, 5, 24, 43, 18)
-            }
-        }
-
-        @Test
-        @DisplayName("Invalid minute throws exception")
-        fun invalidMinuteThrowsException() {
-            assertThrows<Exception> {
-                HijrahDateTime.of(1446, 2, 5, 12, 60, 18)
-            }
-        }
-
-        @Test
-        @DisplayName("Invalid second throws exception")
-        fun invalidSecondThrowsException() {
-            assertThrows<Exception> {
-                HijrahDateTime.of(1446, 2, 5, 12, 43, 60)
-            }
-        }
-
-        @Test
-        @DisplayName("Out of range year throws exception")
-        fun outOfRangeYearThrowsException() {
-            assertThrows<DateTimeException> {
-                HijrahDateTime.of(1299, 2, 5, 12, 43, 18)
-            }
-
-            assertThrows<DateTimeException> {
-                HijrahDateTime.of(1601, 2, 5, 12, 43, 18)
-            }
+            assertEquals(hijrahDateTime.compareTo(hijrahDateTime), 0)
         }
     }
 
     @Test
-    @DisplayName("Epoch datetime is 1389-10-22T00:00:00")
-    fun epochDayIsCalculatedProperly() {
-        val actual = HijrahDateTime.EPOCH
-        val expectedEpochDatetime = HijrahDateTime.of(1389, 10, 22, 0, 0, 0)
+    @DisplayName("HijrahDateTime is truncated to the specified field properly")
+    fun truncate() {
 
-        assertEquals(expectedEpochDatetime, actual)
+        var truncatedHijrahDateTime = hijrahDateTime.truncatedTo(ChronoUnit.SECONDS)
+        assertEquals(HijrahDateTime.of(1446, 2, 5, 12, 43, 18), truncatedHijrahDateTime)
 
-        assertEquals(LocalDate.EPOCH.atStartOfDay().toInstant(ZoneOffset.UTC), actual.toInstant(ZoneOffset.UTC))
+        truncatedHijrahDateTime = hijrahDateTime.truncatedTo(ChronoUnit.MINUTES)
+        assertEquals(HijrahDateTime.of(1446, 2, 5, 12, 43, 0), truncatedHijrahDateTime)
+
+        truncatedHijrahDateTime = hijrahDateTime.truncatedTo(ChronoUnit.DAYS)
+        assertEquals(HijrahDateTime.of(1446, 2, 5, 0, 0, 0), truncatedHijrahDateTime)
+
     }
 
     @Nested
-    @DisplayName("Truncation")
-    inner class TruncationTest {
-
+    @DisplayName("Adjustment")
+    inner class AdjustmentsTest {
 
         @Test
-        @DisplayName("Truncating HijrahDateTime to seconds")
-        fun hijrahDateTimeIsTruncatedToSecondsProperly() {
-            val truncatedHijrahDateTime = hijrahDateTime.truncatedTo(ChronoUnit.SECONDS)
+        @DisplayName("Adjusting HijrahDateTime to the specified temporal properly")
+        fun adjustInto() {
+            var target = hijrahDateTime.withMonth(2).withDayOfMonth(1)
+            var targetAfterAdjusted = hijrahDateTime.adjustInto(target)
+            assertEquals(hijrahDateTime, targetAfterAdjusted)
 
-            assertEquals(HijrahDateTime.of(1446, 2, 5, 12, 43, 18), truncatedHijrahDateTime)
+            target = hijrahDateTime.withMonth(3).withDayOfMonth(1)
+            targetAfterAdjusted = hijrahDateTime.adjustInto(target)
+            assertEquals(hijrahDateTime, targetAfterAdjusted)
+
+            target = hijrahDateTime.withMonth(2).withDayOfMonth(6)
+            targetAfterAdjusted = hijrahDateTime.adjustInto(target)
+            assertEquals(hijrahDateTime, targetAfterAdjusted)
+
+            target = hijrahDateTime.withYear(1443).withMonth(8)
+            targetAfterAdjusted = hijrahDateTime.adjustInto(target)
+            assertEquals(hijrahDateTime, targetAfterAdjusted)
         }
 
         @Test
-        @DisplayName("Truncating HijrahDateTime to minutes")
-        fun hijrahDateTimeIsTruncatedProperly() {
-            val truncatedHijrahDateTime = hijrahDateTime.truncatedTo(ChronoUnit.MINUTES)
+        @DisplayName("HijrahDateTime.with adjusts the specified field properly")
+        fun with() {
+            var newHijrahDateTime = hijrahDateTime.withNano(500)
+            assertEquals(500, newHijrahDateTime.nanoOfSecond)
 
-            assertEquals(HijrahDateTime.of(1446, 2, 5, 12, 43, 0), truncatedHijrahDateTime)
-        }
+            newHijrahDateTime = hijrahDateTime.withSecond(30)
+            assertEquals(30, newHijrahDateTime.secondOfMinute)
 
-        @Test
-        @DisplayName("Truncating HijrahDateTime to days")
-        fun hijrahDateTimeIsTruncatedToDaysProperly() {
-            val truncatedHijrahDateTime = hijrahDateTime.truncatedTo(ChronoUnit.DAYS)
+            newHijrahDateTime = hijrahDateTime.withMinute(55)
+            assertEquals(55, newHijrahDateTime.minuteOfHour)
 
-            assertEquals(HijrahDateTime.of(1446, 2, 5, 0, 0, 0), truncatedHijrahDateTime)
+            newHijrahDateTime = hijrahDateTime.withHour(15)
+            assertEquals(15, newHijrahDateTime.hour)
+
+            newHijrahDateTime = hijrahDateTime.withDayOfMonth(10)
+            assertEquals(10, newHijrahDateTime.dayOfMonth)
+
+            newHijrahDateTime = hijrahDateTime.withMonth(3)
+            assertEquals(3, newHijrahDateTime.monthValue)
+
+            newHijrahDateTime = hijrahDateTime.withYear(1447)
+            assertEquals(1447, newHijrahDateTime.year)
         }
 
     }
+
+
+    @Nested
+    @DisplayName("Constants")
+    inner class ConstantsTest {
+
+        @Test
+        @DisplayName("Epoch datetime is 1389-10-22T00:00:00")
+        fun epochDayIsCalculatedProperly() {
+            val actual = HijrahDateTime.EPOCH
+            val expectedEpochDatetime = HijrahDateTime.of(1389, 10, 22, 0, 0, 0)
+
+            assertEquals(expectedEpochDatetime, actual)
+
+            assertEquals(
+                LocalDate.EPOCH.atStartOfDay().toInstant(ZoneOffset.UTC),
+                actual.toInstant(ZoneOffset.UTC)
+            )
+        }
+
+        @Test
+        @DisplayName("HijrahDateTime.MIN is the minimum supported HijrahDateTime")
+        fun minIsMinimumSupportedHijrahDateTime() {
+            val min = HijrahDateTime.MIN
+
+            assertEquals(1300, min.year)
+        }
+
+        @Test
+        @DisplayName("HijrahDateTime.MAX is the maximum supported HijrahDateTime")
+        fun maxIsMaximumSupportedHijrahDateTime() {
+            val max = HijrahDateTime.MAX
+
+            assertEquals(1600, max.year)
+        }
+
+
+    }
+
+    @Test
+    @DisplayName("HijrahDate is extracted properly")
+    fun hijrahDateIsExtractedProperly() {
+        val hijrahDate = hijrahDateTime.toHijrahDate()
+        assertEquals(HijrahDate.of(1446, 2, 5), hijrahDate)
+    }
+
+    @Test
+    @DisplayName("HijrahDateTime chronology is HijrahChronology")
+    fun hijrahDateTimeChronologyIsHijrahChronology() {
+        assertEquals(HijrahChronology.INSTANCE, hijrahDateTime.chronology)
+
+        assertNotNull(hijrahDateTime.withYear(1443).chronology)
+    }
+
+    @Test
+    @DisplayName("HijrahDateTime.toString returns the expected string")
+    fun hijrahDateTimeToStringReturnsExpectedString() {
+        val expected = "${hijrahDateTime.chronology.id} ${HijrahEra.AH} 1446-02-05T12:43:18.000000100"
+        assertEquals(expected, hijrahDateTime.toString())
+    }
+
+
+
+
 
 }

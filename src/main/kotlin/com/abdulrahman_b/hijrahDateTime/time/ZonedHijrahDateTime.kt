@@ -73,7 +73,6 @@ open class ZonedHijrahDateTime internal constructor(
 
     val zone: ZoneId get() = dateTime.zone
     val offset: ZoneOffset get() = dateTime.offset
-    val chronology: HijrahChronology get() = dateTime.chronology as HijrahChronology
 
     @Serial
     private val serialVersionUid = 1L

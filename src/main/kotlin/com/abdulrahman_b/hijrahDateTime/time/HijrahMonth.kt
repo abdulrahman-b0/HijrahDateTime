@@ -2,7 +2,9 @@
 
 package com.abdulrahman_b.hijrahDateTime.time
 
+import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronology
 import java.time.DateTimeException
+import java.time.Month
 import java.time.chrono.Chronology
 import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
@@ -223,9 +225,7 @@ enum class HijrahMonth(val value: Int) : TemporalAccessor, TemporalAdjuster {
      */
 
     override fun adjustInto(temporal: Temporal): Temporal {
-        if (Chronology.from(temporal) != HijrahChronology.INSTANCE) {
-            throw DateTimeException("Adjustment only supported on Hijrah date-time")
-        }
+        requireHijrahChronology(temporal)
         return temporal.with(ChronoField.MONTH_OF_YEAR, value.toLong())
     }
 

@@ -54,8 +54,6 @@ class HijrahDateTime internal constructor(
     private val dateTime: ChronoLocalDateTime<HijrahDate>
 ) : DateTimeTemporal<ChronoLocalDateTime<HijrahDate>, HijrahDateTime>(dateTime), Comparable<HijrahDateTime>, TemporalAdjuster, java.io.Serializable {
 
-    val chronology get() = dateTime.chronology as HijrahChronology
-
     @Serial
     private val serialVersionUid = 1L
 
@@ -199,9 +197,7 @@ class HijrahDateTime internal constructor(
          * @return the hijrah date-time, not null
          */
         @JvmStatic
-        fun of(date: HijrahDate, time: LocalTime): HijrahDateTime {
-            return HijrahDateTime(date.atTime(time))
-        }
+        fun of(date: HijrahDate, time: LocalTime) = HijrahDateTime(date.atTime(time))
 
         /**
          * Obtains an instance of [HijrahDateTime] from year, month,

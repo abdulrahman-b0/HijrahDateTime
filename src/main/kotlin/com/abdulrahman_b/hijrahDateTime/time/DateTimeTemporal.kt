@@ -17,6 +17,8 @@ import java.time.temporal.Temporal
 import java.time.temporal.TemporalAdjuster
 import java.time.temporal.TemporalAmount
 import java.time.temporal.TemporalField
+import java.time.temporal.TemporalQueries
+import java.time.temporal.TemporalQuery
 import java.time.temporal.TemporalUnit
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.time.temporal.ValueRange
@@ -36,6 +38,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
     @Serial
     private val serialVersionUid: Long = 1L
 
+    val chronology: HijrahChronology = temporal.query(TemporalQueries.chronology()) as HijrahChronology
     val year get() = get(ChronoField.YEAR)
     val monthValue get() = get(ChronoField.MONTH_OF_YEAR)
     val month get() = HijrahMonth.of(monthValue)
@@ -372,9 +375,20 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      * @see HijrahFormatters.getRecommendedFormatter
      */
     @JvmOverloads
-    open fun format(formatter: DateTimeFormatter = HijrahFormatters.getRecommendedFormatter(temporal)): String {
+    open fun format(formatter: DateTimeFormatter = HijrahFormatters.getRecommendedFormatter(this)): String {
         requireHijrahChronologyFormatter(formatter)
         return formatter.format(temporal)
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <R : Any?> query(query: TemporalQuery<R>): R {
+
+        return when(query) {
+            TemporalQueries.chronology() -> chronology as R
+            TemporalQueries.precision() -> ChronoUnit.NANOS as R
+            else -> temporal.query(query)
+        }
+
     }
 
 
