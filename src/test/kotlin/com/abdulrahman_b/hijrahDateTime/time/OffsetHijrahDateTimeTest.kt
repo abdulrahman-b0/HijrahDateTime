@@ -139,7 +139,7 @@ class OffsetHijrahDateTimeTest {
         @Test
         @DisplayName("OffsetHijrahDateTime.dayOfWeek returns correct value")
         fun getDayOfWeek() {
-            assertEquals(5, offsetHijrahDateTime.dayOfWeek)
+            assertEquals(5, offsetHijrahDateTime.dayOfWeekValue)
         }
 
         @Test

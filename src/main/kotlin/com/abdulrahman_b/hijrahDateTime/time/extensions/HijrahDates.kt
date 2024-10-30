@@ -8,6 +8,7 @@ import com.abdulrahman_b.hijrahDateTime.time.OffsetHijrahDateTime
 import com.abdulrahman_b.hijrahDateTime.time.ZonedHijrahDateTime
 import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronologyFormatter
 import java.time.DateTimeException
+import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
@@ -20,44 +21,23 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalAdjusters.lastDayOfMonth
 
 object HijrahDates {
 
-    val MIN_YEAR: Int by lazy {
-        val yearRange = HijrahChronology.INSTANCE.range(ChronoField.YEAR)
-        yearRange.minimum.toInt()
-    }
-
-    val MAX_YEAR: Int by lazy {
-        val yearRange = HijrahChronology.INSTANCE.range(ChronoField.YEAR)
-        yearRange.maximum.toInt()
-    }
-
-    val MIN: HijrahDate by lazy { HijrahDate.of(MIN_YEAR, 1, 1) }
-
-    val MAX: HijrahDate by lazy {
-        try {
-            HijrahDate.of(MAX_YEAR, 12, 30)
-        } catch (e: DateTimeException) {
-            HijrahDate.of(MAX_YEAR, 12, 29)
-        }
-    }
-
-    val EPOCH: HijrahDate by lazy {
-        ofEpochDay(0)
-    }
+    val MIN_YEAR = HijrahChronology.INSTANCE.range(ChronoField.YEAR).minimum.toInt()
+    val MAX_YEAR = HijrahChronology.INSTANCE.range(ChronoField.YEAR).maximum.toInt()
+    val MIN: HijrahDate = HijrahDate.of(MIN_YEAR, 1, 1)
+    val MAX: HijrahDate = HijrahDate.of(MAX_YEAR, 12, 29).with(lastDayOfMonth())
+    val EPOCH: HijrahDate = ofEpochDay(0)
 
     inline val HijrahDate.year: Int get() = get(ChronoField.YEAR)
-
     inline val HijrahDate.monthValue: Int get() = get(ChronoField.MONTH_OF_YEAR)
-
     inline val HijrahDate.month: HijrahMonth get() = HijrahMonth.of(monthValue)
-
     inline val HijrahDate.dayOfYear: Int get() = get(ChronoField.DAY_OF_YEAR)
-
     inline val HijrahDate.dayOfMonth: Int get() = get(ChronoField.DAY_OF_MONTH)
-
-    inline val HijrahDate.dayOfWeek: Int get() = get(ChronoField.DAY_OF_WEEK)
+    inline val HijrahDate.dayOfWeekValue: Int get() = get(ChronoField.DAY_OF_WEEK)
+    inline val HijrahDate.dayOfWeek: DayOfWeek get() = DayOfWeek.of(dayOfWeekValue)
 
     /**
      * Returns a copy of this date with the specified number of days added.

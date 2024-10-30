@@ -149,7 +149,7 @@ class ZonedHijrahDateTimeTest {
         @Test
         @DisplayName("ZonedHijrahDateTime.dayOfWeek returns correct value")
         fun getDayOfWeek() {
-            assertEquals(5, zonedHijrahDateTime.dayOfWeek)
+            assertEquals(5, zonedHijrahDateTime.dayOfWeekValue)
         }
 
         @Test

@@ -3,7 +3,7 @@ package com.abdulrahman_b.hijrahDateTime.time.extensions
 import com.abdulrahman_b.hijrahDateTime.time.HijrahMonth
 import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.datesUntil
 import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.dayOfMonth
-import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.dayOfWeek
+import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.dayOfWeekValue
 import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.dayOfYear
 import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.minusDays
 import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.month
@@ -66,7 +66,7 @@ class HijrahDateExtensionsTest {
         @Test
         @DisplayName("Day of week is retrieved properly")
         fun dayOfWeek() {
-            assertEquals(5, hijrahDate.dayOfWeek)
+            assertEquals(5, hijrahDate.dayOfWeekValue)
         }
     }
 

@@ -5,6 +5,7 @@ import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
 import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronologyFormatter
 import java.io.Serial
 import java.time.DateTimeException
+import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalTime
 import java.time.chrono.HijrahChronology
@@ -40,7 +41,8 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
     val month get() = HijrahMonth.of(monthValue)
     val dayOfYear get() = get(ChronoField.DAY_OF_YEAR)
     val dayOfMonth get() = get(ChronoField.DAY_OF_MONTH)
-    val dayOfWeek get() = get(ChronoField.DAY_OF_WEEK)
+    val dayOfWeekValue get() = get(ChronoField.DAY_OF_WEEK)
+    val dayOfWeek: DayOfWeek get() = DayOfWeek.of(dayOfWeekValue)
     val hour get() = get(ChronoField.HOUR_OF_DAY)
     val minuteOfHour get() = get(ChronoField.MINUTE_OF_HOUR)
     val secondOfMinute get() = get(ChronoField.SECOND_OF_MINUTE)

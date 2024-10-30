@@ -158,8 +158,8 @@ class HijrahDateTimeTest {
         @Test
         @DisplayName("HijrahDateTime.dayOfWeek returns correct value")
         fun getDayOfWeek() {
-            assertEquals(5, hijrahDateTime.dayOfWeek)
-            assertEquals(DayOfWeek.FRIDAY, DayOfWeek.of(hijrahDateTime.dayOfWeek))
+            assertEquals(5, hijrahDateTime.dayOfWeekValue)
+            assertEquals(DayOfWeek.FRIDAY, hijrahDateTime.dayOfWeek)
         }
 
         @Test
