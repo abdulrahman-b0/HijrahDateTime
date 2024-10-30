@@ -1,6 +1,6 @@
 # HijrahDateTime
 
-[![Kotlin Alpha](https://kotl.in/badges/alpha.svg)]()
+[![Kotlin Alpha](https://kotl.in/badges/beta.svg)]()
 [![Kotlin](https://img.shields.io/badge/kotlin-2.0-blue.svg?logo=kotlin)]()
 [![Java](https://img.shields.io/badge/java-17-orange.svg?logo=java)]()
 
