@@ -86,7 +86,7 @@ import java.time.format.SignStyle
 import java.time.temporal.ChronoField
 
 val dateFormat: DateTimeFormatter = DateTimeFormatterBuilder()
-  .appendValue(ChronoField.YEAR, 4, 10, SignStyle.EXCEEDS_PAD)
+  .appendValue(ChronoField.YEAR, 4, 4, SignStyle.EXCEEDS_PAD)
   .appendLiteral('/')
   .appendValue(ChronoField.MONTH_OF_YEAR, 2)
   .appendLiteral('/')
@@ -157,14 +157,14 @@ repositories {
 #### Using Gradle Kotlin DSL
 ```kotlin build.gradle.kts
 dependencies {
-    implementation("com.abdulrahman-b:HijrahDateTime:1.0.0-alpha.2")
+    implementation("com.abdulrahman-b:HijrahDateTime:1.0.0-beta.1")
 }
 ```
 
 #### Using Gradle Groovy DSL
 ```groovy build.gradle
 dependencies {
-    implementation 'com.abdulrahman-b:HijrahDateTime:1.0.0-alpha.2'
+    implementation 'com.abdulrahman-b:HijrahDateTime:1.0.0-beta.1'
 }
 ```
 
@@ -176,7 +176,7 @@ Add a dependency to the `<dependencies>` element:
 <dependency>
     <groupId>com.abdulrahman-b</groupId>
     <artifactId>HijrahDateTime</artifactId>
-    <version>1.0.0-alpha.2</version>
+    <version>1.0.0-beta.1</version>
 </dependency>
 ```
 

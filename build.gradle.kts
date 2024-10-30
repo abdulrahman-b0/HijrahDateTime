@@ -1,3 +1,4 @@
+@file:Suppress("MemberVisibilityCanBePrivate", "unused")
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jreleaser.model.Active
 import org.jreleaser.model.Signing
@@ -14,7 +15,7 @@ plugins {
 
 
 group = "com.abdulrahman-b"
-version = "1.0.0-alpha.2"
+version = "1.0.0-beta.1"
 
 java {
     withJavadocJar()
