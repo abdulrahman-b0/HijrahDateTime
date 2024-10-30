@@ -12,6 +12,7 @@ import java.time.Clock
 import java.time.DateTimeException
 import java.time.DayOfWeek
 import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
@@ -491,6 +492,39 @@ class HijrahDateTimeTest {
         val expectedEpochDatetime = HijrahDateTime.of(1389, 10, 22, 0, 0, 0)
 
         assertEquals(expectedEpochDatetime, actual)
+
+        assertEquals(LocalDate.EPOCH.atStartOfDay().toInstant(ZoneOffset.UTC), actual.toInstant(ZoneOffset.UTC))
+    }
+
+    @Nested
+    @DisplayName("Truncation")
+    inner class TruncationTest {
+
+
+        @Test
+        @DisplayName("Truncating HijrahDateTime to seconds")
+        fun hijrahDateTimeIsTruncatedToSecondsProperly() {
+            val truncatedHijrahDateTime = hijrahDateTime.truncatedTo(ChronoUnit.SECONDS)
+
+            assertEquals(HijrahDateTime.of(1446, 2, 5, 12, 43, 18), truncatedHijrahDateTime)
+        }
+
+        @Test
+        @DisplayName("Truncating HijrahDateTime to minutes")
+        fun hijrahDateTimeIsTruncatedProperly() {
+            val truncatedHijrahDateTime = hijrahDateTime.truncatedTo(ChronoUnit.MINUTES)
+
+            assertEquals(HijrahDateTime.of(1446, 2, 5, 12, 43, 0), truncatedHijrahDateTime)
+        }
+
+        @Test
+        @DisplayName("Truncating HijrahDateTime to days")
+        fun hijrahDateTimeIsTruncatedToDaysProperly() {
+            val truncatedHijrahDateTime = hijrahDateTime.truncatedTo(ChronoUnit.DAYS)
+
+            assertEquals(HijrahDateTime.of(1446, 2, 5, 0, 0, 0), truncatedHijrahDateTime)
+        }
+
     }
 
 }
