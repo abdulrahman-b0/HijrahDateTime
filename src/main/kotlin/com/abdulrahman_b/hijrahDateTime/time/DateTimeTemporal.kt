@@ -30,7 +30,7 @@ import java.time.temporal.ValueRange
  * This class is a base class for all date-time classes in this package.
  *
  * @param T the input type of the date-time object, which is a subclass of [Temporal], all operations in this class are applied to this temporal object.
- * @param Impl the output type of the date-time object, which is a subclass of [DateTimeTemporal], all operations in this class return this type.
+ * @param Impl the implementation type of the date-time object, which is a subclass of [DateTimeTemporal], all operations in this class return this type.
  */
 sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
     private val temporal: T,
