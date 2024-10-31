@@ -23,6 +23,9 @@ import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters.lastDayOfMonth
 
+/**
+ * A set of extensions and utility functions that provide the ability to work with [HijrahDate].
+ */
 object HijrahDates {
 
     val MIN_YEAR = HijrahChronology.INSTANCE.range(ChronoField.YEAR).minimum.toInt()

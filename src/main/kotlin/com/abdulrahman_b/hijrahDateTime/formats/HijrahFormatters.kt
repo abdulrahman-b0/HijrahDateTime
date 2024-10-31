@@ -20,6 +20,11 @@ import java.time.temporal.Temporal
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.util.Locale
 
+/**
+ * A set of predefined standard Hijrah date-time formatters.
+ *
+ * This class provides instances of pre-built formatters for the most common.
+ */
 object HijrahFormatters {
 
     /**
@@ -131,7 +136,6 @@ object HijrahFormatters {
      * This returns an immutable formatter capable of formatting and parsing
      * a format that extends the Hijrah offset date-time format
      * to add the time-zone.
-     * The section in square brackets is not part of the ISO-8601 standard.
      * The format consists of:
      *
      * * The [HIJRAH_OFFSET_DATE_TIME] formatter.

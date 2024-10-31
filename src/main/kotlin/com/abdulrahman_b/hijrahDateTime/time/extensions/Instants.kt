@@ -10,6 +10,9 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 
+/**
+ * A set of extension and utility functions for converting from [Instant] to Hijrah date-time types.
+ */
 object Instants {
     /** Converts this instant to a [ZonedHijrahDateTime] at the given [zoneId]. */
     fun Instant.atHijrahZone(zoneId: ZoneId) = ZonedHijrahDateTime.ofInstant(this, zoneId)

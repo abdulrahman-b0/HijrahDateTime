@@ -9,6 +9,9 @@ import java.time.OffsetDateTime
 import java.time.ZonedDateTime
 import java.time.chrono.HijrahDate
 
+/**
+ * A set of extension functions for converting from ISO date-time types to Hijrah date-time types.
+ */
 object DateTimeConversions {
 
     /** Converts this local date to a [HijrahDate]. */
