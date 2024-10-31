@@ -112,7 +112,7 @@ class HijrahDateExtensionsTest {
         @Test
         @DisplayName("HijrahDate is obtained from Instant properly")
         fun ofInstant() {
-            val instant = hijrahDate.atTime(LocalTime.of(0, 0,)).toInstant(ZoneOffset.UTC)
+            val instant = hijrahDate.atTime(LocalTime.of(0, 0)).toInstant(ZoneOffset.UTC)
 
             var obtainedHijrahDate = HijrahDates.ofInstant(instant, ZoneOffset.UTC)
             assertEquals(hijrahDate, obtainedHijrahDate)

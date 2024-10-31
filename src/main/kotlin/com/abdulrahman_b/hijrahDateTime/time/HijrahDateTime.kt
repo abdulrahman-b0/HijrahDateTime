@@ -8,7 +8,6 @@ import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates
 import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.atStartOfDay
 import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronology
 import kotlinx.serialization.Serializable
-import java.io.Serial
 import java.time.Clock
 import java.time.DateTimeException
 import java.time.Instant
