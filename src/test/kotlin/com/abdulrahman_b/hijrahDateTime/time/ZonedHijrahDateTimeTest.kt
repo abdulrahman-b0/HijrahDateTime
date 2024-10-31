@@ -2,6 +2,8 @@ package com.abdulrahman_b.hijrahDateTime.time
 
 import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -9,27 +11,53 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import java.time.Clock
 import java.time.DateTimeException
 import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
+import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
+import java.time.chrono.HijrahEra
 import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalQueries
 
 class ZonedHijrahDateTimeTest {
 
-    private var zonedHijrahDateTime = ZonedHijrahDateTime.now() //Cannot use lateinit here, because its inline class, and null is not appropriate value for it
+    private lateinit var zonedHijrahDateTime: ZonedHijrahDateTime
 
     @BeforeEach
     fun setUp() {
-        zonedHijrahDateTime = ZonedHijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0, ZoneId.of("Asia/Riyadh"))
+        zonedHijrahDateTime = ZonedHijrahDateTime.of(1446, 2, 5, 12, 43, 18, zoneId =  ZoneId.of("Asia/Riyadh"))
     }
 
     @Nested
     @DisplayName("Factory Methods")
     inner class FactoryTests {
+
+        @Test
+        @DisplayName("ZonedHijrahDateTime.now() returns the current instance")
+        fun nowReturnsCurrentInstance() {
+            var now = ZonedHijrahDateTime.now()
+            assertEquals(now.zone, ZoneId.systemDefault())
+            assertEquals(now.offset, ZoneOffset.systemDefault().rules.getOffset(now.toInstant()))
+
+            now = ZonedHijrahDateTime.now(ZoneId.of("Asia/Riyadh"))
+            assertEquals(now.zone, ZoneId.of("Asia/Riyadh"))
+            assertEquals(now.offset, ZoneOffset.ofHours(3))
+
+            now = ZonedHijrahDateTime.now(ZoneOffset.ofHours(3))
+            assertEquals(now.zone, ZoneOffset.ofHours(3))
+            assertEquals(now.offset, ZoneOffset.ofHours(3))
+
+            now = ZonedHijrahDateTime.now(Clock.system(ZoneId.of("Asia/Riyadh")))
+            assertEquals(now.zone, ZoneId.of("Asia/Riyadh"))
+            assertEquals(now.offset, ZoneOffset.ofHours(3))
+        }
 
         @Test
         @DisplayName("ZonedHijrahDateTime is obtained from TemporalAccessor properly")
@@ -76,6 +104,14 @@ class ZonedHijrahDateTimeTest {
 
             assertTrue(zonedHijrahDateTime.isEqual(actual)) {
                 "Expected: $zonedHijrahDateTime\nActual: $actual"
+            }
+        }
+
+        @Test
+        @DisplayName("Invalid zone ID throws DateTimeException")
+        fun invalidZoneIdThrowsDateTimeException() {
+            assertThrows<DateTimeException> {
+                ZonedHijrahDateTime.of(1446, 2, 5, 12, 43, zoneId =  ZoneId.of("Invalid/Zone"))
             }
         }
 
@@ -336,49 +372,41 @@ class ZonedHijrahDateTimeTest {
 
 
     @Nested
-    @DisplayName("Field Support")
-    inner class FieldSupportTest {
-        @Test
-        @DisplayName("ChronoField.YEAR is supported")
-        fun yearFieldIsSupported() = assertTrue(zonedHijrahDateTime.isSupported(ChronoField.YEAR))
+    @DisplayName("Support")
+    inner class SupportTest {
 
         @Test
-        @DisplayName("ChronoField.MONTH_OF_YEAR is supported")
-        fun monthFieldIsSupported() = assertTrue(zonedHijrahDateTime.isSupported(ChronoField.MONTH_OF_YEAR))
+        @DisplayName("Required fields are supported")
+        fun requiredFieldsAreSupported() {
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoField.YEAR))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoField.MONTH_OF_YEAR))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoField.DAY_OF_YEAR))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoField.DAY_OF_MONTH))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoField.DAY_OF_WEEK))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoField.HOUR_OF_DAY))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoField.MINUTE_OF_HOUR))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoField.SECOND_OF_MINUTE))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoField.NANO_OF_SECOND))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoField.SECOND_OF_DAY))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoField.NANO_OF_DAY))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoField.OFFSET_SECONDS))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoField.INSTANT_SECONDS))
+        }
 
         @Test
-        @DisplayName("ChronoField.DAY_OF_YEAR is supported")
-        fun dayOfYearFieldIsSupported() = assertTrue(zonedHijrahDateTime.isSupported(ChronoField.DAY_OF_YEAR))
-
-        @Test
-        @DisplayName("ChronoField.DAY_OF_MONTH is supported")
-        fun dayOfMonthFieldIsSupported() = assertTrue(zonedHijrahDateTime.isSupported(ChronoField.DAY_OF_MONTH))
-
-        @Test
-        @DisplayName("ChronoField.DAY_OF_WEEK is supported")
-        fun dayOfWeekFieldIsSupported() = assertTrue(zonedHijrahDateTime.isSupported(ChronoField.DAY_OF_WEEK))
-
-        @Test
-        @DisplayName("ChronoField.HOUR_OF_DAY is supported")
-        fun hourFieldIsSupported() = assertTrue(zonedHijrahDateTime.isSupported(ChronoField.HOUR_OF_DAY))
-
-        @Test
-        @DisplayName("ChronoField.MINUTE_OF_HOUR is supported")
-        fun minuteFieldIsSupported() = assertTrue(zonedHijrahDateTime.isSupported(ChronoField.MINUTE_OF_HOUR))
-
-        @Test
-        @DisplayName("ChronoField.SECOND_OF_MINUTE is supported")
-        fun secondFieldIsSupported() = assertTrue(zonedHijrahDateTime.isSupported(ChronoField.SECOND_OF_MINUTE))
-
-        @Test
-        @DisplayName("ChronoField.NANO_OF_SECOND is supported")
-        fun nanoSecondFieldIsSupported() = assertTrue(zonedHijrahDateTime.isSupported(ChronoField.NANO_OF_SECOND))
-
-        @Test
-        @DisplayName("ChronoField.SECOND_OF_DAY is supported")
-        fun secondOfDayFieldIsSupported() = assertTrue(zonedHijrahDateTime.isSupported(ChronoField.SECOND_OF_DAY))
+        @DisplayName("Required units are supported")
+        fun requiredUnitsAreSupported() {
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoUnit.NANOS))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoUnit.SECONDS))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoUnit.MINUTES))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoUnit.HOURS))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoUnit.DAYS))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoUnit.MONTHS))
+            assertTrue(zonedHijrahDateTime.isSupported(ChronoUnit.YEARS))
+        }
 
     }
+
 
 
     @Nested
@@ -428,18 +456,6 @@ class ZonedHijrahDateTimeTest {
                 "Expected: $zonedHijrahDateTime\nActual: $newZonedHijrahDateTime"
             }
         }
-
-        @Test
-        @DisplayName("ZonedHijrahDateTime.toHijrahDateTime returns the correct HijrahDateTime instance")
-        fun toLocalDateTime() {
-            val hijrahDateTime = zonedHijrahDateTime.toHijrahDateTime()
-
-            val expected = HijrahDateTime.of(1446, 2, 5, 12, 43, 18)
-
-            assertTrue(hijrahDateTime.isEqual(expected)) {
-                "Expected: $expected\nActual: $hijrahDateTime"
-            }
-        }
     }
 
     @Nested
@@ -452,6 +468,7 @@ class ZonedHijrahDateTimeTest {
             val hijrahDateTime2 = zonedHijrahDateTime.plusNanos(1)
 
             assertTrue(zonedHijrahDateTime.isBefore(hijrahDateTime2))
+            assertEquals(zonedHijrahDateTime.compareTo(hijrahDateTime2), -1)
         }
 
         @Test
@@ -460,6 +477,7 @@ class ZonedHijrahDateTimeTest {
             val hijrahDateTime2 = zonedHijrahDateTime.minusNanos(1)
 
             assertTrue(zonedHijrahDateTime.isAfter(hijrahDateTime2))
+            assertEquals(zonedHijrahDateTime.compareTo(hijrahDateTime2), 1)
         }
 
         @Test
@@ -468,6 +486,9 @@ class ZonedHijrahDateTimeTest {
             val hijrahDateTime2 = ZonedHijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0, ZoneId.of("Asia/Riyadh"))
 
             assertTrue(zonedHijrahDateTime.isEqual(hijrahDateTime2))
+            assertEquals(zonedHijrahDateTime.compareTo(hijrahDateTime2), 0)
+            assertTrue(zonedHijrahDateTime == hijrahDateTime2)
+            assertFalse(zonedHijrahDateTime.equals(null))
         }
 
         @Test
@@ -475,6 +496,7 @@ class ZonedHijrahDateTimeTest {
         fun earlierInstanceWithDifferentZoneIsBeforeTheLaterOne() {
             val hijrahDateTime2 = zonedHijrahDateTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai")).plusNanos(1)
             assertTrue(zonedHijrahDateTime.isBefore(hijrahDateTime2))
+            assertEquals(zonedHijrahDateTime.compareTo(hijrahDateTime2), -1)
         }
 
         @Test
@@ -483,6 +505,7 @@ class ZonedHijrahDateTimeTest {
             val hijrahDateTime2 = zonedHijrahDateTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai")).minusNanos(1)
 
             assertTrue(zonedHijrahDateTime.isAfter(hijrahDateTime2))
+            assertEquals(zonedHijrahDateTime.compareTo(hijrahDateTime2), 1)
         }
 
         @Test
@@ -491,22 +514,98 @@ class ZonedHijrahDateTimeTest {
             val hijrahDateTime2 = zonedHijrahDateTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai"))
 
             assertTrue(zonedHijrahDateTime.isEqual(hijrahDateTime2))
+            assertEquals(-1, zonedHijrahDateTime.compareTo(hijrahDateTime2))
         }
 
     }
 
-    @Nested
-    @DisplayName("Invalid Values")
-    inner class InvalidValuesTest {
+    @Test
+    @DisplayName("truncate to the specified field properly")
+    fun truncate() {
 
-        @Test
-        @DisplayName("Invalid zone ID throws DateTimeException")
-        fun invalidZoneIdThrowsDateTimeException() {
-            assertThrows<DateTimeException> {
-                ZonedHijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0, ZoneId.of("Invalid/Zone"))
-            }
+        var truncatedHijrahDateTime = zonedHijrahDateTime.truncatedTo(ChronoUnit.SECONDS)
+        var expected = ZonedHijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0, ZoneId.of("Asia/Riyadh"))
+        assertEquals(expected, truncatedHijrahDateTime)
+
+        truncatedHijrahDateTime = zonedHijrahDateTime.truncatedTo(ChronoUnit.MINUTES)
+        expected = ZonedHijrahDateTime.of(1446, 2, 5, 12, 43, 0, 0, ZoneId.of("Asia/Riyadh"))
+        assertEquals(expected, truncatedHijrahDateTime)
+
+        truncatedHijrahDateTime = zonedHijrahDateTime.truncatedTo(ChronoUnit.DAYS)
+        expected = ZonedHijrahDateTime.of(1446, 2, 5, 0, 0, 0, 0, ZoneId.of("Asia/Riyadh"))
+        assertEquals(expected, truncatedHijrahDateTime)
+
+    }
+
+    @Test
+    @DisplayName("HijrahDateTime is extracted properly")
+    fun toHijrahDateTime() {
+        val hijrahDateTime = zonedHijrahDateTime.toHijrahDateTime()
+        val expected = HijrahDateTime.of(1446, 2, 5, 12, 43, 18)
+        assertEquals(expected, hijrahDateTime)
+    }
+
+    @Test
+    @DisplayName("HijrahDate is extracted properly")
+    fun toHijrahDate() {
+        val hijrahDate = zonedHijrahDateTime.toHijrahDate()
+        val expected = HijrahDate.of(1446, 2, 5)
+        assertEquals(expected, hijrahDate)
+    }
+
+    @Test
+    @DisplayName("LocalTime is extracted properly")
+    fun toLocalTime() {
+        val localTime = zonedHijrahDateTime.toLocalTime()
+        val expected = LocalTime.of(12, 43, 18)
+        assertEquals(expected, localTime)
+    }
+
+    @Test
+    @DisplayName("Converted to OffsetHijrahDateTime properly")
+    fun toOffsetHijrahDateTime() {
+        val offsetHijrahDateTime = zonedHijrahDateTime.toOffsetHijrahDateTime()
+        val expected = OffsetHijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0, ZoneOffset.ofHours(3))
+        assertEquals(expected, offsetHijrahDateTime)
+        assertEquals(expected.offset, offsetHijrahDateTime.offset)
+    }
+
+
+    @Test
+    @DisplayName("ZonedHijrahDateTime.toHijrahDateTime returns the correct HijrahDateTime instance")
+    fun toLocalDateTime() {
+        val hijrahDateTime = zonedHijrahDateTime.toHijrahDateTime()
+
+        val expected = HijrahDateTime.of(1446, 2, 5, 12, 43, 18)
+
+        assertTrue(hijrahDateTime.isEqual(expected)) {
+            "Expected: $expected\nActual: $hijrahDateTime"
         }
+    }
 
+    @Test
+    @DisplayName("toString returns the correct string representation")
+    fun toStringReturnsCorrectStringRepresentation() {
+        val expected = "${zonedHijrahDateTime.chronology.id} ${HijrahEra.AH} 1446-02-05T12:43:18+03:00[Asia/Riyadh]"
+        assertEquals(expected, zonedHijrahDateTime.toString())
+    }
+
+    @Test
+    @DisplayName("Hash code is calculated properly")
+    fun hashCodeIsCalculatedProperly() {
+        zonedHijrahDateTime.hashCode()
+    }
+
+    @Test
+    @DisplayName("Temporal queries work as expected")
+    fun temporalQueriesAreSupported() {
+        assertEquals(HijrahChronology.INSTANCE, zonedHijrahDateTime.query(TemporalQueries.chronology()))
+        assertEquals(zonedHijrahDateTime.zone, zonedHijrahDateTime.query(TemporalQueries.zoneId()))
+        assertEquals(ChronoUnit.NANOS, zonedHijrahDateTime.query(TemporalQueries.precision()))
+        assertEquals(LocalDate.from(zonedHijrahDateTime),zonedHijrahDateTime.query(TemporalQueries.localDate()))
+        assertEquals(zonedHijrahDateTime.toLocalTime(), zonedHijrahDateTime.query(TemporalQueries.localTime()))
+        assertEquals(zonedHijrahDateTime.offset ,zonedHijrahDateTime.query(TemporalQueries.offset()))
+        assertEquals(zonedHijrahDateTime.zone, zonedHijrahDateTime.query(TemporalQueries.zone()))
     }
 
 

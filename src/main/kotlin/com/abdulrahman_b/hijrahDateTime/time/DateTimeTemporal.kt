@@ -2,7 +2,8 @@
 package com.abdulrahman_b.hijrahDateTime.time
 
 import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
-import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronologyFormatter
+import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters.getRecommendedFormatter
+import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronology
 import java.io.Serial
 import java.time.DateTimeException
 import java.time.DayOfWeek
@@ -78,7 +79,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      */
     override fun plus(amountToAdd: Long, unit: TemporalUnit): Impl = typedFactory(temporal.plus(amountToAdd, unit))
 
-    override operator fun minus(amount: TemporalAmount): Impl = typedFactory(temporal.plus(amount))
+    override fun minus(amount: TemporalAmount): Impl = typedFactory(temporal.minus(amount))
 
     /**
      * Returns an object of the same type as this object with the specified period subtracted.
@@ -375,10 +376,8 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
      * @see HijrahFormatters.getRecommendedFormatter
      */
     @JvmOverloads
-    open fun format(formatter: DateTimeFormatter = HijrahFormatters.getRecommendedFormatter(this)): String {
-        requireHijrahChronologyFormatter(formatter)
-        return formatter.format(temporal)
-    }
+    open fun format(formatter: DateTimeFormatter = getRecommendedFormatter(this)): String =
+        requireHijrahChronology(formatter).format(temporal)
 
     @Suppress("UNCHECKED_CAST")
     override fun <R : Any?> query(query: TemporalQuery<R>): R {

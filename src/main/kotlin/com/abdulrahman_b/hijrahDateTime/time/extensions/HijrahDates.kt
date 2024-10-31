@@ -6,7 +6,7 @@ import com.abdulrahman_b.hijrahDateTime.time.HijrahDateTime
 import com.abdulrahman_b.hijrahDateTime.time.HijrahMonth
 import com.abdulrahman_b.hijrahDateTime.time.OffsetHijrahDateTime
 import com.abdulrahman_b.hijrahDateTime.time.ZonedHijrahDateTime
-import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronologyFormatter
+import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronology
 import java.time.DateTimeException
 import java.time.DayOfWeek
 import java.time.Instant
@@ -264,7 +264,7 @@ object HijrahDates {
      * @throws DateTimeParseException if the text cannot be parsed
      */
     fun parse(text: CharSequence, formatter: DateTimeFormatter): HijrahDate {
-        requireHijrahChronologyFormatter(formatter)
+        requireHijrahChronology(formatter)
         return formatter.parse(text, HijrahDate::from)
     }
 

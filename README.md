@@ -3,7 +3,7 @@
 [![Kotlin Beta](https://kotl.in/badges/beta.svg)]()
 [![Kotlin](https://img.shields.io/badge/kotlin-2.0-blue.svg?logo=kotlin)]()
 [![Java](https://img.shields.io/badge/java-14-orange.svg?logo=java)]()
-[![Test Coverage](https://s3.amazonaws.com/assets.coveralls.io/badges/coveralls_79.svg)]()
+[![Test Coverage](https://s3.amazonaws.com/assets.coveralls.io/badges/coveralls_90.svg)]()
 
 HijrahDateTime is a Kotlin/JVM library that is built on top of java.time to facilitates work with Hijrah date and time APIs.
 

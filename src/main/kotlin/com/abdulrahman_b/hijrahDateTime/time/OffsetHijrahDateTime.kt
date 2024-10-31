@@ -6,7 +6,6 @@ import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters.HIJRAH_DATE_TIM
 import com.abdulrahman_b.hijrahDateTime.serializers.OffsetHijrahDateTimeSerializer
 import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates
 import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronology
-import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronologyFormatter
 import kotlinx.serialization.Serializable
 import java.io.Serial
 import java.time.Clock
@@ -82,10 +81,6 @@ class OffsetHijrahDateTime private constructor(
         return dateTime.isSupported(field) || offset.isSupported(field)
     }
 
-    override fun isSupported(unit: TemporalUnit): Boolean {
-        return dateTime.isSupported(unit)
-    }
-
 
     override fun get(field: TemporalField): Int {
         return when {
@@ -106,20 +101,12 @@ class OffsetHijrahDateTime private constructor(
 
     override fun range(field: TemporalField): ValueRange {
         if (field is ChronoField) {
-            if (field === ChronoField.INSTANT_SECONDS || field === ChronoField.OFFSET_SECONDS) {
-                return field.range()
+            if (field === ChronoField.OFFSET_SECONDS) {
+                return offset.range(field)
             }
             return dateTime.range(field)
         }
         return field.rangeRefinedBy(this)
-    }
-
-    override fun plus(amountToAdd: Long, unit: TemporalUnit): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.plus(amountToAdd, unit), offset)
-    }
-
-    override fun minus(amountToSubtract: Long, unit: TemporalUnit): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.minus(amountToSubtract, unit), offset)
     }
 
     override fun until(endExclusive: Temporal, unit: TemporalUnit): Long {
@@ -127,20 +114,9 @@ class OffsetHijrahDateTime private constructor(
     }
 
 
-    override fun plus(amount: TemporalAmount): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.plus(amount), offset)
-    }
-
-    override fun minus(amount: TemporalAmount): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.minus(amount), offset)
-    }
-
-    override fun with(adjuster: TemporalAdjuster): OffsetHijrahDateTime {
-        return OffsetHijrahDateTime(dateTime.with(adjuster), offset)
-    }
-
-
     override fun with(field: TemporalField, newValue: Long): OffsetHijrahDateTime {
+        if (field == ChronoField.OFFSET_SECONDS)
+            return withOffsetSameLocal(ZoneOffset.ofTotalSeconds(newValue.toInt()))
         return OffsetHijrahDateTime(dateTime.with(field, newValue), offset)
     }
 
@@ -160,7 +136,7 @@ class OffsetHijrahDateTime private constructor(
 
 
     override fun format(formatter: DateTimeFormatter): String {
-        requireHijrahChronologyFormatter(formatter)
+        requireHijrahChronology(formatter)
         return formatter.format(toZonedHijrahDateTime(offset))
     }
 
@@ -476,7 +452,7 @@ class OffsetHijrahDateTime private constructor(
         @JvmOverloads
         @JvmStatic
         fun parse(text: CharSequence, formatter: DateTimeFormatter = HijrahFormatters.HIJRAH_OFFSET_DATE_TIME): OffsetHijrahDateTime {
-            requireHijrahChronologyFormatter(formatter)
+            requireHijrahChronology(formatter)
             return formatter.parse(text, Companion::from)
         }
 

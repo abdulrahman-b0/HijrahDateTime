@@ -7,7 +7,6 @@ import com.abdulrahman_b.hijrahDateTime.serializers.HijrahDateTimeSerializer
 import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates
 import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates.atStartOfDay
 import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronology
-import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronologyFormatter
 import kotlinx.serialization.Serializable
 import java.io.Serial
 import java.time.Clock
@@ -54,7 +53,7 @@ class HijrahDateTime internal constructor(
     private val dateTime: ChronoLocalDateTime<HijrahDate>
 ) : DateTimeTemporal<ChronoLocalDateTime<HijrahDate>, HijrahDateTime>(dateTime), Comparable<HijrahDateTime>, TemporalAdjuster, java.io.Serializable {
 
-    @Serial
+
     private val serialVersionUid = 1L
 
     override fun adjustInto(temporal: Temporal): Temporal {
@@ -288,9 +287,7 @@ class HijrahDateTime internal constructor(
             epochSecond: Long,
             nanoOfSecond: Int,
             zoneOffset: ZoneOffset
-        ): HijrahDateTime {
-            return ofInstant(Instant.ofEpochSecond(epochSecond, nanoOfSecond.toLong()), zoneOffset)
-        }
+        ): HijrahDateTime = ofInstant(Instant.ofEpochSecond(epochSecond, nanoOfSecond.toLong()), zoneOffset)
 
         /**
          * Parses a string to obtain an instance of [HijrahDateTime].
@@ -305,10 +302,7 @@ class HijrahDateTime internal constructor(
         fun parse(
             text: CharSequence,
             formatter: DateTimeFormatter = HijrahFormatters.HIJRAH_DATE_TIME
-        ): HijrahDateTime {
-            requireHijrahChronologyFormatter(formatter)
-            return formatter.parse(text, Companion::from)
-        }
+        ): HijrahDateTime = requireHijrahChronology(formatter).parse(text, Companion::from)
 
         /** The minimum supported [HijrahDateTime] */
         val MIN = HijrahDateTime(HijrahDates.MIN.atTime(LocalTime.MIN))

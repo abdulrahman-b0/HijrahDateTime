@@ -4,7 +4,7 @@ package com.abdulrahman_b.hijrahDateTime.time
 import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
 import com.abdulrahman_b.hijrahDateTime.serializers.ZonedHijrahDateTimeSerializer
 import com.abdulrahman_b.hijrahDateTime.time.extensions.HijrahDates
-import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronologyFormatter
+import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronology
 import kotlinx.serialization.Serializable
 import java.io.Serial
 import java.time.Clock
@@ -175,7 +175,7 @@ open class ZonedHijrahDateTime internal constructor(
      *
      * @return an OffsetHijrahDateTime representing the same local date-time and offset
      */
-    fun toOffsetDateTime() = OffsetHijrahDateTime.of(toHijrahDateTime(), offset)
+    fun toOffsetHijrahDateTime() = OffsetHijrahDateTime.of(toHijrahDateTime(), offset)
 
     override fun toString() = dateTime.toString()
 
@@ -285,7 +285,7 @@ open class ZonedHijrahDateTime internal constructor(
          */
         @JvmStatic
         @JvmOverloads
-        fun of(year: Int, month: Int, dayOfMonth: Int, hour: Int, minute: Int, second: Int = 0, nanoOfSecond: Int = 0, zoneId: ZoneId = ZoneId.systemDefault()) : ZonedHijrahDateTime {
+        fun of(year: Int, month: Int, dayOfMonth: Int, hour: Int, minute: Int, second: Int = 0, nanoOfSecond: Int = 0, zoneId: ZoneId) : ZonedHijrahDateTime {
             return of(HijrahDate.of(year, month, dayOfMonth), LocalTime.of(hour, minute, second, nanoOfSecond), zoneId)
         }
 
@@ -345,7 +345,7 @@ open class ZonedHijrahDateTime internal constructor(
         @JvmStatic
         @JvmOverloads
         fun parse(text: CharSequence, formatter: DateTimeFormatter = HijrahFormatters.HIJRAH_ZONED_DATE_TIME): ZonedHijrahDateTime {
-            requireHijrahChronologyFormatter(formatter)
+            requireHijrahChronology(formatter)
             return formatter.parse(text, Companion::from)
         }
     }

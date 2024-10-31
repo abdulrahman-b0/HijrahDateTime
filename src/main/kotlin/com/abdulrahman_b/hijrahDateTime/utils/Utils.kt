@@ -7,17 +7,19 @@ import java.time.temporal.Temporal
 import java.time.temporal.TemporalQueries
 import java.time.temporal.UnsupportedTemporalTypeException
 
-internal fun requireHijrahChronologyFormatter(formatter: DateTimeFormatter) {
+internal fun requireHijrahChronology(formatter: DateTimeFormatter): DateTimeFormatter {
     require(formatter.chronology is HijrahChronology) {
         "Formatter's chronology must be a HijrahChronology, but it was ${formatter.chronology}. Did you forget to call 'DateTimeFormatter.withChronology(HijrahChronology.INSTANCE)' ?"
     }
+    return formatter
 }
 
-internal fun requireHijrahChronology(temporal: Temporal) {
+internal fun requireHijrahChronology(temporal: Temporal): Temporal {
     val chronology = temporal.query(TemporalQueries.chronology())
     if (chronology !is HijrahChronology)
         throw UnsupportedTemporalTypeException(
             "adjustment of non HijrahChronology temporal is not supported. Temporal was $temporal with chronology was $chronology"
         )
+    return temporal
 }
 
