@@ -23,10 +23,12 @@ import java.time.ZoneOffset
 import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
 import java.time.chrono.HijrahEra
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 import java.time.temporal.TemporalQueries
+import java.time.temporal.UnsupportedTemporalTypeException
 
 class HijrahDateTimeTest {
 
@@ -153,6 +155,10 @@ class HijrahDateTimeTest {
 
             actual = hijrahDateTime.format(HijrahFormatters.HIJRAH_DATE)
             assertEquals("1446-02-05", actual)
+
+            assertThrows<IllegalArgumentException> {
+                hijrahDateTime.format(DateTimeFormatter.ISO_DATE_TIME)
+            }
 
         }
 
@@ -531,6 +537,10 @@ class HijrahDateTimeTest {
             target = hijrahDateTime.withYear(1443).withMonth(8)
             targetAfterAdjusted = hijrahDateTime.adjustInto(target)
             assertEquals(hijrahDateTime, targetAfterAdjusted)
+
+            assertThrows<UnsupportedTemporalTypeException> {
+                hijrahDateTime.adjustInto(LocalDateTime.now())
+            }
         }
 
         @Test
