@@ -158,14 +158,14 @@ repositories {
 #### Using Gradle Kotlin DSL
 ```kotlin build.gradle.kts
 dependencies {
-    implementation("com.abdulrahman-b:HijrahDateTime:1.0.0-beta.1")
+    implementation("com.abdulrahman-b:HijrahDateTime:1.0.0-beta.2")
 }
 ```
 
 #### Using Gradle Groovy DSL
 ```groovy build.gradle
 dependencies {
-    implementation 'com.abdulrahman-b:HijrahDateTime:1.0.0-beta.1'
+    implementation 'com.abdulrahman-b:HijrahDateTime:1.0.0-beta.2'
 }
 ```
 
@@ -177,11 +177,11 @@ Add a dependency to the `<dependencies>` element:
 <dependency>
     <groupId>com.abdulrahman-b</groupId>
     <artifactId>HijrahDateTime</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 
 ## Building
 
 The library is compatible with the Kotlin Standard Library not lower than `2.0`.
-The library also requires JDK 14 or higher to build and run the dependencies.
+The library also requires JDK 17 or higher to build and run the dependencies.
