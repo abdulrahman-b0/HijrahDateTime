@@ -49,6 +49,7 @@ object HijrahFormatters {
      * other calendar systems are correctly converted.
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
+    @JvmStatic
     val HIJRAH_DATE: DateTimeFormatter = DateTimeFormatterBuilder()
         .appendValue(ChronoField.YEAR, 4, 4, SignStyle.EXCEEDS_PAD)
         .appendLiteral('-')
@@ -74,6 +75,7 @@ object HijrahFormatters {
      * other calendar systems are correctly converted.
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
+    @JvmStatic
     val HIJRAH_OFFSET_DATE: DateTimeFormatter = DateTimeFormatterBuilder()
         .parseCaseInsensitive()
         .append(HIJRAH_DATE)
@@ -96,6 +98,7 @@ object HijrahFormatters {
      * other calendar systems are correctly converted.
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
+    @JvmStatic
     val HIJRAH_DATE_TIME: DateTimeFormatter = DateTimeFormatterBuilder()
         .parseCaseInsensitive()
         .append(HIJRAH_DATE)
@@ -121,6 +124,7 @@ object HijrahFormatters {
      * other calendar systems are correctly converted.
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
+    @JvmStatic
     val HIJRAH_OFFSET_DATE_TIME: DateTimeFormatter = DateTimeFormatterBuilder()
         .parseCaseInsensitive()
         .append(HIJRAH_DATE_TIME)
@@ -149,6 +153,7 @@ object HijrahFormatters {
      * other calendar systems are correctly converted.
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
+    @JvmStatic
     val HIJRAH_ZONED_DATE_TIME: DateTimeFormatter = DateTimeFormatterBuilder()
         .append(HIJRAH_OFFSET_DATE_TIME)
         .optionalStart()
@@ -158,7 +163,7 @@ object HijrahFormatters {
         .appendLiteral(']')
         .toFormatter(ResolverStyle.STRICT, HijrahChronology.INSTANCE)
 
-    internal fun DateTimeFormatterBuilder.toFormatter(resolverStyle: ResolverStyle, chronology: HijrahChronology, locale: Locale = Locale.getDefault()): DateTimeFormatter {
+    private fun DateTimeFormatterBuilder.toFormatter(resolverStyle: ResolverStyle, chronology: HijrahChronology, locale: Locale = Locale.getDefault()): DateTimeFormatter {
         return this.toFormatter().withChronology(chronology).withResolverStyle(resolverStyle).withLocale(locale)
     }
 
@@ -169,6 +174,7 @@ object HijrahFormatters {
      * @return the recommended formatter for the specified temporal object.
      */
     @Throws(UnsupportedTemporalTypeException::class)
+    @JvmStatic
     fun getRecommendedFormatter(temporal: Temporal): DateTimeFormatter {
         return when (temporal) {
             is HijrahDate -> HIJRAH_DATE
