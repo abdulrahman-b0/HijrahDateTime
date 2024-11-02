@@ -264,7 +264,7 @@ class OffsetHijrahDateTime private constructor(
         fun now() = now(Clock.systemDefaultZone())
 
         /**
-         * Obtains the current date-time from the system clock in the specified time-zone.
+         * Obtains the current date-time from the system clock in the specified offset.
          *
          *
          * This will query the system clock [Clock.system] to obtain the current date-time.
@@ -275,12 +275,12 @@ class OffsetHijrahDateTime private constructor(
          * Using this method will prevent the ability to use an alternate clock for testing
          * because the clock is hard-coded.
          *
-         * @param zone  the zone ID to use, not null
+         * @param offset  the zone ID to use, not null
          * @return the current date-time using the system clock, not null
          */
         @JvmStatic
-        fun now(zone: ZoneId): OffsetHijrahDateTime {
-            return now(Clock.system(zone))
+        fun now(offset: ZoneOffset): OffsetHijrahDateTime {
+            return now(Clock.system(offset))
         }
 
         /**
