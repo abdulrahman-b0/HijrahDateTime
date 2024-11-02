@@ -15,15 +15,19 @@ import java.time.chrono.HijrahDate
 object DateTimeConversions {
 
     /** Converts this local date to a [HijrahDate]. */
+    @JvmStatic
     fun LocalDate.toHijrahDate(): HijrahDate = HijrahDate.from(this)
 
     /** Converts this local date to a [HijrahDateTime] at the start of the day. */
+    @JvmStatic
     fun LocalDateTime.toHijrahDateTime() = HijrahDateTime.from(this)
 
     /** Converts this local date to a [ZonedHijrahDateTime] at the start of the day. */
+    @JvmStatic
     fun ZonedDateTime.toZonedHijrahDateTime() = ZonedHijrahDateTime.from(this)
 
     /** Converts this local date to an [OffsetHijrahDateTime] at the start of the day. */
+    @JvmStatic
     fun OffsetDateTime.toOffsetHijrahDateTime() = OffsetHijrahDateTime.from(this)
 
 }
