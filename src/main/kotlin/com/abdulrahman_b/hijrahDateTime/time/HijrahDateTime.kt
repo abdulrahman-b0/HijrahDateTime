@@ -50,7 +50,7 @@ import java.time.zone.ZoneRules
 @Serializable(with = HijrahDateTimeSerializer::class)
 class HijrahDateTime internal constructor(
     private val dateTime: ChronoLocalDateTime<HijrahDate>
-) : DateTimeTemporal<ChronoLocalDateTime<HijrahDate>, HijrahDateTime>(dateTime), Comparable<HijrahDateTime>, TemporalAdjuster, java.io.Serializable {
+) : HijrahTemporal<ChronoLocalDateTime<HijrahDate>, HijrahDateTime>(dateTime), Comparable<HijrahDateTime>, TemporalAdjuster, java.io.Serializable {
 
 
     private val serialVersionUid = 1L

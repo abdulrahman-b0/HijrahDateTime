@@ -69,7 +69,7 @@ import java.time.zone.ZoneRules
 @Serializable(with = ZonedHijrahDateTimeSerializer::class)
 open class ZonedHijrahDateTime internal constructor(
     private val dateTime: ChronoZonedDateTime<HijrahDate>
-): DateTimeTemporal<ChronoZonedDateTime<HijrahDate>, ZonedHijrahDateTime>(dateTime), Comparable<ZonedHijrahDateTime>, java.io.Serializable {
+): HijrahTemporal<ChronoZonedDateTime<HijrahDate>, ZonedHijrahDateTime>(dateTime), Comparable<ZonedHijrahDateTime>, java.io.Serializable {
 
     val zone: ZoneId get() = dateTime.zone
     val offset: ZoneOffset get() = dateTime.offset

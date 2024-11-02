@@ -5,6 +5,7 @@ import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters
 import com.abdulrahman_b.hijrahDateTime.formats.HijrahFormatters.getRecommendedFormatter
 import com.abdulrahman_b.hijrahDateTime.utils.requireHijrahChronology
 import java.io.Serial
+import java.io.Serializable
 import java.time.DateTimeException
 import java.time.DayOfWeek
 import java.time.Duration
@@ -30,11 +31,11 @@ import java.time.temporal.ValueRange
  * This class is a base class for all date-time classes in this package.
  *
  * @param T the input type of the date-time object, which is a subclass of [Temporal], all operations in this class are applied to this temporal object.
- * @param Impl the implementation type of the date-time object, which is a subclass of [DateTimeTemporal], all operations in this class return this type.
+ * @param Impl the implementation type of the date-time object, which is a subclass of [HijrahTemporal], all operations in this class return this type.
  */
-sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
+sealed class HijrahTemporal <in T: Temporal, Impl: HijrahTemporal<T, Impl>>(
     private val temporal: T,
-): Temporal by temporal, java.io.Serializable {
+): Temporal by temporal, Serializable {
 
     @Serial
     private val serialVersionUid: Long = 1L
@@ -488,7 +489,7 @@ sealed class DateTimeTemporal <in T: Temporal, Impl: DateTimeTemporal<T, Impl>>(
 
     /**
      * This method is used to create a new instance of the implementation class.
-     * Since this [DateTimeTemporal] has no way to create a new instance, this method is abstract.
+     * Since this [HijrahTemporal] has no way to create a new instance, this method is abstract.
      * The implementation of this method should return a new instance of `this` implementation, which is then used to return the result of the functions in this class.
      */
     protected abstract fun factory(temporal: T): Impl
