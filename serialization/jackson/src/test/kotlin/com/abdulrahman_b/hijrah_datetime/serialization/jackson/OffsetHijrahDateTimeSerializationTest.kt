@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.ZoneOffset
-import java.time.chrono.HijrahDate
 
 class OffsetHijrahDateTimeSerializationTest {
 

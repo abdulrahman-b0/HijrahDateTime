@@ -1,13 +1,11 @@
 package jakarta_validators
 
-import com.abdulrahman_b.hijrah_datetime.HijrahDateTime
 import com.abdulrahman_b.hijrah_datetime.ZonedHijrahDateTime
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockkObject
 import io.mockk.slot
 import jakarta.validation.Validation
-import jakarta.validation.Validator
 import jakarta.validation.constraints.Future
 import jakarta.validation.constraints.FutureOrPresent
 import jakarta.validation.constraints.Past

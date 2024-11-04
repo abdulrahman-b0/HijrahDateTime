@@ -5,8 +5,6 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.io.ByteArrayOutputStream
-import java.io.ObjectOutputStream
 import java.time.ZoneId
 
 class ZonedHijrahDateTimeSerializerTest {
