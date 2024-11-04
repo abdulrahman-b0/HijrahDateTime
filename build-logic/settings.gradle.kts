@@ -1,15 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":jakarta-validators")
-
-
-rootProject.name = "HijrahDateTime"
-
-includeBuild("build-logic")
-include(":core")
-include(":serialization")
-include(":serialization:kotlinx")
-include(":serialization:jackson")
 
 pluginManagement {
     repositories {
@@ -20,11 +10,17 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         mavenLocal()
         mavenCentral()
     }
 
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
 }
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+rootProject.name = "build-logic"

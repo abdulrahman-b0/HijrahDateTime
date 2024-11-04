@@ -7,13 +7,12 @@ import java.lang.System.load
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.jreleaser)
-    `maven-publish`
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.jreleaser) apply  false
 }
 
-
+/*
 group = "com.abdulrahman-b"
 version = "1.0.0-beta.2"
 
@@ -128,10 +127,6 @@ jreleaser {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
@@ -153,3 +148,5 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+ */
