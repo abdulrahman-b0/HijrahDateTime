@@ -10,7 +10,7 @@ hijrahDateTimePublishing {
 dependencies {
     implementation(projects.core)
     implementation(libs.jackson.core)
-    implementation(libs.jackson.core.annotations)
     implementation(libs.jackson.core.databind)
-    implementation(libs.jackson.module.kotlin)
+    testImplementation(libs.jackson.core.annotations)
+    testImplementation(libs.jackson.module.kotlin)
 }
