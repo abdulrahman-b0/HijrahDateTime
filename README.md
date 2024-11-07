@@ -3,7 +3,7 @@
 [![Kotlin Alpha](https://kotl.in/badges/beta.svg)]()
 [![Kotlin](https://img.shields.io/badge/kotlin-2.0-blue.svg?logo=kotlin)]()
 [![Java](https://img.shields.io/badge/java-17-orange.svg?logo=java)]()
-[![Test Coverage](https://s3.amazonaws.com/assets.coveralls.io/badges/coveralls_94.svg)]()
+[![Test Coverage](https://s3.amazonaws.com/assets.coveralls.io/badges/coveralls_93.svg)]()
 
 HijrahDateTime is a Kotlin/JVM library that is built on top of java.time to facilitates work with Hijrah date and time APIs.
 
@@ -128,7 +128,7 @@ The library provides serialization support with java serialization. You can seri
 
 The library provides serialization support with kotlinx.serialization library in the artifact `HijrahDateTime-serialization-kotlinx`. 
 
-#### Using the custom serializers
+#### Using @Serializable annotation
 
 The library provides a list of custom serializers, Each of which use the recommended built-in formatters to serialize and deserialize the datetime classes from and to `String`.
 The serializers are:
@@ -151,7 +151,7 @@ data class MyData(
 
 fun main() {
     val data = MyData(HijrahDateTime.of(1446, 10, 12, 12, 30))
-    val json = Json.encodeToString(data)
+    val json: String = Json.encodeToString(data)
     println(json) // {"date":"1446-10-12T12:30:00"}
 }
 ```
@@ -163,7 +163,7 @@ Contextual serialization is a feature of kotlinx.serialization that allows you t
 The library provides a `HijrahChronoSerializersModule` class that contextually registers all the serializers for you, while allowing you to customize the formatters. For example:
 
 ```kotlin
-import com.abdulrahman_b.hijrah_datetime.serialization.kotlinx.HijrahDateTimeSerializer
+
 import kotlinx.serialization.Contextual
 
 data class MyData(
@@ -172,18 +172,18 @@ data class MyData(
 )
 
 fun main() {
-    
+
     val formatter = DateTimeFormatter
         .ofPattern("yyyy/MM/dd hh:mm:ss a") // Custom format
         .withChronology(HijrahChronology.INSTANCE)
-    
+
     val json = Json {
         serializersModule = HijrahChronoSerializersModule(hijrahDateTimeFormatter = formatter).get()
     }
 
     val data = MyData(HijrahDateTime.of(1446, 10, 12, 12, 30))
-    val json = json.encodeToString(data)
-    println(json) // {"date":"1446/10/12 12:30:00 PM"
+    val jsonString: String = json.encodeToString(data)
+    println(jsonString) // {"date":"1446/10/12 12:30:00 PM"
 }
 ```
 
@@ -236,7 +236,7 @@ data class MyData(
 
 fun main() {
     val data = MyData(HijrahDateTime.of(1446, 10, 12, 12, 30))
-    val json = ObjectMapper().writeValueAsString(data)
+    val json: String = ObjectMapper().writeValueAsString(data)
     println(json) // {"date":"1446-10-12T12:30:00"}
 }
 ```
@@ -263,7 +263,7 @@ fun main() {
         .registerKotlinModule() //Don't forget to register the kotlin module if you are using kotlin data classes. You find it in the jackson-module-kotlin library.
 
     val data = MyData(HijrahDateTime.of(1446, 10, 12, 12, 30))
-    val json = mapper.writeValueAsString(data)
+    val json: String = mapper.writeValueAsString(data)
     println(json) // {"date":"1446/10/12 12:30:00 PM"}
 }
 ```
@@ -275,19 +275,19 @@ Serialization done! If you have any questions or issues or a requirement to supp
 
 ## Jakarta Bean Validation
 
-The library provides support for Jakarta Bean Validation 3.0 API in the artifact `HijrahDateTime-jakarta-validators`.
+The library provides support for Jakarta Bean Validation 3.0 API in the artifact `HijrahDateTime-jakarta-validation`.
 
-The library implements a set of validators for the hijrah datetime classes, which allows you to validate the datetime classes according to your requirements. This is especially useful for JVM backend applications such as Spring Boot.
+The Jakarta Bean Validation API provides a set of standard constraints annotations to validate the classes, including `@Future`, `@Past`, `@FutureOrPresent`, and `@PastOrPresent` annotations.
+However, those annotations works only on java.time built-in classes, and they do not work on the hijrah datetime classes provided by this library.
 
-If you are familiar with the Jakarta Bean Validation API, you supposed to know that it provides a set of standard constraints annotations to validate the classes according to your requirements.
-This library does not provide any new additional constraints annotations. Instead, it uses the standard constraints annotations provided by the Jakarta Bean Validation API.
-That means you can use `@Future`, `@Past`, `@FutureOrPresent`, and `@PastOrPresent` annotations to validate the hijrah datetime classes. Cool, right?
+The library artifact `HijrahDateTime-jakarta-validation` adds support for validating the hijrah datetime classes using the standard constraints annotations provided by the Jakarta Bean Validation API.
+That means with this library artifact, you can use `@Future`, `@Past`, `@FutureOrPresent`, and `@PastOrPresent` annotations to validate the hijrah datetime classes. Cool, right?
 
 For example, in a Spring boot application, you can use the `@Future` annotation to validate the `HijrahDateTime` class like this:
 
 ```kotlin
 data class MyData(
-    @field:Future //In java, you can use @Future annotation directly without the field keyword.
+    @field:Future //In kotlin, you have to use the field: prefix to apply the annotation to the field.
     val date: HijrahDateTime
 )
 
@@ -335,7 +335,7 @@ dependencies {
     implementation("com.abdulrahman-b:HijrahDateTime:1.0.0-beta.3") //Core library
     implementation("com.abdulrahman-b:HijrahDateTime-serialization-kotlinx:1.0.0-beta.3") //Kotlinx Serialization support
     implementation("com.abdulrahman-b:HijrahDateTime-serialization-jackson:1.0.0-beta.3") //Jackson Serialization support
-    implementation("com.abdulrahman-b:HijrahDateTime-jakarta-validators:1.0.0-beta.3") //Jakarta Bean Validation support
+    implementation("com.abdulrahman-b:HijrahDateTime-jakarta-validation:1.0.0-beta.3") //Jakarta Bean Validation support
 }
 ```
 
@@ -345,7 +345,7 @@ dependencies {
     implementation 'com.abdulrahman-b:HijrahDateTime:1.0.0-beta.3' //Core library
     implementation 'com.abdulrahman-b:HijrahDateTime-serialization-kotlinx:1.0.0-beta.3' //Kotlinx Serialization support
     implementation 'com.abdulrahman-b:HijrahDateTime-serialization-jackson:1.0.0-beta.3' //Jackson Serialization support
-    implementation 'com.abdulrahman-b:HijrahDateTime-jakarta-validators:1.0.0-beta.3' //Jakarta Bean Validation support
+    implementation 'com.abdulrahman-b:HijrahDateTime-jakarta-validation:1.0.0-beta.3' //Jakarta Bean Validation support
 }
 ```
 
@@ -374,7 +374,7 @@ Add a dependency to the `<dependencies>` element:
 
 <dependency>
     <groupId>com.abdulrahman-b</groupId>
-    <artifactId>HijrahDateTime-jakarta-validators</artifactId>
+    <artifactId>HijrahDateTime-jakarta-validation</artifactId>
     <version>1.0.0-beta.3</version>
 </dependency> <!--Jakarta Bean Validation support-->
 ```
