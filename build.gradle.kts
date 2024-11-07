@@ -32,8 +32,3 @@ kover {
     )
 }
 
-val publishProperties by lazy {
-    Properties().apply {
-        load(file("publish.properties").reader())
-    }
-}
