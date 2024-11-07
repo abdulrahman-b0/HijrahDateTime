@@ -1,8 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":jakarta-validators")
-
-
 rootProject.name = "HijrahDateTime"
 
 includeBuild("build-logic")
@@ -10,6 +7,7 @@ include(":core")
 include(":serialization")
 include(":serialization:kotlinx")
 include(":serialization:jackson")
+include(":jakarta-validation")
 
 pluginManagement {
     repositories {
