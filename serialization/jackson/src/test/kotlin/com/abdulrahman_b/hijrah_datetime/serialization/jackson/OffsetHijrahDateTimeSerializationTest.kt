@@ -16,7 +16,7 @@ class OffsetHijrahDateTimeSerializationTest {
 
     @BeforeEach
     fun setUp() {
-        objectMapper = ObjectMapper().registerModules(HijrahChronoSerializersModule().get())
+        objectMapper = ObjectMapper().registerModules(HijrahChronoSerializersModule())
     }
 
     @Test

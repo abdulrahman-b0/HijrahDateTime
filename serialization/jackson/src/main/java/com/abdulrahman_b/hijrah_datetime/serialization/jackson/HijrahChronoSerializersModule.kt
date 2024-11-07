@@ -14,33 +14,13 @@ import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
 
 /**
- * A provider class that provides a Jackson module that registers serializers and deserializers for [HijrahDate] and library classes, including, [HijrahDateTime], [OffsetHijrahDateTime], and [ZonedHijrahDateTime].
- * */
+ * A Jackson module that registers serializers and deserializers for [HijrahDate] and library classes, including, [HijrahDateTime], [OffsetHijrahDateTime], and [ZonedHijrahDateTime].
+ */
 class HijrahChronoSerializersModule @JvmOverloads constructor(
     private val hijrahDateFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_DATE,
     private val hijrahDateTimeFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_DATE_TIME,
     private val hijrahOffsetDateTimeFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_OFFSET_DATE_TIME,
     private val hijrahZonedDateTimeFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_ZONED_DATE_TIME
-) {
-
-    fun get(): SimpleModule = HijrahChronoSerializersModuleImpl(
-        hijrahDateFormatter,
-        hijrahDateTimeFormatter,
-        hijrahOffsetDateTimeFormatter,
-        hijrahZonedDateTimeFormatter
-    )
-
-
-}
-
-/**
- * A Jackson module that registers serializers and deserializers for [HijrahDate] and [HijrahTemporal] classes, including, [HijrahDateTime], [OffsetHijrahDateTime], and [ZonedHijrahDateTime].
- */
-private class HijrahChronoSerializersModuleImpl(
-    private val hijrahDateFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_DATE,
-    private val hijrahDateTimeFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_DATE_TIME,
-    private val hijrahOffsetDateTimeFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_OFFSET_DATE_TIME,
-    private val hijrahZonedDateTimeFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_ZONED_DATE_TIME,
 ): SimpleModule() {
 
     override fun setupModule(context: SetupContext) {
@@ -66,4 +46,5 @@ private class HijrahChronoSerializersModuleImpl(
             addDeserializer(ZonedHijrahDateTime::class.java, ZonedHijrahDateTimeSerialization.Deserializer(hijrahZonedDateTimeFormatter))
         }
     }
+
 }

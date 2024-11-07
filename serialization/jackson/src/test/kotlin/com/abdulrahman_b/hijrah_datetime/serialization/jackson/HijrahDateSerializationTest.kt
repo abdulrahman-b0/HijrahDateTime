@@ -21,7 +21,7 @@ class HijrahDateSerializationTest {
         hijrahDate = HijrahDate.of(1446, 10, 1)
         val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd").withChronology(HijrahChronology.INSTANCE)
         objectMapper = ObjectMapper()
-            .registerModules(HijrahChronoSerializersModule(hijrahDateFormatter = formatter).get())
+            .registerModules(HijrahChronoSerializersModule(hijrahDateFormatter = formatter))
             .registerKotlinModule()
     }
 
