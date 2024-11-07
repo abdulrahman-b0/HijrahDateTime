@@ -3,7 +3,6 @@ junitJupiter = "5.11.1"
 kotlin = "2.0.20"
 serialization = "1.7.3"
 jackson = "2.18.1"
-jreleaser = "1.14.0"
 jakarta-validation = "3.1.0"
 hibernate-validator = "8.0.1.Final"
 expressly = "5.0.0"
@@ -24,15 +23,10 @@ hibernate-validator = { module = "org.hibernate.validator:hibernate-validator", 
 expressly = { module = "org.glassfish.expressly:expressly", version.ref = "expressly" }
 
 #Testing
+#noinspection GradleDependency
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junitJupiter" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
-
-#Gradle Plugins for #build-logic
-gradlePlugin-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-gradlePlugin-kover = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
-gradlePlugin-jreleaser = { module = "org.jreleaser:jreleaser-gradle-plugin", version.ref = "jreleaser" }
-gradlePlugin-vanniktechMavenPublish = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.30.0" }
 
 [plugins]
 #noinspection GradleDependency
@@ -41,7 +35,6 @@ hijrahDatetime-publish = { id = "com.abdulrahman_b.hijrah_datetime.publish" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-jreleaser = { id = "org.jreleaser", version.ref = "jreleaser" }
 vanniktechMavenPublish = { id = "com.vanniktech.maven.publish",  version = "0.30.0"}
 
 
