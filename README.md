@@ -354,29 +354,36 @@ dependencies {
 Add a dependency to the `<dependencies>` element:
 
 ```xml pom.xml
-<dependency>
-    <groupId>com.abdulrahman-b</groupId>
-    <artifactId>HijrahDateTime</artifactId>
-    <version>1.0.0-beta.3</version>
-</dependency> <!--Core library-->
 
-<dependency>
-    <groupId>com.abdulrahman-b</groupId>
-    <artifactId>HijrahDateTime-serialization-kotlinx</artifactId>
-    <version>1.0.0-beta.3</version>
-</dependency> <!--Kotlinx Serialization support-->
 
-<dependency>
-    <groupId>com.abdulrahman-b</groupId>
-    <artifactId>HijrahDateTime-serialization-jackson</artifactId>
-    <version>1.0.0-beta.3</version>
-</dependency> <!--Jackson Serialization support-->
+<dependencies>
 
-<dependency>
-    <groupId>com.abdulrahman-b</groupId>
-    <artifactId>HijrahDateTime-jakarta-validation</artifactId>
-    <version>1.0.0-beta.3</version>
-</dependency> <!--Jakarta Bean Validation support-->
+    <dependency>
+        <groupId>com.abdulrahman-b</groupId>
+        <artifactId>HijrahDateTime</artifactId>
+        <version>1.0.0-beta.3</version>
+    </dependency> <!--Core library-->
+
+    <dependency>
+        <groupId>com.abdulrahman-b</groupId>
+        <artifactId>HijrahDateTime-serialization-kotlinx</artifactId>
+        <version>1.0.0-beta.3</version>
+    </dependency> <!--Kotlinx Serialization support-->
+
+    <dependency>
+        <groupId>com.abdulrahman-b</groupId>
+        <artifactId>HijrahDateTime-serialization-jackson</artifactId>
+        <version>1.0.0-beta.3</version>
+    </dependency> <!--Jackson Serialization support-->
+
+    <dependency>
+        <groupId>com.abdulrahman-b</groupId>
+
+        <artifactId>HijrahDateTime-jakarta-validation</artifactId>
+        <version>1.0.0-beta.3</version>
+    </dependency> <!--Jakarta Bean Validation support-->
+</dependencies>
+
 ```
 
 ## Building
