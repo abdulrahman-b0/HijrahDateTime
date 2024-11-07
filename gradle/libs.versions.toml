@@ -8,6 +8,7 @@ jakarta-validation = "3.1.0"
 hibernate-validator = "8.0.1.Final"
 expressly = "5.0.0"
 mockk = "1.13.13"
+kover = "0.9.0-RC"
 
 [libraries]
 
@@ -18,7 +19,6 @@ jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref
 jackson-core-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
 jackson-core-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
-
 jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version.ref = "jakarta-validation" }
 hibernate-validator = { module = "org.hibernate.validator:hibernate-validator", version.ref = "hibernate-validator" }
 expressly = { module = "org.glassfish.expressly:expressly", version.ref = "expressly" }
@@ -28,14 +28,21 @@ junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.r
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junitJupiter" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
-kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+#Gradle Plugins for #build-logic
+gradlePlugin-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+gradlePlugin-kover = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
+gradlePlugin-jreleaser = { module = "org.jreleaser:jreleaser-gradle-plugin", version.ref = "jreleaser" }
+gradlePlugin-vanniktechMavenPublish = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.30.0" }
 
 [plugins]
 #noinspection GradleDependency
 hijrahDatetime-library = { id = "com.abdulrahman_b.hijrah_datetime.library" }
+hijrahDatetime-publish = { id = "com.abdulrahman_b.hijrah_datetime.publish" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 jreleaser = { id = "org.jreleaser", version.ref = "jreleaser" }
+vanniktechMavenPublish = { id = "com.vanniktech.maven.publish",  version = "0.30.0"}
 
 
 [bundles]

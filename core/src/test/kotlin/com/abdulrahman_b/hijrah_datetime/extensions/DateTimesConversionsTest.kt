@@ -2,10 +2,8 @@ package com.abdulrahman_b.hijrah_datetime.extensions
 
 
 import com.abdulrahman_b.hijrah_datetime.HijrahDateTime
-import com.abdulrahman_b.hijrah_datetime.extensions.DateTimeConversions.toHijrahDate
-import com.abdulrahman_b.hijrah_datetime.extensions.DateTimeConversions.toHijrahDateTime
-import com.abdulrahman_b.hijrah_datetime.extensions.DateTimeConversions.toOffsetHijrahDateTime
-import com.abdulrahman_b.hijrah_datetime.extensions.DateTimeConversions.toZonedHijrahDateTime
+import com.abdulrahman_b.hijrah_datetime.OffsetHijrahDateTime
+import com.abdulrahman_b.hijrah_datetime.ZonedHijrahDateTime
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -25,7 +23,7 @@ class DateTimesConversionsTest {
         val expected = HijrahDate.of(1446, 4, 25)
 
         val localDate = LocalDate.of(2024, 10, 28)
-        val hijrahDate = localDate.toHijrahDate()
+        val hijrahDate = HijrahDate.from(localDate)
 
         assertEquals(expected, hijrahDate)
 
@@ -38,7 +36,7 @@ class DateTimesConversionsTest {
         val expected = HijrahDateTime.of(1446, 4, 25, 5, 12)
 
         val localDateTime = LocalDateTime.of(2024, 10, 28, 5, 12)
-        val hijrahDateTime = localDateTime.toHijrahDateTime()
+        val hijrahDateTime = HijrahDateTime.from(localDateTime)
 
         assertEquals(expected, hijrahDateTime)
 
@@ -51,7 +49,7 @@ class DateTimesConversionsTest {
         val expected = HijrahDateTime.of(1446, 4, 25, 5, 12).atZone(ZoneId.of("Asia/Riyadh"))
 
         val zonedDateTime = LocalDateTime.of(2024, 10, 28, 5, 12).atZone(ZoneId.of("Asia/Riyadh"))
-        val zonedHijrahDateTime = zonedDateTime.toZonedHijrahDateTime()
+        val zonedHijrahDateTime = ZonedHijrahDateTime.from(zonedDateTime)
 
         assertEquals(expected, zonedHijrahDateTime)
     }
@@ -63,7 +61,7 @@ class DateTimesConversionsTest {
         val expected = HijrahDateTime.of(1446, 4, 25, 5, 12).atOffset(ZoneOffset.of("+03:00"))
 
         val offsetDateTime = LocalDateTime.of(2024, 10, 28, 5, 12).atOffset(ZoneOffset.of("+03:00"))
-        val offsetHijrahDateTime = offsetDateTime.toOffsetHijrahDateTime()
+        val offsetHijrahDateTime = OffsetHijrahDateTime.from(offsetDateTime)
 
         assertEquals(expected, offsetHijrahDateTime)
     }

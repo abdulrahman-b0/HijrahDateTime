@@ -49,7 +49,8 @@ object HijrahFormatters {
      * other calendar systems are correctly converted.
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
-    @JvmStatic
+
+    @JvmField
     val HIJRAH_DATE: DateTimeFormatter = DateTimeFormatterBuilder()
         .appendValue(ChronoField.YEAR, 4, 4, SignStyle.EXCEEDS_PAD)
         .appendLiteral('-')
@@ -75,7 +76,7 @@ object HijrahFormatters {
      * other calendar systems are correctly converted.
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
-    @JvmStatic
+    @JvmField
     val HIJRAH_OFFSET_DATE: DateTimeFormatter = DateTimeFormatterBuilder()
         .parseCaseInsensitive()
         .append(HIJRAH_DATE)
@@ -98,7 +99,7 @@ object HijrahFormatters {
      * other calendar systems are correctly converted.
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
-    @JvmStatic
+    @JvmField
     val HIJRAH_DATE_TIME: DateTimeFormatter = DateTimeFormatterBuilder()
         .parseCaseInsensitive()
         .append(HIJRAH_DATE)
@@ -124,7 +125,7 @@ object HijrahFormatters {
      * other calendar systems are correctly converted.
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
-    @JvmStatic
+    @JvmField
     val HIJRAH_OFFSET_DATE_TIME: DateTimeFormatter = DateTimeFormatterBuilder()
         .parseCaseInsensitive()
         .append(HIJRAH_DATE_TIME)
@@ -153,7 +154,7 @@ object HijrahFormatters {
      * other calendar systems are correctly converted.
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
-    @JvmStatic
+    @JvmField
     val HIJRAH_ZONED_DATE_TIME: DateTimeFormatter = DateTimeFormatterBuilder()
         .append(HIJRAH_OFFSET_DATE_TIME)
         .optionalStart()

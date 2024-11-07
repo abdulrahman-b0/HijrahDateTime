@@ -14,7 +14,8 @@ class HijrahDateTimeSerializationTest {
 
     @BeforeEach
     fun setUp() {
-        objectMapper = ObjectMapper().registerModule(HijrahJacksonSerializersModule())
+        objectMapper = ObjectMapper()
+            .registerModules(HijrahChronoSerializersModule().get())
     }
 
     @Test

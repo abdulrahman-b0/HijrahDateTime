@@ -2,8 +2,6 @@ package com.abdulrahman_b.hijrah_datetime.extensions
 
 import com.abdulrahman_b.hijrah_datetime.OffsetHijrahDateTime
 import com.abdulrahman_b.hijrah_datetime.ZonedHijrahDateTime
-import com.abdulrahman_b.hijrah_datetime.extensions.DateTimeConversions.toOffsetHijrahDateTime
-import com.abdulrahman_b.hijrah_datetime.extensions.DateTimeConversions.toZonedHijrahDateTime
 import com.abdulrahman_b.hijrah_datetime.extensions.Instants.atHijrahOffset
 import com.abdulrahman_b.hijrah_datetime.extensions.Instants.atHijrahZone
 import com.abdulrahman_b.hijrah_datetime.extensions.Instants.toHijrahString
@@ -32,7 +30,7 @@ class InstantExtensionsTest {
         assertEquals(expected, zonedHijrahDateTime)
 
         val localDateTime = instant.atZone(ZoneOffset.UTC)
-        val asHijrah = localDateTime.toZonedHijrahDateTime()
+        val asHijrah = ZonedHijrahDateTime.from(localDateTime)
 
         assertEquals(expected, asHijrah) //Extra validation
     }
@@ -46,7 +44,7 @@ class InstantExtensionsTest {
         assertEquals(expected, offsetHijrahDateTime)
 
         val localDateTime = instant.atOffset(ZoneOffset.UTC)
-        val asHijrah = localDateTime.toOffsetHijrahDateTime()
+        val asHijrah = OffsetHijrahDateTime.from(localDateTime)
 
         assertEquals(expected, asHijrah) //Extra validation
     }

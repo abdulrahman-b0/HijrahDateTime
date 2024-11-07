@@ -11,23 +11,33 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
 
+/**
+ * A container for Jackson serializer and deserializer for [HijrahDate] class.
+ */
+object HijrahDateSerialization {
+    /**
+     * A Jackson serializer for [HijrahDate] class. It serializes the [HijrahDate] to a string using the provided [formatter].
+     */
+    class Serializer(
+        private val formatter: DateTimeFormatter = HijrahFormatters.HIJRAH_DATE
+    ) : StdSerializer<HijrahDate>(HijrahDate::class.java) {
 
-class HijrahDateSerializer (
-    private val formatter: DateTimeFormatter = HijrahFormatters.HIJRAH_DATE
-): StdSerializer<HijrahDate>(HijrahDate::class.java) {
+        override fun serialize(value: HijrahDate, gen: JsonGenerator, provider: SerializerProvider) {
+            gen.writeString(value.format(formatter))
+        }
 
-    override fun serialize(value: HijrahDate, gen: JsonGenerator, provider: SerializerProvider) {
-        gen.writeString(value.format(formatter))
     }
 
-}
+    /**
+     * A Jackson deserializer for [HijrahDate] class. It deserializes the [HijrahDate] from a string using the provided [formatter].
+     */
+    class Deserializer(
+        private val formatter: DateTimeFormatter = HijrahFormatters.HIJRAH_DATE
+    ) : StdDeserializer<HijrahDate>(HijrahDate::class.java) {
 
-class HijrahDateDeserializer (
-    private val formatter: DateTimeFormatter = HijrahFormatters.HIJRAH_DATE
-): StdDeserializer<HijrahDate>(HijrahDate::class.java) {
+        override fun deserialize(parser: JsonParser, ctxt: DeserializationContext): HijrahDate {
+            return HijrahDates.parse(parser.text, formatter)
+        }
 
-    override fun deserialize(parser: JsonParser, ctxt: DeserializationContext): HijrahDate {
-        return HijrahDates.parse(parser.text, formatter)
     }
-
 }

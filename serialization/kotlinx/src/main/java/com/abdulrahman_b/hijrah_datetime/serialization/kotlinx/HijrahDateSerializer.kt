@@ -11,9 +11,13 @@ import kotlinx.serialization.encoding.Encoder
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
 
-object HijrahDateToStringSerializer: KSerializer<HijrahDate> by HijrahDateSerializerImpl(HijrahFormatters.HIJRAH_DATE)
+object HijrahDateSerializer : KSerializer<HijrahDate> by HijrahDateSerializerImpl(HijrahFormatters.HIJRAH_DATE) {
 
-internal class HijrahDateSerializerImpl (private val formatter: DateTimeFormatter): KSerializer<HijrahDate> {
+    operator fun invoke(formatter: DateTimeFormatter): KSerializer<HijrahDate> =
+        HijrahDateSerializerImpl(formatter)
+}
+
+private class HijrahDateSerializerImpl(private val formatter: DateTimeFormatter) : KSerializer<HijrahDate> {
 
     override val descriptor = PrimitiveSerialDescriptor("HijrahDate", PrimitiveKind.STRING)
 

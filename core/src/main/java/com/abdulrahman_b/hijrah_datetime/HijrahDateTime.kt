@@ -48,7 +48,7 @@ import java.time.zone.ZoneRules
 
 class HijrahDateTime internal constructor(
     private val dateTime: ChronoLocalDateTime<HijrahDate>
-) : HijrahTemporal<HijrahDateTime>(dateTime), Comparable<HijrahDateTime>, TemporalAdjuster, Serializable {
+) : HijrahTemporal<HijrahDateTime>(dateTime), TemporalAdjuster, Serializable {
 
 
     private val serialVersionUid = 1L
@@ -170,9 +170,7 @@ class HijrahDateTime internal constructor(
          * Obtains the current date-time from the system clock in the default time-zone.
          */
         @JvmStatic
-        fun now() = HijrahDateTime(
-            HijrahDate.now().atTime(LocalTime.now())
-        )
+        fun now() = HijrahDateTime(HijrahDate.now().atTime(LocalTime.now()))
 
         /**
          * Obtains the current date-time from the system clock in the specified time-zone.
@@ -181,11 +179,7 @@ class HijrahDateTime internal constructor(
          * @return the current date-time, not null
          */
         @JvmStatic
-        fun now(zoneId: ZoneId): HijrahDateTime =
-            ofInstant(
-                Instant.now(),
-                zoneId
-            )
+        fun now(zoneId: ZoneId): HijrahDateTime = ofInstant(Instant.now(), zoneId)
 
         /**
          * Obtains the current date-time from the system clock in the specified time-zone.
@@ -194,10 +188,7 @@ class HijrahDateTime internal constructor(
          * @return the current date-time, not null
          */
         @JvmStatic
-        fun now(clock: Clock): HijrahDateTime =
-            now(
-                clock.zone
-            )
+        fun now(clock: Clock): HijrahDateTime = now(clock.zone)
 
         /**
          * Obtains an instance of [HijrahDateTime] from a [HijrahDate] and a [LocalTime].
@@ -211,10 +202,7 @@ class HijrahDateTime internal constructor(
          * @return the hijrah date-time, not null
          */
         @JvmStatic
-        fun of(date: HijrahDate, time: LocalTime) =
-            HijrahDateTime(
-                date.atTime(time)
-            )
+        fun of(date: HijrahDate, time: LocalTime) = HijrahDateTime(date.atTime(time))
 
         /**
          * Obtains an instance of [HijrahDateTime] from year, month,
@@ -273,9 +261,7 @@ class HijrahDateTime internal constructor(
          */
         @JvmStatic
         fun from(temporal: TemporalAccessor): HijrahDateTime {
-            return HijrahDateTime(
-                HijrahChronology.INSTANCE.localDateTime(temporal)
-            )
+            return HijrahDateTime(HijrahChronology.INSTANCE.localDateTime(temporal))
         }
 
         /**
@@ -310,11 +296,10 @@ class HijrahDateTime internal constructor(
             epochSecond: Long,
             nanoOfSecond: Int,
             zoneOffset: ZoneOffset
-        ): HijrahDateTime =
-            ofInstant(
-                Instant.ofEpochSecond(epochSecond, nanoOfSecond.toLong()),
-                zoneOffset
-            )
+        ): HijrahDateTime = ofInstant(
+            Instant.ofEpochSecond(epochSecond, nanoOfSecond.toLong()),
+            zoneOffset
+        )
 
         /**
          * Parses a string to obtain an instance of [HijrahDateTime].
@@ -332,17 +317,13 @@ class HijrahDateTime internal constructor(
         ): HijrahDateTime = requireHijrahChronology(formatter).parse(text, Companion::from)
 
         /** The minimum supported [HijrahDateTime] */
-        val MIN = HijrahDateTime(
-            HijrahDates.MIN.atTime(LocalTime.MIN)
-        )
+        @JvmField val MIN = HijrahDateTime(HijrahDates.MIN.atTime(LocalTime.MIN))
 
         /** The maximum supported [HijrahDateTime] */
-        val MAX = HijrahDateTime(
-            HijrahDates.MAX.atTime(LocalTime.MAX)
-        )
+        @JvmField val MAX = HijrahDateTime(HijrahDates.MAX.atTime(LocalTime.MAX))
 
         /** The epoch in [HijrahDateTime] */
-        val EPOCH = HijrahDates.EPOCH.atStartOfDay()
+        @JvmField val EPOCH = HijrahDates.EPOCH.atStartOfDay()
 
     }
 

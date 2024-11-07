@@ -9,13 +9,14 @@ import java.time.ZoneOffset
 
 class OffsetHijrahDateTimeSerializationTest {
 
-    private val offsetHijrahDateTime = OffsetHijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0, ZoneOffset.ofHours(3))
+    private val offsetHijrahDateTime =
+        OffsetHijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0, ZoneOffset.ofHours(3))
     private val jsonString = "\"1446-02-05T12:43:18+03:00\""
     private lateinit var objectMapper: ObjectMapper
 
     @BeforeEach
     fun setUp() {
-        objectMapper = ObjectMapper().registerModule(HijrahJacksonSerializersModule())
+        objectMapper = ObjectMapper().registerModules(HijrahChronoSerializersModule().get())
     }
 
     @Test

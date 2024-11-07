@@ -9,13 +9,20 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import java.time.format.DateTimeFormatter
 
-object OffsetHijrahDateTimeSerializer: KSerializer<OffsetHijrahDateTime> by OffsetHijrahDateTimeSerializerImpl(HijrahFormatters.HIJRAH_OFFSET_DATE_TIME)
+object OffsetHijrahDateTimeSerializer : KSerializer<OffsetHijrahDateTime> by OffsetHijrahDateTimeSerializerImpl(
+    HijrahFormatters.HIJRAH_OFFSET_DATE_TIME
+) {
 
-internal class OffsetHijrahDateTimeSerializerImpl (
+    operator fun invoke(formatter: DateTimeFormatter): KSerializer<OffsetHijrahDateTime> =
+        OffsetHijrahDateTimeSerializerImpl(formatter)
+}
+
+private class OffsetHijrahDateTimeSerializerImpl(
     private val formatter: DateTimeFormatter
-): KSerializer<OffsetHijrahDateTime> {
+) : KSerializer<OffsetHijrahDateTime> {
 
-    override val descriptor = PrimitiveSerialDescriptor("OffsetHijrahDateTime", PrimitiveKind.STRING)
+    override val descriptor =
+        PrimitiveSerialDescriptor("OffsetHijrahDateTime", PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder): OffsetHijrahDateTime {
         return OffsetHijrahDateTime.parse(decoder.decodeString())

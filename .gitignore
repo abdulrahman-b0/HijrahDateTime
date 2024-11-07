@@ -65,3 +65,5 @@ bin/
 /publish.properties
 /HijrahDateTime_signing_private_key.pgp
 /HijrahDateTime_signing_public_key.pgp
+/kover
+/hijrah_datetime_secring.gpg

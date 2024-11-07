@@ -44,7 +44,7 @@ import java.time.temporal.ValueRange
 class OffsetHijrahDateTime private constructor(
     private val dateTime: HijrahDateTime,
     val offset: ZoneOffset
-) : TemporalAdjuster, Serializable, Comparable<OffsetHijrahDateTime>, HijrahTemporal<OffsetHijrahDateTime>(dateTime) {
+) : HijrahTemporal<OffsetHijrahDateTime>(dateTime), TemporalAdjuster, Serializable {
 
 
     @Serial

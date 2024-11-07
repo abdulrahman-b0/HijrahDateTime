@@ -10,11 +10,17 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import java.time.format.DateTimeFormatter
 
-object HijrahDateTimeSerializer: KSerializer<HijrahDateTime> by HijrahDateTimeSerializerImpl(HijrahFormatters.HIJRAH_DATE_TIME)
+object HijrahDateTimeSerializer : KSerializer<HijrahDateTime> by HijrahDateTimeSerializerImpl(
+    HijrahFormatters.HIJRAH_DATE_TIME
+) {
 
-internal class HijrahDateTimeSerializerImpl (
+    operator fun invoke(formatter: DateTimeFormatter): KSerializer<HijrahDateTime> =
+        HijrahDateTimeSerializerImpl(formatter)
+}
+
+private class HijrahDateTimeSerializerImpl(
     private val formatter: DateTimeFormatter
-): KSerializer<HijrahDateTime> {
+) : KSerializer<HijrahDateTime> {
 
     override val descriptor = PrimitiveSerialDescriptor("HijrahDateTime", PrimitiveKind.STRING)
 

@@ -21,7 +21,7 @@ class HijrahDateSerializationTest {
         hijrahDate = HijrahDate.of(1446, 10, 1)
         val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd").withChronology(HijrahChronology.INSTANCE)
         objectMapper = ObjectMapper()
-            .registerModules(HijrahJacksonSerializersModule(hijrahDateFormatter = formatter))
+            .registerModules(HijrahChronoSerializersModule(hijrahDateFormatter = formatter).get())
             .registerKotlinModule()
     }
 
@@ -46,8 +46,8 @@ class HijrahDateSerializationTest {
     }
 
     private data class TestClass(
-        @JsonSerialize(using = HijrahDateSerializer::class)
-        @JsonDeserialize(using = HijrahDateDeserializer::class)
+        @JsonSerialize(using = HijrahDateSerialization.Serializer::class)
+        @JsonDeserialize(using = HijrahDateSerialization.Deserializer::class)
         val hijrahDate: HijrahDate
     )
 

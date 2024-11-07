@@ -3,6 +3,8 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.the
 import org.gradle.kotlin.dsl.withType
@@ -16,21 +18,20 @@ class LibraryConfigConventionPlugin: Plugin<Project> {
 
         plugins.apply("java-library")
         plugins.apply(libs.plugins.kotlin.jvm.get().pluginId)
+        plugins.apply(libs.plugins.kotlin.kover.get().pluginId)
 
-        group = "com.abdulrahman_b"
-        version = "1.0.0-beta.3"
+        group = rootProject.group
+        version = rootProject.version
 
         kotlin {
             compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_17)
+                jvmTarget = JvmTarget.JVM_17
             }
         }
 
         java {
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
-            withJavadocJar()
-            withSourcesJar()
         }
 
         dependencies {

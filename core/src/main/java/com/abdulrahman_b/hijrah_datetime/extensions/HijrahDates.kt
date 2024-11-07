@@ -28,11 +28,11 @@ import java.time.temporal.TemporalAdjusters.lastDayOfMonth
  */
 object HijrahDates {
 
-    @JvmStatic val MIN_YEAR = HijrahChronology.INSTANCE.range(ChronoField.YEAR).minimum.toInt()
-    @JvmStatic val MAX_YEAR = HijrahChronology.INSTANCE.range(ChronoField.YEAR).maximum.toInt()
-    @JvmStatic val MIN: HijrahDate = HijrahDate.of(MIN_YEAR, 1, 1)
-    @JvmStatic val MAX: HijrahDate = HijrahDate.of(MAX_YEAR, 12, 29).with(lastDayOfMonth())
-    @JvmStatic val EPOCH: HijrahDate = ofEpochDay(0)
+    @JvmField val MIN_YEAR = HijrahChronology.INSTANCE.range(ChronoField.YEAR).minimum.toInt()
+    @JvmField val MAX_YEAR = HijrahChronology.INSTANCE.range(ChronoField.YEAR).maximum.toInt()
+    @JvmField val MIN: HijrahDate = HijrahDate.of(MIN_YEAR, 1, 1)
+    @JvmField val MAX: HijrahDate = HijrahDate.of(MAX_YEAR, 12, 29).with(lastDayOfMonth())
+    @JvmField val EPOCH: HijrahDate = ofEpochDay(0)
 
     @JvmStatic inline val HijrahDate.year: Int get() = get(ChronoField.YEAR)
     @JvmStatic inline val HijrahDate.monthValue: Int get() = get(ChronoField.MONTH_OF_YEAR)

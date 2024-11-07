@@ -34,7 +34,7 @@ import java.time.temporal.ValueRange
  */
 sealed class HijrahTemporal<T : HijrahTemporal<T>>(
     private val temporal: Temporal,
-) : Temporal by temporal, Serializable {
+) : Temporal by temporal, Comparable<T>, Serializable {
 
     @Serial
     private val serialVersionUid: Long = 1L

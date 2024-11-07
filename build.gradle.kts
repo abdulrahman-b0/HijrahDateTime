@@ -1,152 +1,39 @@
 @file:Suppress("MemberVisibilityCanBePrivate", "unused")
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jreleaser.model.Active
-import org.jreleaser.model.Signing
-import org.jreleaser.util.Algorithm
-import java.lang.System.load
+
 import java.util.Properties
+
 
 plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.serialization) apply false
-    alias(libs.plugins.jreleaser) apply  false
+    alias(libs.plugins.kotlin.kover)
 }
 
-/*
-group = "com.abdulrahman-b"
-version = "1.0.0-beta.2"
+rootProject.group = "com.abdulrahman-b"
+rootProject.version = "1.0.0-beta.3"
+rootProject.description =
+    "HijrahDateTime is a Kotlin/JVM library that is built on top of java.time to facilitates work with Hijrah date and time APIs."
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
-val publishProperties = Properties().apply {
-    load(file("publish.properties").reader())
-}
-
-
-publishing {
-
-    publications {
-        create<MavenPublication>(project.name) {
-            groupId = project.group.toString()
-            artifactId = project.name
-            version = project.version.toString()
-
-            from(components["java"])
-
-            pom {
-                name = publishProperties.getProperty("project.name")
-                description = publishProperties.getProperty("project.description")
-                url = publishProperties.getProperty("project.url")
-                licenses {
-                    license {
-                        name = publishProperties.getProperty("project.license.name")
-                        url = publishProperties.getProperty("project.license.url")
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = publishProperties.getProperty("developer.id")
-                        name = publishProperties.getProperty("developer.name")
-                        email = publishProperties.getProperty("developer.email")
-                    }
-                }
-
-                scm {
-                    connection.set(publishProperties.getProperty("scm.connection"))
-                    developerConnection.set(publishProperties.getProperty("scm.developerConnection"))
-                    url.set(publishProperties.getProperty("scm.url"))
-                }
-            }
-
-
-        }
-    }
-
-    repositories {
-        maven {
-            url = uri(layout.buildDirectory.dir("staging-deploy"))
-        }
-    }
-
-}
-
-val gradleProject = project
-
-jreleaser {
-    project {
-        name = gradleProject.name
-        version = gradleProject.version.toString()
-        description = publishProperties.getProperty("project.description")
-        license = publishProperties.getProperty("project.license.name")
-        authors = listOf(publishProperties.getProperty("developer.name"))
-        links {
-            homepage = publishProperties.getProperty("project.url")
-        }
-    }
-
-    signing {
-        active.set(Active.ALWAYS)
-        armored.set(true)
-        mode.set(Signing.Mode.FILE)
-        publicKey.set(publishProperties.getProperty("signing.publicKey"))
-        secretKey.set(publishProperties.getProperty("signing.privateKey"))
-        passphrase.set(publishProperties.getProperty("signing.passphrase"))
-    }
-
-    checksum {
-        algorithms.addAll(Algorithm.MD5, Algorithm.SHA_1, Algorithm.SHA_256, Algorithm.SHA_512)
-    }
-
-    release {
-        github {
-            enabled.set(true)
-            host.set(publishProperties.getProperty("github.host"))
-            repoOwner.set(publishProperties.getProperty("github.repository.owner"))
-            name.set(publishProperties.getProperty("github.repository.name"))
-            token.set(publishProperties.getProperty("github.token"))
-            tagName.set(project.version.toString())
-        }
-    }
-
-    deploy {
-        maven {
-            mavenCentral {
-                register("sonatype") {
-                    active.set(Active.ALWAYS)
-                    url.set("https://central.sonatype.com/api/v1/publisher")
-                    username.set(publishProperties.getProperty("sonatype.username"))
-                    password.set(publishProperties.getProperty("sonatype.password"))
-                    stagingRepository(layout.buildDirectory.dir("staging-deploy").get().toString())
-                }
-            }
-        }
-    }
-}
-
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
-    }
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
 
 dependencies {
-    implementation(libs.kotlin.reflect)
-    implementation(libs.kotlin.serialization.json)
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter)
+    kover(projects.core)
+    kover(projects.serialization.kotlinx)
+    kover(projects.serialization.jackson)
+    kover(projects.jakartaValidation)
 }
 
-tasks.test {
-    useJUnitPlatform()
+kover {
+    //Those classes are only containers for nested classes. For organization purposes.
+    reports.filters.excludes.classes(
+        "com.abdulrahman_b.hijrah_datetime.serialization.jackson.HijrahDateSerialization",
+        "com.abdulrahman_b.hijrah_datetime.serialization.jackson.HijrahDateTimeSerialization",
+        "com.abdulrahman_b.hijrah_datetime.serialization.jackson.OffsetHijrahDateTimeSerialization",
+        "com.abdulrahman_b.hijrah_datetime.serialization.jackson.ZonedHijrahDateTimeSerialization",
+    )
 }
 
- */
+val publishProperties by lazy {
+    Properties().apply {
+        load(file("publish.properties").reader())
+    }
+}
