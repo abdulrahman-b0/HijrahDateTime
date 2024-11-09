@@ -126,10 +126,7 @@ The library provides serialization support with java serialization. You can seri
 
 ### Using kotlinx.serialization
 
-The library provides serialization support with kotlinx.serialization library in the artifact `HijrahDateTime-serialization-kotlinx`. 
-
-#### Using @Serializable annotation
-
+The library provides serialization support with kotlinx.serialization library in the artifact `HijrahDateTime-serialization-kotlinx`.
 The library provides a list of custom serializers, Each of which use the recommended built-in formatters to serialize and deserialize the datetime classes from and to `String`.
 The serializers are:
 
@@ -138,67 +135,37 @@ The serializers are:
 - `ZonedHijrahDateTimeSerializer` to serialize and deserialize the `ZonedHijrahDateTime` class.
 - `OffsetHijrahDateTimeSerializer` to serialize and deserialize the `OffsetHijrahDateTime` class.
 
-So, you can use them in your data classes like this:
-
-```kotlin
-import com.abdulrahman_b.hijrah_datetime.serialization.kotlinx.HijrahDateTimeSerializer
-import kotlinx.serialization.Serializable
-
-data class MyData(
-    @Serializable(with = HijrahDateTimeSerializer::class)
-    val date: HijrahDateTime
-)
-
-fun main() {
-    val data = MyData(HijrahDateTime.of(1446, 10, 12, 12, 30))
-    val json: String = Json.encodeToString(data)
-    println(json) // {"date":"1446-10-12T12:30:00"}
-}
-```
-#### Using contextual serialization
-
-The above serializers are useful when you want to serialize and deserialize the datetime classes, regardless of the string format. However, if you want to use another format, you have to use the contextual serialization.
-
-Contextual serialization is a feature of kotlinx.serialization that allows you to register serializers at runtime, which allows you to customize the serialization and deserialization process according to your needs.
-The library provides a `HijrahChronoSerializersModule` class that contextually registers all the serializers for you, while allowing you to customize the formatters. For example:
+You can either use the serializers directly in your data classes with `@Serializable(with = ...)` annotation or use the contextual serialization to register the serializers at runtime. The latter allows you to customize the format of the serialized string:
 
 ```kotlin
 
-import kotlinx.serialization.Contextual
-
-data class MyData(
-    @Contextual
-    val date: HijrahDateTime
-)
-
 fun main() {
-
     val formatter = DateTimeFormatter
         .ofPattern("yyyy/MM/dd hh:mm:ss a") // Custom format
         .withChronology(HijrahChronology.INSTANCE)
 
     val json = Json {
-        serializersModule = HijrahChronoSerializersModule(hijrahDateTimeFormatter = formatter).get()
+        serializersModule = SerializersModule {
+            contextual(HijrahDateTime::class, HijrahDateTimeSerializer(formatter)) // Register the serializer with the custom format
+        }
     }
+    
+    val date = HijrahDateTime.of(1446, 10, 12, 12, 30)
+    val jsonString: String = json.encodeToString(date)
+    println(jsonString) // "1446/10/12 12:30:00 PM"
 
-    val data = MyData(HijrahDateTime.of(1446, 10, 12, 12, 30))
-    val jsonString: String = json.encodeToString(data)
-    println(jsonString) // {"date":"1446/10/12 12:30:00 PM"
 }
 ```
 
-Alternatively, you can define the contextual serialization manually, like this:
+You can also adds other serializers for the other datetime classes in the same way. Or you can use `HijrahDateTimeSerializersModule` class that registers all serializers for `HijrahDate`, `HijrahDateTime`, `ZonedHijrahDateTime`, and `OffsetHijrahDateTime` classes, and allows you to customize the formatters. For example:
 
 ```kotlin
-//For brevity, other code is omitted
-
+// Code omitted for brevity
 val json = Json {
-    serializersModule = SerializersModule {
-        contextual(HijrahDateTime::class, HijrahDateTimeSerializer(formatter)) // Register the serializer with the custom format
-    }
+    serializersModule = HijrahChronoSerializersModule(hijrahDateTimeFormatter = formatter).get()
 }
-
-//For brevity, other code is omitted, the output should be the same as the above example.
+// Code omitted for brevity
+}
 ```
 
 
@@ -221,36 +188,13 @@ Since jackson defines separate classes for serializer and deserializer for each 
 
 For organization purposes, the serializer and deserializer for each type is defined as a nested class.
 
-So, you can use them in your data classes like this:
-
-```kotlin
-import com.abdulrahman_b.hijrah_datetime.serialization.jackson.HijrahDateTimeSerialization
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-
-data class MyData(
-    @JsonSerialize(using = HijrahDateTimeSerialization.Serializer::class)
-    @JsonDeserialize(using = HijrahDateTimeSerialization.Deserializer::class)
-    val date: HijrahDateTime
-)
-
-fun main() {
-    val data = MyData(HijrahDateTime.of(1446, 10, 12, 12, 30))
-    val json: String = ObjectMapper().writeValueAsString(data)
-    println(json) // {"date":"1446-10-12T12:30:00"}
-}
-```
-
-Alternatively, you can use the `HijrahChronoSerializersModule` class that registers all the serializers and deserializers for you, while allowing you to customize the formatters. For example:
+So, you can use them in your data classes with `@JsonSerialize(using = ...)` and `@JsonDeserialize(using = ...)` annotations,
+or you can use the `HijrahChronoSerializersModule` module class that registers all the serializers and deserializers for you, while allowing you to customize the formatters. For example:
 
 ```kotlin
 import com.abdulrahman_b.hijrah_datetime.serialization.jackson.HijrahChronoSerializationModule
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-
-data class MyData(
-    val date: HijrahDateTime
-)
 
 fun main() {
 
@@ -260,11 +204,10 @@ fun main() {
 
     val module = HijrahChronoSerializationModule(hijrahDateTimeFormatter = formatter)
     val mapper = ObjectMapper().registerModule(module)
-        .registerKotlinModule() //Don't forget to register the kotlin module if you are using kotlin data classes. You find it in the jackson-module-kotlin library.
 
-    val data = MyData(HijrahDateTime.of(1446, 10, 12, 12, 30))
+    val data = HijrahDateTime.of(1446, 10, 12, 12, 30)
     val json: String = mapper.writeValueAsString(data)
-    println(json) // {"date":"1446/10/12 12:30:00 PM"}
+    println(json) // "1446/10/12 12:30:00 PM"
 }
 ```
 
