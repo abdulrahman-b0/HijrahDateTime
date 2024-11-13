@@ -52,6 +52,15 @@ object HijrahDates {
     fun HijrahDate.plusDays(days: Long): HijrahDate = plus(days, ChronoUnit.DAYS)
 
     /**
+     * Returns a copy of this date with the specified number of weeks added.
+     *
+     * @param weeks the weeks to add, may be negative
+     * @return a [HijrahDate] based on this date with the weeks added, not null
+     */
+    @JvmStatic
+    fun HijrahDate.plusWeeks(weeks: Long): HijrahDate = plus(weeks, ChronoUnit.WEEKS)
+
+    /**
      * Returns a copy of this date with the specified number of months added.
      *
      * @param months the months to add, may be negative
@@ -77,6 +86,15 @@ object HijrahDates {
      */
     @JvmStatic
     fun HijrahDate.minusDays(days: Long): HijrahDate = minus(days, ChronoUnit.DAYS)
+
+    /**
+     * Returns a copy of this date with the specified number of weeks subtracted.
+     *
+     * @param weeks the weeks to subtract, may be negative
+     * @return a [HijrahDate] based on this date with the weeks subtracted, not null
+     */
+    @JvmStatic
+    fun HijrahDate.minusWeeks(weeks: Long): HijrahDate = minus(weeks, ChronoUnit.WEEKS)
 
     /**
      * Returns a copy of this date with the specified number of months subtracted.
@@ -198,7 +216,6 @@ object HijrahDates {
      */
     @JvmStatic
     fun HijrahDate.datesUntil(endExclusive: HijrahDate, step: Long): Sequence<HijrahDate> {
-        LocalDate.now().atStartOfDay()
         val end = endExclusive.toEpochDay()
         val start = toEpochDay()
         require(end >= start) { "$endExclusive < $this" }
@@ -215,6 +232,15 @@ object HijrahDates {
     fun HijrahDate.atTime(offsetTime: OffsetTime): OffsetHijrahDateTime {
         val datetime = HijrahDateTime.of(this, offsetTime.toLocalTime())
         return OffsetHijrahDateTime.of(datetime, offsetTime.offset)
+    }
+
+    /**
+     * Obtains an [HijrahDateTime] with the specified [LocalTime]. This function should be always used instead of member function [HijrahDate.atTime].
+     */
+    @JvmStatic
+    fun HijrahDate.atLocalTime(localTime: LocalTime): HijrahDateTime {
+        val datetime = HijrahDateTime(this.atTime(localTime))
+        return datetime
     }
 
     /**

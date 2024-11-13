@@ -1,7 +1,5 @@
 @file:Suppress("MemberVisibilityCanBePrivate", "unused")
 
-import java.util.Properties
-
 
 plugins {
     alias(libs.plugins.kotlin.jvm) apply false
@@ -27,6 +25,7 @@ kover {
     reports.filters.excludes.classes(
         "com.abdulrahman_b.hijrah_datetime.serialization.jackson.HijrahDateSerialization",
         "com.abdulrahman_b.hijrah_datetime.serialization.jackson.HijrahDateTimeSerialization",
+        "com.abdulrahman_b.hijrah_datetime.serialization.jackson.OffsetHijrahDateSerialization",
         "com.abdulrahman_b.hijrah_datetime.serialization.jackson.OffsetHijrahDateTimeSerialization",
         "com.abdulrahman_b.hijrah_datetime.serialization.jackson.ZonedHijrahDateTimeSerialization",
     )

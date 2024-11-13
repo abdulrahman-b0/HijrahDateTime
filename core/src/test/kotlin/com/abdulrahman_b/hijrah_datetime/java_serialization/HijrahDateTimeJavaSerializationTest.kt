@@ -1,17 +1,17 @@
 package com.abdulrahman_b.hijrah_datetime.java_serialization
 
-import com.abdulrahman_b.hijrah_datetime.OffsetHijrahDateTime
+import com.abdulrahman_b.hijrah_datetime.HijrahDateTime
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayOutputStream
 import java.io.ObjectOutputStream
 
-class OffsetHijrahDateTimeJavaSerialization {
+class HijrahDateTimeJavaSerializationTest {
 
 
     companion object {
-        private val hijrahDateTime = OffsetHijrahDateTime.now()
+        private val hijrahDateTime = HijrahDateTime.now()
         private lateinit var serializedStream: ByteArrayOutputStream
     }
 
@@ -32,7 +32,7 @@ class OffsetHijrahDateTimeJavaSerialization {
         val inputByteArray = serializedStream.toByteArray()
         val objectInputStream = java.io.ObjectInputStream(inputByteArray.inputStream())
 
-        val deserialized = objectInputStream.readObject() as OffsetHijrahDateTime
+        val deserialized = objectInputStream.readObject() as HijrahDateTime
 
         assertEquals(hijrahDateTime, deserialized)
     }

@@ -21,7 +21,7 @@ jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-
 jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version.ref = "jakarta-validation" }
 hibernate-validator = { module = "org.hibernate.validator:hibernate-validator", version.ref = "hibernate-validator" }
 expressly = { module = "org.glassfish.expressly:expressly", version.ref = "expressly" }
-
+threeTenExtra = { module = "org.threeten:threeten-extra", version = "1.8.0" }
 #Testing
 #noinspection GradleDependency
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }

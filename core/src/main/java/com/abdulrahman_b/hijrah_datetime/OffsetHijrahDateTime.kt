@@ -44,7 +44,7 @@ import java.time.temporal.ValueRange
 class OffsetHijrahDateTime private constructor(
     private val dateTime: HijrahDateTime,
     val offset: ZoneOffset
-) : HijrahTemporal<OffsetHijrahDateTime>(dateTime), TemporalAdjuster, Serializable {
+) : AbstractHijrahDateTime<OffsetHijrahDateTime>(dateTime), TemporalAdjuster, Serializable {
 
 
     @Serial
@@ -134,7 +134,7 @@ class OffsetHijrahDateTime private constructor(
 
     override fun format(formatter: DateTimeFormatter): String {
         requireHijrahChronology(formatter)
-        return formatter.format(toZonedHijrahDateTime(offset))
+        return formatter.format(this)
     }
 
     override fun compareTo(other: OffsetHijrahDateTime): Int {
@@ -154,7 +154,9 @@ class OffsetHijrahDateTime private constructor(
 
     fun toHijrahDateTime(): HijrahDateTime = dateTime
 
-    override fun toHijrahDate(): HijrahDate  = dateTime.toHijrahDate()
+    fun toOffsetDate(): OffsetHijrahDate = OffsetHijrahDate.of(dateTime.toHijrahDate(), offset)
+
+    override fun toHijrahDate(): HijrahDate = dateTime.toHijrahDate()
 
     /**
      * Returns a copy of this [OffsetHijrahDateTime] with the specified offset ensuring

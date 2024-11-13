@@ -590,6 +590,19 @@ class OffsetHijrahDateTimeTest {
         assertEquals(expected, offsetHijrahDateTime.toString())
     }
 
+    @Test
+    @DisplayName(".equals() works properly")
+    fun equalityIsCheckedProperly() {
+        val hijrahDateTime2 = OffsetHijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0, ZoneOffset.of("+03:00"))
+        assertTrue(offsetHijrahDateTime == hijrahDateTime2)
+
+        val hijrahDateTime3 = OffsetHijrahDateTime.of(1446, 2, 5, 12, 43, 18, 0, ZoneOffset.of("+04:00"))
+        assertFalse(offsetHijrahDateTime == hijrahDateTime3)
+        assertFalse(offsetHijrahDateTime.equals(null))
+        assertFalse(offsetHijrahDateTime.equals("1446-02-05T12:43:18+03:00"))
+
+    }
+
 
     @Test
     @DisplayName("Hash code is calculated properly")

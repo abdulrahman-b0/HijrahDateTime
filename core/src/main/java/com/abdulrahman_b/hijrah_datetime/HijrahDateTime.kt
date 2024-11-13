@@ -3,6 +3,7 @@
 package com.abdulrahman_b.hijrah_datetime
 
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates
+import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.atLocalTime
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.atStartOfDay
 import com.abdulrahman_b.hijrah_datetime.formats.HijrahFormatters
 import com.abdulrahman_b.hijrah_datetime.utils.requireHijrahChronology
@@ -48,7 +49,7 @@ import java.time.zone.ZoneRules
 
 class HijrahDateTime internal constructor(
     private val dateTime: ChronoLocalDateTime<HijrahDate>
-) : HijrahTemporal<HijrahDateTime>(dateTime), TemporalAdjuster, Serializable {
+) : AbstractHijrahDateTime<HijrahDateTime>(dateTime), TemporalAdjuster, Serializable {
 
 
     private val serialVersionUid = 1L
@@ -202,7 +203,7 @@ class HijrahDateTime internal constructor(
          * @return the hijrah date-time, not null
          */
         @JvmStatic
-        fun of(date: HijrahDate, time: LocalTime) = HijrahDateTime(date.atTime(time))
+        fun of(date: HijrahDate, time: LocalTime): HijrahDateTime = date.atLocalTime(time)
 
         /**
          * Obtains an instance of [HijrahDateTime] from year, month,
@@ -236,10 +237,7 @@ class HijrahDateTime internal constructor(
         ): HijrahDateTime {
             val hijrahDate = HijrahDate.of(year, month, dayOfMonth)
             val localTime = LocalTime.of(hour, minute, second, nanoOfSecond)
-            return of(
-                hijrahDate,
-                localTime
-            )
+            return of(hijrahDate, localTime)
         }
 
         /**
@@ -317,13 +315,16 @@ class HijrahDateTime internal constructor(
         ): HijrahDateTime = requireHijrahChronology(formatter).parse(text, Companion::from)
 
         /** The minimum supported [HijrahDateTime] */
-        @JvmField val MIN = HijrahDateTime(HijrahDates.MIN.atTime(LocalTime.MIN))
+        @JvmField
+        val MIN = HijrahDates.MIN.atLocalTime(LocalTime.MIN)
 
         /** The maximum supported [HijrahDateTime] */
-        @JvmField val MAX = HijrahDateTime(HijrahDates.MAX.atTime(LocalTime.MAX))
+        @JvmField
+        val MAX: HijrahDateTime = HijrahDates.MAX.atLocalTime(LocalTime.MAX)
 
         /** The epoch in [HijrahDateTime] */
-        @JvmField val EPOCH = HijrahDates.EPOCH.atStartOfDay()
+        @JvmField
+        val EPOCH = HijrahDates.EPOCH.atStartOfDay()
 
     }
 

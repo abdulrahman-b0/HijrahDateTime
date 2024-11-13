@@ -496,22 +496,28 @@ class ZonedHijrahDateTimeTest {
             val hijrahDateTime2 = zonedHijrahDateTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai")).plusNanos(1)
             assertTrue(zonedHijrahDateTime.isBefore(hijrahDateTime2))
             assertEquals(zonedHijrahDateTime.compareTo(hijrahDateTime2), -1)
+
+            val hijrahDateTime3 = zonedHijrahDateTime.withZoneSameLocal(ZoneOffset.UTC)
+            assertTrue(zonedHijrahDateTime.isBefore(hijrahDateTime3))
+            assertEquals(zonedHijrahDateTime.compareTo(hijrahDateTime3), -1)
         }
 
         @Test
         @DisplayName("Later instance with different zone is after the earlier one")
         fun laterInstanceWithDifferentZoneIsAfterTheEarlierOne() {
             val hijrahDateTime2 = zonedHijrahDateTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai")).minusNanos(1)
-
             assertTrue(zonedHijrahDateTime.isAfter(hijrahDateTime2))
             assertEquals(zonedHijrahDateTime.compareTo(hijrahDateTime2), 1)
+
+            val hijrahDateTime3 = zonedHijrahDateTime.withZoneSameLocal(ZoneId.of("Asia/Shanghai"))
+            assertTrue(zonedHijrahDateTime.isAfter(hijrahDateTime3))
+            assertEquals(zonedHijrahDateTime.compareTo(hijrahDateTime3), 1)
         }
 
         @Test
         @DisplayName("Same instances with different zones are actually equal")
         fun equalInstancesWithDifferentZoneAreActuallyEqual() {
             val hijrahDateTime2 = zonedHijrahDateTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai"))
-
             assertTrue(zonedHijrahDateTime.isEqual(hijrahDateTime2))
             assertEquals(-1, zonedHijrahDateTime.compareTo(hijrahDateTime2))
         }

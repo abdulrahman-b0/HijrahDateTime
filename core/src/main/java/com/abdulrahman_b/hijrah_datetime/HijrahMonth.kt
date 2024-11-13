@@ -229,6 +229,11 @@ enum class HijrahMonth(val value: Int) : TemporalAccessor, TemporalAdjuster {
     }
 
     companion object {
+        /**
+         * Obtains an instance of [HijrahMonth] from an [Int] value.
+         * @param value the month-of-year, from 1 to 12
+         */
+        @JvmStatic
         fun of(value: Int): HijrahMonth {
             return entries.first { it.value == value }
         }
@@ -250,6 +255,7 @@ enum class HijrahMonth(val value: Int) : TemporalAccessor, TemporalAdjuster {
          * @return the month-of-year, not null
          * @throws DateTimeException if unable to convert to a [HijrahMonth]
          */
+        @JvmStatic
         fun from(temporal: TemporalAccessor): HijrahMonth {
             var temporalVariable = temporal
             if (temporalVariable is HijrahMonth) {

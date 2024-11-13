@@ -6,3 +6,19 @@ plugins {
 hijrahDateTimePublishing {
     artifactId = rootProject.name
 }
+
+sourceSets {
+    test {
+        java {
+            srcDir("src/test/kotlin")
+        }
+
+        kotlin {
+            srcDir("src/test/java")
+        }
+    }
+}
+
+dependencies {
+    testImplementation(libs.threeTenExtra)
+}

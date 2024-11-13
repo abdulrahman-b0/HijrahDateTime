@@ -1,7 +1,9 @@
 package com.abdulrahman_b.hijrah_datetime.extensions
 
+import com.abdulrahman_b.hijrah_datetime.HijrahDateTime
 import com.abdulrahman_b.hijrah_datetime.HijrahMonth
 import com.abdulrahman_b.hijrah_datetime.OffsetHijrahDateTime
+import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.atLocalTime
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.atTime
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.datesUntil
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.dayOfMonth
@@ -10,11 +12,13 @@ import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.dayOfWeekValue
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.dayOfYear
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.minusDays
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.minusMonths
+import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.minusWeeks
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.minusYears
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.month
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.monthValue
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.plusDays
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.plusMonths
+import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.plusWeeks
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.plusYears
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.toInstant
 import com.abdulrahman_b.hijrah_datetime.extensions.HijrahDates.withDayOfMonth
@@ -142,6 +146,10 @@ class HijrahDateExtensionsTest {
             var obtainedHijrahDate = HijrahDate.of(1446, 2, 6)
             assertEquals(expectedHijrahDate, obtainedHijrahDate)
 
+            expectedHijrahDate = hijrahDate.plusWeeks(1)
+            obtainedHijrahDate = HijrahDate.of(1446, 2, 12)
+            assertEquals(expectedHijrahDate, obtainedHijrahDate)
+
             expectedHijrahDate = hijrahDate.plusMonths(1)
             obtainedHijrahDate = HijrahDate.of(1446, 3, 5)
             assertEquals(expectedHijrahDate, obtainedHijrahDate)
@@ -157,6 +165,10 @@ class HijrahDateExtensionsTest {
             var expectedHijrahDate = hijrahDate.minusDays(1)
             val obtainedHijrahDate = HijrahDate.of(1446, 2, 4)
             assertEquals(expectedHijrahDate, obtainedHijrahDate)
+
+            expectedHijrahDate = hijrahDate.minusWeeks(1)
+            val obtainedHijrahDate1 = HijrahDate.of(1446, 1, 27)
+            assertEquals(expectedHijrahDate, obtainedHijrahDate1)
 
             expectedHijrahDate = hijrahDate.minusMonths(1)
             val obtainedHijrahDate2 = HijrahDate.of(1446, 1, 5)
@@ -215,6 +227,15 @@ class HijrahDateExtensionsTest {
         val offsetDateTime = hijrahDate.atTime(offsetTime)
 
         assertEquals(OffsetHijrahDateTime.of(hijrahDate, localTime, ZoneOffset.UTC), offsetDateTime)
+    }
+
+    @Test
+    @DisplayName("Combining HijrahDate with LocalTime to get HijrahDateTime")
+    fun atLocalTime() {
+        val localTime = LocalTime.of(12, 30)
+        val dateTime = hijrahDate.atLocalTime(localTime)
+
+        assertEquals(HijrahDateTime.of(hijrahDate, localTime), dateTime)
     }
 
     @Test
