@@ -42,7 +42,6 @@ object HijrahFormatters {
         .optionalEnd()
         .appendPattern(" a")
         .toFormatter(ResolverStyle.STRICT, HijrahChronology.INSTANCE)
-        .withLocale(Locale.ENGLISH)
 
     /**
      * The Hijrah date formatter that formats or parses a date without an
