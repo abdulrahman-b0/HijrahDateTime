@@ -34,13 +34,13 @@ object HijrahDates {
     @JvmField val MAX: HijrahDate = HijrahDate.of(MAX_YEAR, 12, 29).with(lastDayOfMonth())
     @JvmField val EPOCH: HijrahDate = ofEpochDay(0)
 
-    @get:JvmSynthetic val HijrahDate.year: Int get() = get(ChronoField.YEAR)
-    @get:JvmSynthetic val HijrahDate.monthValue: Int get() = get(ChronoField.MONTH_OF_YEAR)
-    @get:JvmSynthetic val HijrahDate.month: HijrahMonth get() = HijrahMonth.of(monthValue)
-    @get:JvmSynthetic val HijrahDate.dayOfYear: Int get() = get(ChronoField.DAY_OF_YEAR)
-    @get:JvmSynthetic val HijrahDate.dayOfMonth: Int get() = get(ChronoField.DAY_OF_MONTH)
-    @get:JvmSynthetic val HijrahDate.dayOfWeekValue: Int get() = get(ChronoField.DAY_OF_WEEK)
-    @get:JvmSynthetic val HijrahDate.dayOfWeek: DayOfWeek get() = DayOfWeek.of(dayOfWeekValue)
+    @get:JvmSynthetic inline val HijrahDate.year: Int get() = get(ChronoField.YEAR)
+    @get:JvmSynthetic inline val HijrahDate.monthValue: Int get() = get(ChronoField.MONTH_OF_YEAR)
+    @get:JvmSynthetic inline val HijrahDate.month: HijrahMonth get() = HijrahMonth.of(monthValue)
+    @get:JvmSynthetic inline val HijrahDate.dayOfYear: Int get() = get(ChronoField.DAY_OF_YEAR)
+    @get:JvmSynthetic inline val HijrahDate.dayOfMonth: Int get() = get(ChronoField.DAY_OF_MONTH)
+    @get:JvmSynthetic inline val HijrahDate.dayOfWeekValue: Int get() = get(ChronoField.DAY_OF_WEEK)
+    @get:JvmSynthetic inline val HijrahDate.dayOfWeek: DayOfWeek get() = DayOfWeek.of(dayOfWeekValue)
 
     /**
      * Returns a copy of this date with the specified number of days added.

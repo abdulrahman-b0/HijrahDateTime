@@ -13,11 +13,11 @@ sealed class AbstractHijrahDateTime<T: AbstractHijrahDateTime<T>>(
     temporal: Temporal
 ): AbstractHijrahDate<T>(temporal) {
 
-    val hour get() = get(ChronoField.HOUR_OF_DAY)
-    val minuteOfHour get() = get(ChronoField.MINUTE_OF_HOUR)
-    val secondOfMinute get() = get(ChronoField.SECOND_OF_MINUTE)
-    val nanoOfSecond get() = get(ChronoField.NANO_OF_SECOND)
-    val nanoOfDay get() = getLong(ChronoField.NANO_OF_DAY)
+    inline val hour get() = get(ChronoField.HOUR_OF_DAY)
+    inline val minuteOfHour get() = get(ChronoField.MINUTE_OF_HOUR)
+    inline val secondOfMinute get() = get(ChronoField.SECOND_OF_MINUTE)
+    inline val nanoOfSecond get() = get(ChronoField.NANO_OF_SECOND)
+    inline val nanoOfDay get() = getLong(ChronoField.NANO_OF_DAY)
 
     /**
      *  Returns a copy of this date-time with the specified nano-of-second added.

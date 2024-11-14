@@ -8,13 +8,13 @@ import java.time.temporal.Temporal
 sealed class AbstractHijrahDate <T: AbstractHijrahDate<T>> (temporal: Temporal): AbstractHijrahTemporal<T>(temporal) {
 
 
-    val year get() = get(ChronoField.YEAR)
-    val monthValue get() = get(ChronoField.MONTH_OF_YEAR)
-    val month get() = HijrahMonth.of(monthValue)
-    val dayOfYear get() = get(ChronoField.DAY_OF_YEAR)
-    val dayOfMonth get() = get(ChronoField.DAY_OF_MONTH)
-    val dayOfWeekValue get() = get(ChronoField.DAY_OF_WEEK)
-    val dayOfWeek: DayOfWeek get() = DayOfWeek.of(dayOfWeekValue)
+    inline val year get() = get(ChronoField.YEAR)
+    inline val monthValue get() = get(ChronoField.MONTH_OF_YEAR)
+    inline val month get() = HijrahMonth.of(monthValue)
+    inline val dayOfYear get() = get(ChronoField.DAY_OF_YEAR)
+    inline val dayOfMonth get() = get(ChronoField.DAY_OF_MONTH)
+    inline val dayOfWeekValue get() = get(ChronoField.DAY_OF_WEEK)
+    inline val dayOfWeek: DayOfWeek get() = DayOfWeek.of(dayOfWeekValue)
 
     /**
      *  Returns a copy of this date-time with the specified day-of-month added.
