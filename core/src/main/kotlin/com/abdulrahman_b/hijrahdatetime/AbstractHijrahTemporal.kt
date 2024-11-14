@@ -38,13 +38,9 @@ sealed class AbstractHijrahTemporal<T : AbstractHijrahTemporal<T>>(
     val chronology: HijrahChronology =
         temporal.query(TemporalQueries.chronology()) as HijrahChronology
 
-    override fun isSupported(field: TemporalField): Boolean {
-        return temporal.isSupported(field)
-    }
+    override fun isSupported(field: TemporalField) = temporal.isSupported(field)
 
-    override fun isSupported(unit: TemporalUnit): Boolean {
-        return temporal.isSupported(unit)
-    }
+    override fun isSupported(unit: TemporalUnit) = temporal.isSupported(unit)
 
     override operator fun plus(amount: TemporalAmount): T = factory(temporal.plus(amount))
 
