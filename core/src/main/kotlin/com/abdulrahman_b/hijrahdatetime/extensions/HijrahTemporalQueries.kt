@@ -22,8 +22,7 @@ object HijrahTemporalQueries {
      * @throws ArithmeticException if numeric calculations are required and result overflows.
      */
     @JvmStatic
-    fun hijrahDate(): TemporalQuery<HijrahDate> = TemporalQuery { temporal ->
-
+    fun hijrahDate(): TemporalQuery<HijrahDate?> = TemporalQuery { temporal ->
         when (temporal) {
             is HijrahDate -> temporal
             is HijrahDateTime -> temporal.toHijrahDate()
