@@ -1,4 +1,5 @@
 @file:Suppress("MemberVisibilityCanBePrivate", "unused")
+
 package com.abdulrahman_b.hijrahdatetime.extensions
 
 import com.abdulrahman_b.hijrahdatetime.HijrahDateTime
@@ -33,13 +34,13 @@ object HijrahDates {
     @JvmField val MAX: HijrahDate = HijrahDate.of(MAX_YEAR, 12, 29).with(lastDayOfMonth())
     @JvmField val EPOCH: HijrahDate = ofEpochDay(0)
 
-    @JvmStatic inline val HijrahDate.year: Int get() = get(ChronoField.YEAR)
-    @JvmStatic inline val HijrahDate.monthValue: Int get() = get(ChronoField.MONTH_OF_YEAR)
-    @JvmStatic inline val HijrahDate.month: HijrahMonth get() = HijrahMonth.of(monthValue)
-    @JvmStatic inline val HijrahDate.dayOfYear: Int get() = get(ChronoField.DAY_OF_YEAR)
-    @JvmStatic inline val HijrahDate.dayOfMonth: Int get() = get(ChronoField.DAY_OF_MONTH)
-    @JvmStatic inline val HijrahDate.dayOfWeekValue: Int get() = get(ChronoField.DAY_OF_WEEK)
-    @JvmStatic inline val HijrahDate.dayOfWeek: DayOfWeek get() = DayOfWeek.of(dayOfWeekValue)
+    @get:JvmSynthetic val HijrahDate.year: Int get() = get(ChronoField.YEAR)
+    @get:JvmSynthetic val HijrahDate.monthValue: Int get() = get(ChronoField.MONTH_OF_YEAR)
+    @get:JvmSynthetic val HijrahDate.month: HijrahMonth get() = HijrahMonth.of(monthValue)
+    @get:JvmSynthetic val HijrahDate.dayOfYear: Int get() = get(ChronoField.DAY_OF_YEAR)
+    @get:JvmSynthetic val HijrahDate.dayOfMonth: Int get() = get(ChronoField.DAY_OF_MONTH)
+    @get:JvmSynthetic val HijrahDate.dayOfWeekValue: Int get() = get(ChronoField.DAY_OF_WEEK)
+    @get:JvmSynthetic val HijrahDate.dayOfWeek: DayOfWeek get() = DayOfWeek.of(dayOfWeekValue)
 
     /**
      * Returns a copy of this date with the specified number of days added.
@@ -47,7 +48,7 @@ object HijrahDates {
      * @param days the days to add, may be negative
      * @return a [HijrahDate] based on this date with the days added, not null
      */
-    @JvmStatic
+    @JvmSynthetic
     fun HijrahDate.plusDays(days: Long): HijrahDate = plus(days, ChronoUnit.DAYS)
 
     /**
@@ -56,7 +57,7 @@ object HijrahDates {
      * @param weeks the weeks to add, may be negative
      * @return a [HijrahDate] based on this date with the weeks added, not null
      */
-    @JvmStatic
+    @JvmSynthetic
     fun HijrahDate.plusWeeks(weeks: Long): HijrahDate = plus(weeks, ChronoUnit.WEEKS)
 
     /**
@@ -65,7 +66,7 @@ object HijrahDates {
      * @param months the months to add, may be negative
      * @return a [HijrahDate] based on this date with the months added, not null
      */
-    @JvmStatic
+    @JvmSynthetic
     fun HijrahDate.plusMonths(months: Long): HijrahDate = plus(months, ChronoUnit.MONTHS)
 
     /**
@@ -74,7 +75,7 @@ object HijrahDates {
      * @param years the years to add, may be negative
      * @return a [HijrahDate] based on this date with the years added, not null
      */
-    @JvmStatic
+    @JvmSynthetic
     fun HijrahDate.plusYears(years: Long): HijrahDate = plus(years, ChronoUnit.YEARS)
 
     /**
@@ -83,7 +84,7 @@ object HijrahDates {
      * @param days the days to subtract, may be negative
      * @return a [HijrahDate] based on this date with the days subtracted, not null
      */
-    @JvmStatic
+    @JvmSynthetic
     fun HijrahDate.minusDays(days: Long): HijrahDate = minus(days, ChronoUnit.DAYS)
 
     /**
@@ -92,7 +93,7 @@ object HijrahDates {
      * @param weeks the weeks to subtract, may be negative
      * @return a [HijrahDate] based on this date with the weeks subtracted, not null
      */
-    @JvmStatic
+    @JvmSynthetic
     fun HijrahDate.minusWeeks(weeks: Long): HijrahDate = minus(weeks, ChronoUnit.WEEKS)
 
     /**
@@ -101,7 +102,7 @@ object HijrahDates {
      * @param months the months to subtract, may be negative
      * @return a [HijrahDate] based on this date with the months subtracted, not null
      */
-    @JvmStatic
+    @JvmSynthetic
     fun HijrahDate.minusMonths(months: Long): HijrahDate = minus(months, ChronoUnit.MONTHS)
 
     /**
@@ -110,7 +111,7 @@ object HijrahDates {
      * @param years the years to subtract, may be negative
      * @return a [HijrahDate] based on this date with the years subtracted, not null
      * */
-    @JvmStatic
+    @JvmSynthetic
     fun HijrahDate.minusYears(years: Long): HijrahDate = minus(years, ChronoUnit.YEARS)
 
     /**
@@ -120,7 +121,7 @@ object HijrahDates {
      * @return a [HijrahDate] based on this date with the requested day-of-month, not null
      * @throws DateTimeException if the day-of-month is invalid for the month-year
      */
-    @JvmStatic
+    @JvmSynthetic
     fun HijrahDate.withDayOfMonth(dayOfMonth: Int): HijrahDate =
         with(ChronoField.DAY_OF_MONTH, dayOfMonth.toLong())
 
@@ -131,7 +132,7 @@ object HijrahDates {
      * @param dayOfYear the day-of-year to set in the returned date.
      * @return a [HijrahDate] based on this date with the requested day-of-year, not null
      */
-    @JvmStatic
+    @JvmSynthetic
     fun HijrahDate.withDayOfYear(dayOfYear: Int): HijrahDate =
         with(ChronoField.DAY_OF_YEAR, dayOfYear.toLong())
 
@@ -142,7 +143,7 @@ object HijrahDates {
      * @param month the month-of-year to set in the returned date.
      * @return a [HijrahDate] based on this date with the requested month, not null
      */
-    @JvmStatic
+    @JvmSynthetic
     fun HijrahDate.withMonth(month: HijrahMonth): HijrahDate =
         with(ChronoField.MONTH_OF_YEAR, month.value.toLong())
 
@@ -152,7 +153,7 @@ object HijrahDates {
      * @param year the year to set in the returned date.
      * @return a [HijrahDate] based on this date with the requested year, not null
      */
-    @JvmStatic
+    @JvmSynthetic
     fun HijrahDate.withYear(year: Int): HijrahDate = with(ChronoField.YEAR, year.toLong())
 
     /**
@@ -237,10 +238,8 @@ object HijrahDates {
      * Obtains an [HijrahDateTime] with the specified [LocalTime]. This function should be always used instead of member function [HijrahDate.atTime].
      */
     @JvmStatic
-    fun HijrahDate.atLocalTime(localTime: LocalTime): HijrahDateTime {
-        val datetime = HijrahDateTime(this.atTime(localTime))
-        return datetime
-    }
+    fun HijrahDate.atLocalTime(localTime: LocalTime): HijrahDateTime =
+        HijrahDateTime(atTime(localTime))
 
     /**
      * Obtains an [OffsetHijrahDateTime] with the specified [ZoneOffset].
@@ -250,9 +249,7 @@ object HijrahDates {
      * @return the offset date-time, not null
      */
     @JvmStatic
-    fun HijrahDate.toInstant(offset: ZoneOffset): Instant {
-        return atStartOfDay(offset).toInstant()
-    }
+    fun HijrahDate.toInstant(offset: ZoneOffset): Instant = atStartOfDay(offset).toInstant()
 
 
     /**
@@ -262,9 +259,9 @@ object HijrahDates {
      * @return the created [HijrahDate], not null
      */
     @JvmStatic
-    fun ofEpochDay(epochDay: Long): HijrahDate {
-        return HijrahChronology.INSTANCE.dateEpochDay(epochDay)
-    }
+    fun ofEpochDay(epochDay: Long): HijrahDate =
+        HijrahChronology.INSTANCE.dateEpochDay(epochDay)
+
 
     /**
      * Creates an instance of [HijrahDate] from the specified [year] and [dayOfYear].
@@ -273,9 +270,8 @@ object HijrahDates {
      * @param dayOfYear the day-of-year to use, not null
      */
     @JvmStatic
-    fun ofYearDay(year: Int, dayOfYear: Int): HijrahDate {
-        return HijrahChronology.INSTANCE.dateYearDay(year, dayOfYear)
-    }
+    fun ofYearDay(year: Int, dayOfYear: Int): HijrahDate =
+        HijrahChronology.INSTANCE.dateYearDay(year, dayOfYear)
 
     /**
      * Creates an instance of [HijrahDate] from the specified [Instant] and [ZoneId].
@@ -312,10 +308,8 @@ object HijrahDates {
      * @throws DateTimeParseException if the text cannot be parsed
      */
     @JvmStatic
-    fun parse(text: CharSequence, formatter: DateTimeFormatter): HijrahDate {
-        requireHijrahChronology(formatter)
-        return formatter.parse(text, HijrahDate::from)
-    }
+    fun parse(text: CharSequence, formatter: DateTimeFormatter): HijrahDate =
+        requireHijrahChronology(formatter).parse(text, HijrahDate::from)
 
     private const val SECONDS_PER_DAY = 86400
 

@@ -126,17 +126,6 @@ public class StaticMethodsCoverageTest {
         HijrahDates.datesUntil(date, date);
         HijrahDates.datesUntil(date, date, 2);
         HijrahDates.toInstant(date, ZoneOffset.UTC);
-        HijrahDates.plusDays(date, 1);
-        HijrahDates.plusWeeks(date, 1);
-        HijrahDates.plusMonths(date, 1);
-        HijrahDates.plusYears(date, 1);
-        HijrahDates.minusDays(date, 1);
-        HijrahDates.minusWeeks(date, 1);
-        HijrahDates.minusMonths(date, 1);
-        HijrahDates.minusYears(date, 1);
-        HijrahDates.withDayOfMonth(date, 1);
-        HijrahDates.withMonth(date, HijrahMonth.DHU_AL_HIJJAH);
-        HijrahDates.withYear(date, 1443);
 
     }
 
