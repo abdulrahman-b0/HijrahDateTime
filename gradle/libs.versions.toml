@@ -30,8 +30,8 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 [plugins]
 #noinspection GradleDependency
-hijrahDatetime-library = { id = "com.abdulrahman_b.hijrah_datetime.library" }
-hijrahDatetime-publish = { id = "com.abdulrahman_b.hijrah_datetime.publish" }
+hijrahDatetime-library = { id = "com.abdulrahman-b.hijrahdatetime.library" }
+hijrahDatetime-publish = { id = "com.abdulrahman-b.hijrahdatetime.publish" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

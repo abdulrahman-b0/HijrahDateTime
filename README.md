@@ -125,8 +125,8 @@ it could be boring to define the whole formatters from scratch. For this reason,
 For example:
 
 ```kotlin
-import com.abdulrahman_b.hijrah_datetime.formats.HijrahFormatters
-import com.abdulrahman_b.hijrah_datetime.LocalHijrahDate
+import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters
+import com.abdulrahman_b.hijrahdatetime.LocalHijrahDate
 
 val dateFormat = HijrahFormatters.buildHijrahDateFormatter(separator = "/")
 val date: HijrahDate = dateFormat.parse("1446/10/12", LocalHijrahDate::from)
@@ -225,7 +225,7 @@ So, you can use them in your data classes with `@JsonSerialize(using = ...)` and
 or you can use the `HijrahChronoSerializersModule` module class that registers all the serializers and deserializers for you, while allowing you to customize the formatters. For example:
 
 ```kotlin
-import com.abdulrahman_b.hijrah_datetime.serialization.jackson.HijrahChronoSerializationModule
+import com.abdulrahman_b.hijrahdatetime.serialization.jackson.HijrahChronoSerializationModule
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 
