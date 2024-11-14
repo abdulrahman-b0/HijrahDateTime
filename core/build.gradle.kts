@@ -10,11 +10,11 @@ hijrahDateTimePublishing {
 sourceSets {
     test {
         java {
-            srcDir("src/test/kotlin")
+            srcDir("src/test/java")
         }
 
         kotlin {
-            srcDir("src/test/java")
+            srcDir("src/test/kotlin")
         }
     }
 }
