@@ -1,4 +1,4 @@
-package com.abdulrahman_b.hijrahdatetime.jakarta_validation
+package com.abdulrahman_b.hijrahdatetime.jakarta.validation
 
 import com.abdulrahman_b.hijrahdatetime.AbstractHijrahTemporal
 import jakarta.validation.ConstraintValidator

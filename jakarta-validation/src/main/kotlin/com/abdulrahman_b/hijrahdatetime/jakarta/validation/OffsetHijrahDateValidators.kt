@@ -1,5 +1,5 @@
 @file:Suppress("CanSealedSubClassBeObject")
-package com.abdulrahman_b.hijrahdatetime.jakarta_validation
+package com.abdulrahman_b.hijrahdatetime.jakarta.validation
 
 import com.abdulrahman_b.hijrahdatetime.OffsetHijrahDate
 import java.time.Clock

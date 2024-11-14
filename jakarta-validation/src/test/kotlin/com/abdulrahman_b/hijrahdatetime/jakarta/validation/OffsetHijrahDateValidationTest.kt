@@ -1,6 +1,6 @@
-package com.abdulrahman_b.hijrahdatetime.jakarta_validation
+package com.abdulrahman_b.hijrahdatetime.jakarta.validation
 
-import com.abdulrahman_b.hijrahdatetime.HijrahDateTime
+import com.abdulrahman_b.hijrahdatetime.OffsetHijrahDate
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockkObject
@@ -19,7 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import java.time.Clock
 
 @ExtendWith(MockKExtension::class)
-internal class HijrahDateTimeValidationTest {
+internal class OffsetHijrahDateValidationTest {
 
     private val validator = Validation.buildDefaultValidatorFactory().validator
 
@@ -27,11 +27,10 @@ internal class HijrahDateTimeValidationTest {
     @BeforeEach
     fun setUp() {
         val capturedClock = slot<Clock>()
-        val hijrahDateTime = HijrahDateTime.now()
-        mockkObject(HijrahDateTime.Companion)
+        val hijrahDate = OffsetHijrahDate.now()
+        mockkObject(OffsetHijrahDate.Companion)
 
-        every { HijrahDateTime.now(capture(capturedClock)) } answers { hijrahDateTime }
-        every { HijrahDateTime.now() } returns hijrahDateTime
+        every { OffsetHijrahDate.now(capture(capturedClock)) } answers { hijrahDate }
 
     }
 
@@ -39,15 +38,15 @@ internal class HijrahDateTimeValidationTest {
     @Test
     @DisplayName("Past date is valid")
     fun testPastDate() {
-        val now = HijrahDateTime.now()
+        val now = OffsetHijrahDate.now(Clock.systemUTC())
 
-        var violations = validator.validate(PastDateHolder(now.minusMinutes(1)))
+        var violations = validator.validate(PastDateHolder(now.minusDays(1)))
         assertTrue(violations.isEmpty())
 
         violations = validator.validate(PastDateHolder(now))
         assertFalse(violations.isEmpty())
 
-        violations = validator.validate(PastDateHolder(now.plusMinutes(1)))
+        violations = validator.validate(PastDateHolder(now.plusDays(1)))
         assertFalse(violations.isEmpty())
 
         violations = validator.validate(PastDateHolder(null))
@@ -58,15 +57,15 @@ internal class HijrahDateTimeValidationTest {
     @Test
     @DisplayName("Future date is valid")
     fun testFutureDate() {
-        val now = HijrahDateTime.now()
+        val now = OffsetHijrahDate.now(Clock.systemUTC())
 
-        var violations = validator.validate(FutureDateHolder(now.plusMinutes(1)))
+        var violations = validator.validate(FutureDateHolder(now.plusDays(1)))
         assertTrue(violations.isEmpty())
 
         violations = validator.validate(FutureDateHolder(now))
         assertFalse(violations.isEmpty())
 
-        violations = validator.validate(FutureDateHolder(now.minusMinutes(1)))
+        violations = validator.validate(FutureDateHolder(now.minusDays(1)))
         assertFalse(violations.isEmpty())
 
         violations = validator.validate(FutureDateHolder(null))
@@ -77,15 +76,15 @@ internal class HijrahDateTimeValidationTest {
     @Test
     @DisplayName("Past or present date is valid")
     fun testPastOrPresentDate() {
-        val now = HijrahDateTime.now()
+        val now = OffsetHijrahDate.now(Clock.systemUTC())
 
-        var violations = validator.validate(PastOrPresentDateHolder(now.minusMinutes(1)))
+        var violations = validator.validate(PastOrPresentDateHolder(now.minusDays(1)))
         assertTrue(violations.isEmpty())
 
         violations = validator.validate(PastOrPresentDateHolder(now))
         assertTrue(violations.isEmpty())
 
-        violations = validator.validate(PastOrPresentDateHolder(now.plusMinutes(1)))
+        violations = validator.validate(PastOrPresentDateHolder(now.plusDays(1)))
         assertFalse(violations.isEmpty())
 
         violations = validator.validate(PastOrPresentDateHolder(null))
@@ -95,25 +94,26 @@ internal class HijrahDateTimeValidationTest {
     @Test
     @DisplayName("Future or present date is valid")
     fun testFutureOrPresentDate() {
-        val now = HijrahDateTime.now()
+        val now = OffsetHijrahDate.now(Clock.systemUTC())
 
-        var violations = validator.validate(FutureOrPresentDateHolder(now.minusMinutes(1)))
+        var violations = validator.validate(FutureOrPresentDateHolder(now.minusDays(1)))
         assertFalse(violations.isEmpty())
 
         violations = validator.validate(FutureOrPresentDateHolder(now))
         assertTrue(violations.isEmpty())
 
-        violations = validator.validate(FutureOrPresentDateHolder(now.plusMinutes(1)))
+        violations = validator.validate(FutureOrPresentDateHolder(now.plusDays(1)))
         assertTrue(violations.isEmpty())
 
         violations = validator.validate(FutureOrPresentDateHolder(null))
         assertTrue(violations.isEmpty())
+
     }
 
-    private data class PastDateHolder (@field:Past val date: HijrahDateTime?)
-    private data class FutureDateHolder (@field:Future val date: HijrahDateTime?)
-    private data class PastOrPresentDateHolder (@field:PastOrPresent val date: HijrahDateTime?)
-    private data class FutureOrPresentDateHolder (@field:FutureOrPresent val date: HijrahDateTime?)
+    private data class PastDateHolder (@field:Past val date: OffsetHijrahDate?)
+    private data class FutureDateHolder (@field:Future val date: OffsetHijrahDate?)
+    private data class PastOrPresentDateHolder (@field:PastOrPresent val date: OffsetHijrahDate?)
+    private data class FutureOrPresentDateHolder (@field:FutureOrPresent val date: OffsetHijrahDate?)
 
 
 }
