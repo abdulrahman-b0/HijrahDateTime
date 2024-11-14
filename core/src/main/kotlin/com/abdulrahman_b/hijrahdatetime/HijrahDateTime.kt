@@ -7,6 +7,7 @@ import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates.atLocalTime
 import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates.atStartOfDay
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters
 import com.abdulrahman_b.hijrahdatetime.utils.requireHijrahChronology
+import java.io.Serial
 import java.io.Serializable
 import java.time.Clock
 import java.time.DateTimeException
@@ -51,7 +52,7 @@ class HijrahDateTime internal constructor(
     private val dateTime: ChronoLocalDateTime<HijrahDate>
 ) : AbstractHijrahDateTime<HijrahDateTime>(dateTime), TemporalAdjuster, Serializable {
 
-
+    @Serial
     private val serialVersionUid = 1L
 
     override fun adjustInto(temporal: Temporal): Temporal {
