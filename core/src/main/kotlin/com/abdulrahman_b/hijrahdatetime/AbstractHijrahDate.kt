@@ -109,6 +109,14 @@ sealed class AbstractHijrahDate <T: AbstractHijrahDate<T>> (temporal: Temporal):
     /**
      * Returns a copy of this date-time with the specified day-of-week set.
      *
+     * This is equivalent to `with(ChronoField.MONTH, month.value)`
+     * @param month the month-of-year to set in the result.
+     */
+    fun withMonth(month: HijrahMonth): T = withMonth(month.value)
+
+    /**
+     * Returns a copy of this date-time with the specified day-of-week set.
+     *
      * This is equivalent to `with(ChronoField.MONTH, month)`
      * @param month the month-of-year to set in the result, from 1 to 12
      */
