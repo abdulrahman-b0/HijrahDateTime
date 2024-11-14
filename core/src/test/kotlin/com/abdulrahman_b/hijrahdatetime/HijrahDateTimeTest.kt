@@ -573,6 +573,12 @@ class HijrahDateTimeTest {
 
             newHijrahDateTime = hijrahDateTime.withYear(1447)
             assertEquals(1447, newHijrahDateTime.year)
+
+
+            val randomTime = LocalTime.of(7, 30, 14)
+            newHijrahDateTime = hijrahDateTime.with(randomTime)
+            assertEquals(randomTime, newHijrahDateTime.toLocalTime())
+            assertEquals(hijrahDateTime.toHijrahDate(), newHijrahDateTime.toHijrahDate())
         }
 
     }
