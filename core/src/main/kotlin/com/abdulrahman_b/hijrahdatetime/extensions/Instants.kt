@@ -1,5 +1,4 @@
 @file:JvmName("InstantUtils")
-@file:Suppress("unused")
 
 package com.abdulrahman_b.hijrahdatetime.extensions
 
