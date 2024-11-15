@@ -149,7 +149,7 @@ sealed class AbstractHijrahDateTime<T: AbstractHijrahDateTime<T>>(
      * This instance is immutable and unaffected by this method call.
      *
      * @param unit  the unit to truncate to, not null
-     * @return a {@code LocalDateTime} based on this date-time with the time truncated, not null
+     * @return a [HijrahDateTime] based on this date-time with the time truncated, not null
      * @throws DateTimeException if unable to truncate
      * @throws UnsupportedTemporalTypeException if the unit is not supported
      */
