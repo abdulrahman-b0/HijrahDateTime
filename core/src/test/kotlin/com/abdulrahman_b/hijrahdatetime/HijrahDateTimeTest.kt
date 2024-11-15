@@ -571,6 +571,10 @@ class HijrahDateTimeTest {
             newHijrahDateTime = hijrahDateTime.withMonth(3)
             assertEquals(3, newHijrahDateTime.monthValue)
 
+            newHijrahDateTime = hijrahDateTime.withMonth(HijrahMonth.RAMADAN)
+            assertEquals(HijrahMonth.RAMADAN, newHijrahDateTime.month)
+            assertEquals(9, newHijrahDateTime.month.value)
+
             newHijrahDateTime = hijrahDateTime.withYear(1447)
             assertEquals(1447, newHijrahDateTime.year)
 
