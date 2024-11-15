@@ -48,7 +48,7 @@ import java.time.zone.ZoneRules
  * This class is immutable and thread-safe.
  */
 
-class HijrahDateTime internal constructor(
+class HijrahDateTime private constructor(
     private val dateTime: ChronoLocalDateTime<HijrahDate>
 ) : AbstractHijrahDateTime<HijrahDateTime>(dateTime), TemporalAdjuster, Serializable {
 
@@ -106,7 +106,7 @@ class HijrahDateTime internal constructor(
      * @return the zoned date-time formed from this date-time, not null
      */
     fun atZone(zone: ZoneId): ZonedHijrahDateTime {
-        return ZonedHijrahDateTime(dateTime.atZone(zone))
+        return ZonedHijrahDateTime.of(this, zone)
     }
 
     /**
@@ -172,7 +172,7 @@ class HijrahDateTime internal constructor(
          * Obtains the current date-time from the system clock in the default time-zone.
          */
         @JvmStatic
-        fun now() = HijrahDateTime(HijrahDate.now().atTime(LocalTime.now()))
+        fun now() = of(HijrahDate.now(), LocalTime.now())
 
         /**
          * Obtains the current date-time from the system clock in the specified time-zone.
@@ -204,7 +204,7 @@ class HijrahDateTime internal constructor(
          * @return the hijrah date-time, not null
          */
         @JvmStatic
-        fun of(date: HijrahDate, time: LocalTime): HijrahDateTime = date.atLocalTime(time)
+        fun of(date: HijrahDate, time: LocalTime): HijrahDateTime = HijrahDateTime(date.atTime(time))
 
         /**
          * Obtains an instance of [HijrahDateTime] from year, month,

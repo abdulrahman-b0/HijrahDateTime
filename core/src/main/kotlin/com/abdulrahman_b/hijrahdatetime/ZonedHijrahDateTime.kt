@@ -66,7 +66,7 @@ import java.time.zone.ZoneRules
  *
  */
 
-open class ZonedHijrahDateTime internal constructor(
+open class ZonedHijrahDateTime private constructor(
     private val dateTime: ChronoZonedDateTime<HijrahDate>
 ): AbstractHijrahDateTime<ZonedHijrahDateTime>(dateTime), Serializable {
 
@@ -84,8 +84,7 @@ open class ZonedHijrahDateTime internal constructor(
     override fun isAfter(other: ZonedHijrahDateTime) = dateTime.isAfter(other.dateTime)
     override fun range(field: TemporalField): ValueRange = dateTime.range(field)
     override fun compareTo(other: ZonedHijrahDateTime) = dateTime.compareTo(other.dateTime)
-    fun toHijrahDateTime() =
-        HijrahDateTime(dateTime.toLocalDateTime())
+    fun toHijrahDateTime() = HijrahDateTime.of(dateTime.toLocalDate(), dateTime.toLocalTime())
 
     /**
      * Returns a copy of `this` date-time changing the zone offset to the earlier of the two valid offsets at a local time-line overlap.
@@ -264,7 +263,9 @@ open class ZonedHijrahDateTime internal constructor(
          */
         @JvmStatic
         fun of(hijrahDateTime: HijrahDateTime, zoneId: ZoneId): ZonedHijrahDateTime {
-            return hijrahDateTime.atZone(zoneId)
+            val hijrahDate = hijrahDateTime.toHijrahDate()
+            val localTime = hijrahDateTime.toLocalTime()
+            return ZonedHijrahDateTime(hijrahDate.atTime(localTime).atZone(zoneId))
         }
 
         /**
@@ -279,11 +280,7 @@ open class ZonedHijrahDateTime internal constructor(
          */
         @JvmStatic
         fun of(date: HijrahDate, time: LocalTime, zoneId: ZoneId): ZonedHijrahDateTime {
-            return ZonedHijrahDateTime(
-                date.atTime(
-                    time
-                ).atZone(zoneId)
-            )
+            return ZonedHijrahDateTime(date.atTime(time).atZone(zoneId))
         }
 
         /**

@@ -239,7 +239,7 @@ object HijrahDates {
      */
     @JvmStatic
     fun HijrahDate.atLocalTime(localTime: LocalTime): HijrahDateTime =
-        HijrahDateTime(atTime(localTime))
+        HijrahDateTime.of(this, localTime)
 
     /**
      * Obtains an [OffsetHijrahDateTime] with the specified [ZoneOffset].
