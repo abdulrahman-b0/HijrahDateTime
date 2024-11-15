@@ -259,6 +259,7 @@ object HijrahDates {
      * @return the created [HijrahDate], not null
      */
     @JvmStatic
+    @FactoryFunction
     fun ofEpochDay(epochDay: Long): HijrahDate =
         HijrahChronology.INSTANCE.dateEpochDay(epochDay)
 
@@ -270,6 +271,7 @@ object HijrahDates {
      * @param dayOfYear the day-of-year to use, not null
      */
     @JvmStatic
+    @FactoryFunction
     fun ofYearDay(year: Int, dayOfYear: Int): HijrahDate =
         HijrahChronology.INSTANCE.dateYearDay(year, dayOfYear)
 
@@ -282,6 +284,7 @@ object HijrahDates {
      * @return the created [HijrahDate], not null
      */
     @JvmStatic
+    @FactoryFunction
     fun ofInstant(instant: Instant, zone: ZoneId): HijrahDate {
         val offset = zone.rules.getOffset(instant)
         val localSecond = instant.epochSecond + offset.totalSeconds
@@ -297,6 +300,7 @@ object HijrahDates {
      * @return the parsed local date-time, not null
      */
     @JvmStatic
+    @FactoryFunction
     fun parse(text: CharSequence) = parse(text, HijrahFormatters.HIJRAH_DATE)
 
     /**
@@ -308,10 +312,13 @@ object HijrahDates {
      * @throws DateTimeParseException if the text cannot be parsed
      */
     @JvmStatic
+    @FactoryFunction
     fun parse(text: CharSequence, formatter: DateTimeFormatter): HijrahDate =
         requireHijrahChronology(formatter).parse(text, HijrahDate::from)
 
     private const val SECONDS_PER_DAY = 86400
 
+    /** Factory function annotation, used to mark functions that create instances of [HijrahDate]. */
+    private annotation class FactoryFunction
 
 }
