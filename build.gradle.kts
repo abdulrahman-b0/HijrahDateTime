@@ -8,7 +8,7 @@ plugins {
 }
 
 rootProject.group = "com.abdulrahman-b"
-rootProject.version = "1.0.0-beta.4"
+rootProject.version = "1.0.0-beta.5"
 rootProject.description =
     "HijrahDateTime is a Kotlin/JVM library that is built on top of java.time to facilitates work with Hijrah date and time APIs."
 
