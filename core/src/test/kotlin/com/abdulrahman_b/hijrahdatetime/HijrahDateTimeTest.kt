@@ -622,6 +622,14 @@ class HijrahDateTimeTest {
     }
 
     @Test
+    @DisplayName("HijrahDateTime is destructured properly")
+    fun destructuring() {
+        val (date, time) = hijrahDateTime
+        assertEquals(hijrahDateTime.toHijrahDate(), date)
+        assertEquals(hijrahDateTime.toLocalTime(), time)
+    }
+
+    @Test
     @DisplayName("HijrahDate is extracted properly")
     fun hijrahDateIsExtractedProperly() {
         val hijrahDate = hijrahDateTime.toHijrahDate()

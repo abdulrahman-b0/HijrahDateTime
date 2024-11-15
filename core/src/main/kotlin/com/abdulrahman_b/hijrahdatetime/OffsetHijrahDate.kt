@@ -223,6 +223,9 @@ class OffsetHijrahDate private constructor(
         return result
     }
 
+    @JvmSynthetic operator fun component1() = toHijrahDate()
+    @JvmSynthetic operator fun component2() = offset
+
     companion object {
 
         /**

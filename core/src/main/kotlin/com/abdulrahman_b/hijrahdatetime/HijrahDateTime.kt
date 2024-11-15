@@ -166,6 +166,9 @@ class HijrahDateTime private constructor(
 
     override fun compareTo(other: HijrahDateTime): Int = dateTime.compareTo(other.dateTime)
 
+    @JvmSynthetic operator fun component1() = toHijrahDate()
+    @JvmSynthetic operator fun component2() = toLocalTime()
+
     companion object {
 
         /**

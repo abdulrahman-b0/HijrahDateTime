@@ -609,4 +609,13 @@ class OffsetHijrahDateTimeTest {
     fun hashCodeIsCalculatedProperly() {
         offsetHijrahDateTime.hashCode()
     }
+
+    @Test
+    @DisplayName("OffsetHijrahDateTime is destructured properly")
+    fun destructure() {
+        val (date, time, offset) = offsetHijrahDateTime
+        assertEquals(offsetHijrahDateTime.toHijrahDate(), date)
+        assertEquals(offsetHijrahDateTime.toLocalTime(), time)
+        assertEquals(offsetHijrahDateTime.offset, offset)
+    }
 }

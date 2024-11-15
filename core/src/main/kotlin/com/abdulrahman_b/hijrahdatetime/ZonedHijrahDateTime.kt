@@ -182,11 +182,7 @@ open class ZonedHijrahDateTime private constructor(
      *
      * @return an OffsetHijrahDateTime representing the same local date-time and offset
      */
-    fun toOffsetHijrahDateTime() =
-        OffsetHijrahDateTime.of(
-            toHijrahDateTime(),
-            offset
-        )
+    fun toOffsetHijrahDateTime() = OffsetHijrahDateTime.of(toHijrahDateTime(), offset)
 
     override fun toString() = dateTime.toString()
 
@@ -200,6 +196,11 @@ open class ZonedHijrahDateTime private constructor(
     }
 
     override fun hashCode() = dateTime.hashCode()
+
+    @JvmSynthetic operator fun component1() = toHijrahDate()
+    @JvmSynthetic operator fun component2() = toLocalTime()
+    @JvmSynthetic operator fun component3() = zone
+    @JvmSynthetic operator fun component4() = offset
 
     companion object {
 
@@ -263,8 +264,7 @@ open class ZonedHijrahDateTime private constructor(
          */
         @JvmStatic
         fun of(hijrahDateTime: HijrahDateTime, zoneId: ZoneId): ZonedHijrahDateTime {
-            val hijrahDate = hijrahDateTime.toHijrahDate()
-            val localTime = hijrahDateTime.toLocalTime()
+            val (hijrahDate, localTime) = hijrahDateTime
             return ZonedHijrahDateTime(hijrahDate.atTime(localTime).atZone(zoneId))
         }
 

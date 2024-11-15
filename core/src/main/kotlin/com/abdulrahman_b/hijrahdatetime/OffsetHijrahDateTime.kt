@@ -243,6 +243,11 @@ class OffsetHijrahDateTime private constructor(
         return OffsetHijrahDateTime(temporal as HijrahDateTime, offset)
     }
 
+
+    @JvmSynthetic operator fun component1() = toHijrahDate()
+    @JvmSynthetic operator fun component2() = toLocalTime()
+    @JvmSynthetic operator fun component3() = offset
+
     override fun equals(other: Any?): Boolean {
         if (other !is OffsetHijrahDateTime) return false
 

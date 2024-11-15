@@ -610,5 +610,16 @@ class ZonedHijrahDateTimeTest {
         assertEquals(zonedHijrahDateTime.zone, zonedHijrahDateTime.query(TemporalQueries.zone()))
     }
 
+    @Test
+    @DisplayName("ZonedHijrahDateTime is destructured properly")
+    fun destructuring() {
+        val (date, time, zoneId, offset) = zonedHijrahDateTime
+
+        assertEquals(zonedHijrahDateTime.toHijrahDate(), date)
+        assertEquals(zonedHijrahDateTime.toLocalTime(), time)
+        assertEquals(zonedHijrahDateTime.zone, zoneId)
+        assertEquals(zonedHijrahDateTime.offset, offset)
+    }
+
 
 }

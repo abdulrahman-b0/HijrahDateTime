@@ -513,4 +513,12 @@ class OffsetHijrahDateTest {
     fun hashCodeIsCalculatedProperly() {
         offsetHijrahDate.hashCode()
     }
+
+    @Test
+    @DisplayName("OffsetHijrahDate is destructured properly")
+    fun destructuredProperly() {
+        val (date, offset) = offsetHijrahDate
+        assertEquals(offsetHijrahDate.toHijrahDate(), date)
+        assertEquals(ZoneOffset.of("+03:00"), offset)
+    }
 }
