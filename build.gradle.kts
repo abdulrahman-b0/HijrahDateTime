@@ -23,11 +23,11 @@ dependencies {
 kover {
     //Those classes are only containers for nested classes. For organization purposes.
     reports.filters.excludes.classes(
-        "com.abdulrahman_b.hijrah_datetime.serialization.jackson.HijrahDateSerialization",
-        "com.abdulrahman_b.hijrah_datetime.serialization.jackson.HijrahDateTimeSerialization",
-        "com.abdulrahman_b.hijrah_datetime.serialization.jackson.OffsetHijrahDateSerialization",
-        "com.abdulrahman_b.hijrah_datetime.serialization.jackson.OffsetHijrahDateTimeSerialization",
-        "com.abdulrahman_b.hijrah_datetime.serialization.jackson.ZonedHijrahDateTimeSerialization",
+        "com.abdulrahman_b.hijrahdatetime.serialization.jackson.HijrahDateSerialization",
+        "com.abdulrahman_b.hijrahdatetime.serialization.jackson.HijrahDateTimeSerialization",
+        "com.abdulrahman_b.hijrahdatetime.serialization.jackson.OffsetHijrahDateSerialization",
+        "com.abdulrahman_b.hijrahdatetime.serialization.jackson.OffsetHijrahDateTimeSerialization",
+        "com.abdulrahman_b.hijrahdatetime.serialization.jackson.ZonedHijrahDateTimeSerialization",
     )
 }
 
