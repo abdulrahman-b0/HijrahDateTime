@@ -308,20 +308,20 @@ repositories {
 #### Using Gradle Kotlin DSL
 ```kotlin build.gradle.kts
 dependencies {
-    implementation("com.abdulrahman-b:HijrahDateTime:1.0.0-beta.4") //Core library
-    implementation("com.abdulrahman-b:HijrahDateTime-serialization-kotlinx:1.0.0-beta.4") //Kotlinx Serialization support
-    implementation("com.abdulrahman-b:HijrahDateTime-serialization-jackson:1.0.0-beta.4") //Jackson Serialization support
-    implementation("com.abdulrahman-b:HijrahDateTime-jakarta-validation:1.0.0-beta.4") //Jakarta Bean Validation support
+    implementation("com.abdulrahman-b:HijrahDateTime:1.0.0-beta.5") //Core library
+    implementation("com.abdulrahman-b:HijrahDateTime-serialization-kotlinx:1.0.0-beta.5") //Kotlinx Serialization support
+    implementation("com.abdulrahman-b:HijrahDateTime-serialization-jackson:1.0.0-beta.5") //Jackson Serialization support
+    implementation("com.abdulrahman-b:HijrahDateTime-jakarta-validation:1.0.0-beta.5") //Jakarta Bean Validation support
 }
 ```
 
 #### Using Gradle Groovy DSL
 ```groovy build.gradle
 dependencies {
-    implementation 'com.abdulrahman-b:HijrahDateTime:1.0.0-beta.4' //Core library
-    implementation 'com.abdulrahman-b:HijrahDateTime-serialization-kotlinx:1.0.0-beta.4' //Kotlinx Serialization support
-    implementation 'com.abdulrahman-b:HijrahDateTime-serialization-jackson:1.0.0-beta.4' //Jackson Serialization support
-    implementation 'com.abdulrahman-b:HijrahDateTime-jakarta-validation:1.0.0-beta.4' //Jakarta Bean Validation support
+    implementation 'com.abdulrahman-b:HijrahDateTime:1.0.0-beta.5' //Core library
+    implementation 'com.abdulrahman-b:HijrahDateTime-serialization-kotlinx:1.0.0-beta.5' //Kotlinx Serialization support
+    implementation 'com.abdulrahman-b:HijrahDateTime-serialization-jackson:1.0.0-beta.5' //Jackson Serialization support
+    implementation 'com.abdulrahman-b:HijrahDateTime-jakarta-validation:1.0.0-beta.5' //Jakarta Bean Validation support
 }
 ```
 
@@ -337,26 +337,26 @@ Add a dependency to the `<dependencies>` element:
     <dependency>
         <groupId>com.abdulrahman-b</groupId>
         <artifactId>HijrahDateTime</artifactId>
-        <version>1.0.0-beta.4</version>
+        <version>1.0.0-beta.5</version>
     </dependency> <!--Core library-->
 
     <dependency>
         <groupId>com.abdulrahman-b</groupId>
         <artifactId>HijrahDateTime-serialization-kotlinx</artifactId>
-        <version>1.0.0-beta.4</version>
+        <version>1.0.0-beta.5</version>
     </dependency> <!--Kotlinx Serialization support-->
 
     <dependency>
         <groupId>com.abdulrahman-b</groupId>
         <artifactId>HijrahDateTime-serialization-jackson</artifactId>
-        <version>1.0.0-beta.4</version>
+        <version>1.0.0-beta.5</version>
     </dependency> <!--Jackson Serialization support-->
 
     <dependency>
         <groupId>com.abdulrahman-b</groupId>
 
         <artifactId>HijrahDateTime-jakarta-validation</artifactId>
-        <version>1.0.0-beta.4</version>
+        <version>1.0.0-beta.5</version>
     </dependency> <!--Jakarta Bean Validation support-->
 </dependencies>
 
