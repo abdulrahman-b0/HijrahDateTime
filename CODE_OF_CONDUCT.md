@@ -5,7 +5,7 @@ It's expected all participants to respect the following guidelines:
 
 Modesty: Ensure that all communication and content shared within the community is modest and respectful.
 
-Prohibition of Inappropriate Content: Avoid sharing or discussing content that is inappropriate or offensive according to Islamic values, including but not limited to, explicit material, alcohol, and gambling.
+Prohibition of Inappropriate Content: Avoid sharing or discussing content that is inappropriate or offensive according to Islamic values, including but not limited to, alcohol, gambling, or sexual content.
 
 Language: Use language that is respectful and free from profanity or blasphemy.
 
