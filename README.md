@@ -129,7 +129,7 @@ import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters
 import com.abdulrahman_b.hijrahdatetime.LocalHijrahDate
 
 val dateFormat = HijrahFormatters.buildHijrahDateFormatter(separator = "/")
-val date: HijrahDate = dateFormat.parse("1446/10/12", LocalHijrahDate::from)
+val date: HijrahDate = dateFormat.parse("1446/10/12", HijrahDate::from)
 println(date.format(dateFormat)) // "1446/10/12"
 
 val dateTimeFormat = HijrahFormatters.buildHijrahDateTimeFormatter(
