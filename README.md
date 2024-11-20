@@ -364,5 +364,5 @@ Add a dependency to the `<dependencies>` element:
 
 ## Building
 
-The library is compatible with the Kotlin Standard Library not lower than `2.0`.
+The library is compatible with the Kotlin Standard Library not lower than `1.9.0`.
 The library also requires JDK 17 or higher to build and run the dependencies.
