@@ -1,6 +1,6 @@
 # HijrahDateTime
 
-[![Kotlin Beta](https://kotl.in/badges/beta.svg)]()
+[![Release Candidate](https://img.shields.io/badge/project-Release%20Candidate-kotlin.svg?colorA=555555&colorB=AC29EC&label=&logo=kotlin&logoColor=ffffff&logoWidth=10)]()
 [![Kotlin](https://img.shields.io/badge/kotlin-2.0-blue.svg?logo=kotlin)]()
 [![Java](https://img.shields.io/badge/java-17-orange.svg?logo=java)]()
 [![Test Coverage](https://s3.amazonaws.com/assets.coveralls.io/badges/coveralls_99.svg)]()
