@@ -285,10 +285,6 @@ Note that the `HijrahDateTime``` class must be serializable to serialize and des
 
 ## Using in your projects
 
-> Note that the library is experimental, and the API is subject to change.
-> However, the library is almost stable. You can use it in your projects, and if you face any issues or incorrect behavior, consider creating an issue in the repository.
-
-
 The library is published to Maven Central.
 
 
