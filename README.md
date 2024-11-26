@@ -7,7 +7,7 @@
 
 HijrahDateTime is a Kotlin/JVM library that is built on top of java.time to facilitates work with Hijrah date and time APIs.
 
-See [Using in your projects](#using-in-your-projects) for the instructions how to setup a dependency in your project.
+See [Using in your projects](#using-in-your-projects) for the instructions how to set up a dependency in your project.
 
 
 
@@ -134,8 +134,8 @@ println(date.format(dateFormat)) // "1446/10/12"
 
 val dateTimeFormat = HijrahFormatters.buildHijrahDateTimeFormatter(
   localHijrahDateFormatter = dateFormat,
-  datetimeSeparator = ' ' // Change the separator from 'T' to ' '
-  timeFormatter: HijrahFormatters.LOCAL_TIME_12_HOURS // Use the 12-hour format
+  datetimeSeparator = ' ', // Change the separator from 'T' to ' '
+  timeFormatter= HijrahFormatters.LOCAL_TIME_12_HOURS // Use the 12-hour format
 )
 val dateTime: HijrahDateTime = dateTimeFormat.parse("1446/10/12 12:30:00 PM", HijrahDateTime::from)
 println(dateTime.format(dateTimeFormat)) // "1446/10/12 12:30:00 PM"
@@ -188,7 +188,7 @@ fun main() {
 }
 ```
 
-You can also adds other serializers for the other datetime classes in the same way. Or you can use `HijrahChronoSerializersModule` class that registers all serializers for all library datetime classes, and allows you to customize the formatters. For example:
+You can also add other serializers for the other datetime classes in the same way. Or you can use `HijrahChronoSerializersModule` class that registers all serializers for all library datetime classes, and allows you to customize the formatters. For example:
 
 ```kotlin
 // Code omitted for brevity
@@ -196,7 +196,6 @@ val json = Json {
     serializersModule = HijrahChronoSerializersModule(localHijrahDateTimeFormatter = formatter).get()
 }
 // Code omitted for brevity
-}
 ```
 
 
