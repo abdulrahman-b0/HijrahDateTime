@@ -25,8 +25,8 @@ class HijrahMonthTest {
     @DisplayName("HijrahMonth is resolved by its value properly")
     fun hijrahMonthIsResolvedByItsValueProperly() {
         assertEquals(HijrahMonth.SAFAR, HijrahMonth.of(2))
-        assertEquals(HijrahMonth.JUMADA_AL_AWWAL, HijrahMonth.of(5))
-        assertEquals(HijrahMonth.DHU_AL_QIDAH, HijrahMonth.of(11))
+        assertEquals(HijrahMonth.JUMADA_AL_ULA, HijrahMonth.of(5))
+        assertEquals(HijrahMonth.THUL_QIDAH, HijrahMonth.of(11))
     }
 
     @Test
@@ -53,8 +53,8 @@ class HijrahMonthTest {
     @DisplayName("HijrahMonth is got properly")
     fun get() {
         assertEquals(2, HijrahMonth.SAFAR.get(ChronoField.MONTH_OF_YEAR))
-        assertEquals(5, HijrahMonth.JUMADA_AL_AWWAL.get(ChronoField.MONTH_OF_YEAR))
-        assertEquals(11, HijrahMonth.DHU_AL_QIDAH.get(ChronoField.MONTH_OF_YEAR))
+        assertEquals(5, HijrahMonth.JUMADA_AL_ULA.get(ChronoField.MONTH_OF_YEAR))
+        assertEquals(11, HijrahMonth.THUL_QIDAH.get(ChronoField.MONTH_OF_YEAR))
         assertThrows<UnsupportedTemporalTypeException> {
             HijrahMonth.SAFAR.get(ChronoField.DAY_OF_WEEK)
         }
@@ -63,8 +63,8 @@ class HijrahMonthTest {
     @Test
     fun getLong() {
         assertEquals(2, HijrahMonth.SAFAR.getLong(ChronoField.MONTH_OF_YEAR))
-        assertEquals(5, HijrahMonth.JUMADA_AL_AWWAL.getLong(ChronoField.MONTH_OF_YEAR))
-        assertEquals(11, HijrahMonth.DHU_AL_QIDAH.getLong(ChronoField.MONTH_OF_YEAR))
+        assertEquals(5, HijrahMonth.JUMADA_AL_ULA.getLong(ChronoField.MONTH_OF_YEAR))
+        assertEquals(11, HijrahMonth.THUL_QIDAH.getLong(ChronoField.MONTH_OF_YEAR))
         assertThrows<UnsupportedTemporalTypeException> {
             HijrahMonth.SAFAR.getLong(ChronoField.YEAR)
         }
@@ -77,8 +77,8 @@ class HijrahMonthTest {
     @DisplayName("HijrahMonth is queried properly")
     fun query() {
         assertEquals(HijrahMonth.SAFAR, HijrahMonth.SAFAR.query(HijrahMonth::from))
-        assertEquals(HijrahMonth.JUMADA_AL_AWWAL, HijrahDate.of(1443, 5, 15).query(HijrahMonth::from))
-        assertEquals(HijrahMonth.RABI_AL_THANI, LocalDate.of(2024, 10, 30).query(HijrahMonth::from))
+        assertEquals(HijrahMonth.JUMADA_AL_ULA, HijrahDate.of(1443, 5, 15).query(HijrahMonth::from))
+        assertEquals(HijrahMonth.RABI_AL_AKHIR, LocalDate.of(2024, 10, 30).query(HijrahMonth::from))
         assertThrows<DateTimeException> {
             DayOfWeek.FRIDAY.query(HijrahMonth::from)
         }
