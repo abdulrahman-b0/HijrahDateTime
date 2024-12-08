@@ -28,7 +28,7 @@ enum class HijrahMonth(val value: Int) : TemporalAccessor, TemporalAdjuster {
     RABI_AL_AWWAL(3),
     RABI_AL_AKHIR(4),
     JUMADA_AL_ULA(5),
-    JUMADA_AL_KHIRAH(6),
+    JUMADA_AL_AKHIRAH(6),
     RAJAB(7),
     SHAABAN(8),
     RAMADAN(9),
