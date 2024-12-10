@@ -2,6 +2,7 @@
 
 package com.abdulrahman_b.hijrahdatetime.formats
 
+import com.abdulrahman_b.hijrahdatetime.EarlyHijrahDate
 import com.abdulrahman_b.hijrahdatetime.HijrahDateTime
 import com.abdulrahman_b.hijrahdatetime.OffsetHijrahDate
 import com.abdulrahman_b.hijrahdatetime.OffsetHijrahDateTime
@@ -18,6 +19,7 @@ import java.time.format.ResolverStyle
 import java.time.format.SignStyle
 import java.time.temporal.ChronoField
 import java.time.temporal.Temporal
+import java.time.temporal.TemporalAccessor
 import java.time.temporal.UnsupportedTemporalTypeException
 import java.util.Locale
 
@@ -164,9 +166,10 @@ object HijrahFormatters {
      */
     @Throws(UnsupportedTemporalTypeException::class)
     @JvmStatic
-    fun getRecommendedFormatter(temporal: Temporal): DateTimeFormatter {
+    fun getRecommendedFormatter(temporal: TemporalAccessor): DateTimeFormatter {
         return when (temporal) {
             is HijrahDate -> HIJRAH_DATE
+            is EarlyHijrahDate -> HIJRAH_DATE
             is HijrahDateTime -> HIJRAH_DATE_TIME
             is OffsetHijrahDate -> HIJRAH_OFFSET_DATE
             is ZonedHijrahDateTime -> HIJRAH_ZONED_DATE_TIME
