@@ -22,6 +22,13 @@ import java.time.chrono.HijrahDate;
 public class StaticMethodsCoverageTest {
 
     @Test
+    @DisplayName("Call all static functions in EarlyHijrahDate")
+    public void callEarlyHijrahDateStaticFunctions() {
+        EarlyHijrahDate.parse("1000-05-12");
+        EarlyHijrahDate.parse("1000-05-12", HijrahFormatters.HIJRAH_DATE);
+    }
+
+    @Test
     @DisplayName("Call all static functions in HijrahDateTime")
     public void callHijrahDateTimeStaticFunctions() {
         HijrahDateTime.now();

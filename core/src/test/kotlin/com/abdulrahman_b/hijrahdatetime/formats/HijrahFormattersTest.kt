@@ -1,5 +1,6 @@
 package com.abdulrahman_b.hijrahdatetime.formats
 
+import com.abdulrahman_b.hijrahdatetime.EarlyHijrahDate
 import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates.atStartOfDay
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_DATE
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_DATE_TIME
@@ -65,12 +66,14 @@ class HijrahFormattersTest {
     @DisplayName("Recommends the correct Hijrah date format")
     fun hijrahDateFormatter() {
         val hijrahDate = HijrahDate.now()
+        val earlyHijrahDate = EarlyHijrahDate(785, 10, 1)
         val hijrahDateTime = hijrahDate.atStartOfDay()
         val offsetHijrahDateTime = hijrahDateTime.atOffset(ZoneOffset.of("+03:00"))
         val offsetHijrahDate = offsetHijrahDateTime.toOffsetDate()
         val zonedHijrahDateTime = offsetHijrahDateTime.toZonedHijrahDateTime(ZoneId.of("Asia/Riyadh"))
 
         assertEquals(HIJRAH_DATE, getRecommendedFormatter(hijrahDate))
+        assertEquals(HIJRAH_DATE, getRecommendedFormatter(earlyHijrahDate))
         assertEquals(HIJRAH_DATE_TIME, getRecommendedFormatter(hijrahDateTime))
         assertEquals(HIJRAH_OFFSET_DATE, getRecommendedFormatter(offsetHijrahDate))
         assertEquals(HIJRAH_OFFSET_DATE_TIME, getRecommendedFormatter(offsetHijrahDateTime))

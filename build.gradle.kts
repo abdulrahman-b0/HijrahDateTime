@@ -24,6 +24,7 @@ kover {
     //Those classes are only containers for nested classes. For organization purposes.
     reports.filters.excludes.classes(
         "com.abdulrahman_b.hijrahdatetime.serialization.jackson.HijrahDateSerialization",
+        "com.abdulrahman_b.hijrahdatetime.serialization.jackson.EarlyHijrahDateSerialization",
         "com.abdulrahman_b.hijrahdatetime.serialization.jackson.HijrahDateTimeSerialization",
         "com.abdulrahman_b.hijrahdatetime.serialization.jackson.OffsetHijrahDateSerialization",
         "com.abdulrahman_b.hijrahdatetime.serialization.jackson.OffsetHijrahDateTimeSerialization",
