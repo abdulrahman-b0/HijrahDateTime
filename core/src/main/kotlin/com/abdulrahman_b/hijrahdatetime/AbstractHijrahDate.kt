@@ -5,6 +5,17 @@ import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 import java.time.temporal.Temporal
 
+/**
+ * Represents an abstract base class for Hijrah dates in the Islamic Hijrah calendar system.
+ * Provides various utility methods for manipulating and retrieving date-related information
+ * in terms of years, months, days, and weeks, adhering to the Hijrah calendar.
+ *
+ * This class extends [AbstractHijrahTemporal] and is parameterized for type safety,
+ * ensuring operations on the specific implementation of a Hijrah calendar date.
+ *
+ * @param T The type of the subclass extending this abstract class
+ * @constructor Constructs an [AbstractHijrahDate] instance with the specified temporal object.
+ */
 sealed class AbstractHijrahDate <T: AbstractHijrahDate<T>> (temporal: Temporal): AbstractHijrahTemporal<T>(temporal) {
 
 

@@ -70,6 +70,13 @@ class EarlyHijrahDate(
         return field == ChronoField.YEAR_OF_ERA || field == ChronoField.YEAR || field == ChronoField.MONTH_OF_YEAR || field == ChronoField.DAY_OF_MONTH
     }
 
+    /**
+     * Retrieves the value of the specified temporal field from this date.
+     *
+     * @param field the temporal field to retrieve the value for, not null
+     * @return the value of the specified field as an integer
+     * @throws UnsupportedTemporalTypeException if the specified field is unsupported
+     */
     override fun get(field: TemporalField): Int {
         return when (field) {
             ChronoField.YEAR, ChronoField.YEAR_OF_ERA -> year
@@ -79,6 +86,14 @@ class EarlyHijrahDate(
         }
     }
 
+    /**
+     * Retrieves the valid range of values for the specified temporal field within the context
+     * of this EarlyHijrahDate implementation.
+     *
+     * @param field the temporal field for which the range is requested, not null
+     * @return the range of valid values for the specified field
+     * @throws UnsupportedTemporalTypeException if the specified field is not supported
+     */
     override fun range(field: TemporalField): ValueRange {
         return when (field) {
             ChronoField.YEAR, ChronoField.YEAR_OF_ERA -> ValueRange.of(MIN_YEAR.toLong(), MAX_YEAR.toLong())
@@ -88,6 +103,12 @@ class EarlyHijrahDate(
         }
     }
 
+    /**
+     * Queries this date for information using the specified [TemporalQuery].
+     *
+     * @param query the query to invoke, not null
+     * @return the result of the query, which can be null if the query is not supported
+     */
     @Suppress("UNCHECKED_CAST")
     override fun <R : Any> query(query: TemporalQuery<R>): R? {
         return when (query) {
@@ -96,6 +117,13 @@ class EarlyHijrahDate(
         }
     }
 
+    /**
+     * Retrieves the value of the specified temporal field from this date as a [Long].
+     *
+     * @param field the temporal field to retrieve the value for, not null
+     * @return the value of the specified field as a [Long]
+     * @throws UnsupportedTemporalTypeException if the specified field is unsupported
+     */
     override fun getLong(field: TemporalField): Long = get(field).toLong()
 
     /**
@@ -166,6 +194,15 @@ class EarlyHijrahDate(
 
     companion object {
 
+        /**
+         * Parses the given text representation of a date using the provided formatter
+         * and converts it to an instance of [EarlyHijrahDate].
+         *
+         * @param text the text containing the date to be parsed, not null
+         * @param formatter the formatter to use for parsing; defaults to `HijrahFormatters.HIJRAH_DATE`
+         * @return an instance of `EarlyHijrahDate` representing the parsed date
+         * @throws DateTimeException if the text cannot be parsed to an `EarlyHijrahDate`
+         */
         @JvmStatic
         @JvmOverloads
         fun parse(

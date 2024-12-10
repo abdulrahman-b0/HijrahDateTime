@@ -9,6 +9,16 @@ import java.time.temporal.Temporal
 import java.time.temporal.TemporalUnit
 import java.time.temporal.UnsupportedTemporalTypeException
 
+/**
+ * Abstract base class representing a Hijrah date-time.
+ *
+ * This class provides a foundation for date-time representations based on the Hijrah calendar system.
+ * It extends the behavior of [AbstractHijrahDate] by introducing temporal functionality related to time,
+ * such as hours, minutes, seconds, and nanoseconds.
+ *
+ * @param T the actual type that extends this base class
+ * @param temporal the underlying temporal object
+ */
 sealed class AbstractHijrahDateTime<T: AbstractHijrahDateTime<T>>(
     temporal: Temporal
 ): AbstractHijrahDate<T>(temporal) {

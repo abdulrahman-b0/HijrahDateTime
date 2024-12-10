@@ -22,11 +22,15 @@ import java.time.temporal.UnsupportedTemporalTypeException
 import java.time.temporal.ValueRange
 
 /**
- * A class that provides a set of functions to manipulate date-time objects.
+ * Abstract base class representing temporal objects in the Hijrah calendar system.
  *
- * This class is a base class for all date-time classes in this package.
+ * This class provides a foundational implementation for date-time objects following the Hijrah calendar system.
+ * It delegates most functionality to the provided underlying [Temporal] instance while augmenting the behavior
+ * specific to the Hijrah chronology.
  *
- * @param T the implementation type of the date-time object, which is a subclass of [AbstractHijrahTemporal], all operations in this class return this type.
+ * @param T The concrete subclass type extending this abstract class.
+ * @property temporal The temporal instance representing the underlying date-time information.
+ * @constructor Initializes an instance with a specified [Temporal].
  */
 sealed class AbstractHijrahTemporal<T : AbstractHijrahTemporal<T>>(
     private val temporal: Temporal,
