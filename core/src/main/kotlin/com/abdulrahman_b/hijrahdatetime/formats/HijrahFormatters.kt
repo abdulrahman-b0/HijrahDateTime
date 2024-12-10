@@ -203,7 +203,7 @@ object HijrahFormatters {
     @JvmStatic
     fun buildHijrahDateFormatter(separator: String): DateTimeFormatter {
         return DateTimeFormatterBuilder()
-            .appendValue(ChronoField.YEAR, 4, 4, SignStyle.NOT_NEGATIVE)
+            .appendValue(ChronoField.YEAR, 1, 4, SignStyle.NOT_NEGATIVE)
             .appendLiteral(separator)
             .appendValue(ChronoField.MONTH_OF_YEAR, 2)
             .appendLiteral(separator)
