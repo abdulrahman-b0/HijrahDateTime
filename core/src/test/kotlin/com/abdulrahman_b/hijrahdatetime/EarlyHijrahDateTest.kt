@@ -9,16 +9,16 @@ import java.time.temporal.*
 
 class EarlyHijrahDateTest {
 
-    val date = EarlyHijrahDate(700, 1, 30)
+    val date = EarlyHijrahDate.of(700, 1, 30)
 
     @Test
     @DisplayName("Out of range values throw exceptions")
     fun outOfRange() {
         assertThrows<DateTimeException> {
-            EarlyHijrahDate(1446, 12, 5)
+            EarlyHijrahDate.of(1446, 12, 5)
         }
         assertThrows<DateTimeException> {
-            EarlyHijrahDate(700, 12, 32)
+            EarlyHijrahDate.of(700, 12, 32)
         }
     }
 
@@ -121,26 +121,26 @@ class EarlyHijrahDateTest {
 
     @Test
     fun equalsTest() {
-        val date2 = EarlyHijrahDate(700, 1, 30)
+        val date2 = EarlyHijrahDate.of(700, 1, 30)
         assertEquals(date, date2)
     }
 
     @Test
     fun compareTo() {
-        var date2 = EarlyHijrahDate(700, 1, 30)
+        var date2 = EarlyHijrahDate.of(700, 1, 30)
         assertEquals(0, date.compareTo(date2))
 
-        date2 = EarlyHijrahDate(700, 2, 1)
+        date2 = EarlyHijrahDate.of(700, 2, 1)
         assertTrue(date < date2)
 
-        date2 = EarlyHijrahDate(700, 1, 1)
+        date2 = EarlyHijrahDate.of(700, 1, 1)
         assertTrue(date > date2)
 
     }
 
     @Test
     fun hashCodeTest() {
-        val date2 = EarlyHijrahDate(700, 1, 30)
+        val date2 = EarlyHijrahDate.of(700, 1, 30)
         assertEquals(date.hashCode(), date2.hashCode())
     }
 

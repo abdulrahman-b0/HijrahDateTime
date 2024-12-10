@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 
 class EarlyHijrahDateSerializerTest {
 
-    private val hijrahDate = EarlyHijrahDate(1200, 10, 1)
+    private val hijrahDate = EarlyHijrahDate.of(1200, 10, 1)
     private val jsonElement = "\"1200-10-01\""
 
     @Test

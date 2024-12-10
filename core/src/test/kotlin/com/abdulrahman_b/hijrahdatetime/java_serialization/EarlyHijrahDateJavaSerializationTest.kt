@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream
 class EarlyHijrahDateJavaSerializationTest {
 
     companion object {
-        private val hijrahDate = EarlyHijrahDate(50, 5, 16)
+        private val hijrahDate = EarlyHijrahDate.of(50, 5, 16)
         private lateinit var serializedStream: ByteArrayOutputStream
     }
 

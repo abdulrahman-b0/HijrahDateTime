@@ -30,7 +30,7 @@ import java.time.temporal.*
  * @throws DateTimeException if the year or dayOfMonth are out of their respective ranges.
  *
  */
-class EarlyHijrahDate(
+class EarlyHijrahDate private constructor(
     val year: Int,
     val month: HijrahMonth,
     val dayOfMonth: Int
@@ -38,12 +38,6 @@ class EarlyHijrahDate(
 
     @Serial
     private val serialVersionUID = 1L
-
-    constructor(year: Int, monthValue: Int, dayOfMonth: Int) : this(
-        year,
-        HijrahMonth.of(monthValue),
-        dayOfMonth
-    )
 
     init {
         if (year !in MIN_YEAR..MAX_YEAR ) {
@@ -195,6 +189,21 @@ class EarlyHijrahDate(
     companion object {
 
         /**
+         * Creates an instance of `EarlyHijrahDate` based on the specified year, month, and day of the month.
+         *
+         * @param year the year to represent
+         * @param month the month to represent, where 1 is Muharram and 12 is Dhu al-Hijjah
+         * @param dayOfMonth the day of the month to represent
+         * @return the [EarlyHijrahDate] instance representing the specified year, month, and day of the month.
+         *
+         * @throws DateTimeException if values are out of range.
+         */
+        @JvmStatic
+        fun of(year: Int, month: Int, dayOfMonth: Int): EarlyHijrahDate {
+            return EarlyHijrahDate(year, HijrahMonth.of(month), dayOfMonth)
+        }
+
+        /**
          * Parses the given text representation of a date using the provided formatter
          * and converts it to an instance of [EarlyHijrahDate].
          *
@@ -213,7 +222,7 @@ class EarlyHijrahDate(
             return formatter.withChronology(null).parse(text) { accessor: TemporalAccessor ->
                 try {
                     accessor as? EarlyHijrahDate
-                        ?: EarlyHijrahDate(
+                        ?: of(
                             accessor.get(ChronoField.YEAR),
                             accessor.get(ChronoField.MONTH_OF_YEAR),
                             accessor.get(ChronoField.DAY_OF_MONTH)

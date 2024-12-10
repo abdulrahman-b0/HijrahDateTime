@@ -232,10 +232,13 @@ enum class HijrahMonth(val value: Int) : TemporalAccessor, TemporalAdjuster {
         /**
          * Obtains an instance of [HijrahMonth] from an [Int] value.
          * @param value the month-of-year, from 1 to 12
+         *
+         * @throws DateTimeException if month value is out of range.
          */
         @JvmStatic
         fun of(value: Int): HijrahMonth {
-            return entries.first { it.value == value }
+            return entries.find { it.value == value } ?:
+                throw DateTimeException("Invalid value for HijrahMonth: $value")
         }
 
         /**

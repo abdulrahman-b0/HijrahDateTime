@@ -18,7 +18,7 @@ class EarlyHijrahDateSerializationTest {
 
     @BeforeEach
     fun setUp() {
-        hijrahDate = EarlyHijrahDate(1165, 10, 1)
+        hijrahDate = EarlyHijrahDate.of(1165, 10, 1)
         val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd").withChronology(HijrahChronology.INSTANCE)
         objectMapper = ObjectMapper()
             .registerModules(HijrahChronoSerializersModule(hijrahDateFormatter = formatter))

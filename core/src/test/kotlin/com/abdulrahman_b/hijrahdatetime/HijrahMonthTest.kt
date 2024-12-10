@@ -22,6 +22,13 @@ import java.time.temporal.UnsupportedTemporalTypeException
 class HijrahMonthTest {
 
     @Test
+    @DisplayName("Invalid HijrahMonth value throws an exception")
+    fun invalidHijrahMonthValueThrowsAnException() {
+        assertThrows<DateTimeException> { HijrahMonth.of(0) }
+        assertThrows<DateTimeException> { HijrahMonth.of(13) }
+    }
+
+    @Test
     @DisplayName("HijrahMonth is resolved by its value properly")
     fun hijrahMonthIsResolvedByItsValueProperly() {
         assertEquals(HijrahMonth.SAFAR, HijrahMonth.of(2))

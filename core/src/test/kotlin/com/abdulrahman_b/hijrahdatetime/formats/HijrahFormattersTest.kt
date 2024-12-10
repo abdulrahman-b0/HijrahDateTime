@@ -66,7 +66,7 @@ class HijrahFormattersTest {
     @DisplayName("Recommends the correct Hijrah date format")
     fun hijrahDateFormatter() {
         val hijrahDate = HijrahDate.now()
-        val earlyHijrahDate = EarlyHijrahDate(785, 10, 1)
+        val earlyHijrahDate = EarlyHijrahDate.of(785, 10, 1)
         val hijrahDateTime = hijrahDate.atStartOfDay()
         val offsetHijrahDateTime = hijrahDateTime.atOffset(ZoneOffset.of("+03:00"))
         val offsetHijrahDate = offsetHijrahDateTime.toOffsetDate()

@@ -24,6 +24,7 @@ public class StaticMethodsCoverageTest {
     @Test
     @DisplayName("Call all static functions in EarlyHijrahDate")
     public void callEarlyHijrahDateStaticFunctions() {
+        EarlyHijrahDate.of(1000, 5, 12);
         EarlyHijrahDate.parse("1000-05-12");
         EarlyHijrahDate.parse("1000-05-12", HijrahFormatters.HIJRAH_DATE);
     }
