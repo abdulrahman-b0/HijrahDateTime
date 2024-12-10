@@ -2,7 +2,6 @@ package com.abdulrahman_b.hijrahdatetime
 
 
 import com.abdulrahman_b.hijrahdatetime.serialization.kotlinx.EarlyHijrahDateSerializer
-import com.abdulrahman_b.hijrahdatetime.serialization.kotlinx.HijrahDateSerializer
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.assertEquals
