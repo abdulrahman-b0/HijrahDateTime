@@ -4,6 +4,8 @@ plugins {
 }
 
 hijrahDateTimePublishing {
+    artifactName = "HijrahDateTime Jakarta Validation"
+    artifactDescription = "A library that provides Jakarta Validation support for HijrahDateTime library."
     artifactId = "${rootProject.name}-jakarta-validation"
 }
 

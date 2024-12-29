@@ -4,6 +4,8 @@ plugins {
 }
 
 hijrahDateTimePublishing {
+    artifactName = "HijrahDateTime Jackson Serialization"
+    artifactDescription = "A library that provides Jackson serialization support for HijrahDateTime library."
     artifactId = "${rootProject.name}-serialization-jackson"
 }
 

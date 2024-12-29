@@ -12,5 +12,7 @@ dependencies {
 }
 
 hijrahDateTimePublishing {
+    artifactName = "HijrahDateTime Kotlinx Serialization"
+    artifactDescription = "A library that provides Kotlinx serialization support for HijrahDateTime library."
     artifactId = "${rootProject.name}-serialization-kotlinx"
 }

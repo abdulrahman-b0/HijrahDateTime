@@ -75,35 +75,11 @@ class PublishConfigConventionPlugin : Plugin<Project> {
                 }
             }
         }
-
-        tasks.register("publishCoordinatesCheck") {
-            doLast {
-                logger.trace("Running publish coordinates check")
-                check(rootProject.group == "com.abdulrahman-b") {
-                    "[INVALID] The root project group must be 'com.abdulrahman-b'"
-                }
-                logger.info("[VALID] Root project group: ${rootProject.group}")
-
-
-                check(rootProject.name == "HijrahDateTime") {
-                    "[INVALID] The root project name must be 'HijrahDateTime'"
-                }
-                logger.info("[VALID] Root project name: ${rootProject.name}")
-
-                check(hijrahDateTimePublishing.artifactId.get().startsWith(rootProject.name)) {
-                    "[INVALID] The artifactId must start with the root project name"
-                }
-                logger.info("[VALID] ArtifactId: ${hijrahDateTimePublishing.artifactId.get()}")
-            }
-        }
-
-        tasks.getByName("publishToMavenLocal").dependsOn("publishCoordinatesCheck")
-        tasks.getByName("publish").dependsOn("publishCoordinatesCheck")
     }
 
     private fun Project.configurePom(target: MavenPom) = with(target) {
-        name = rootProject.name
-        description = rootProject.description
+        name = hijrahDateTimePublishing.artifactName.get()
+        description = hijrahDateTimePublishing.artifactDescription.get()
         url = publishProperties.getProperty("project.url")
         licenses {
             license {
@@ -131,5 +107,7 @@ class PublishConfigConventionPlugin : Plugin<Project> {
 
 
 interface HijrahDateTimePublishingExtension {
+    val artifactName: Property<String>
+    val artifactDescription: Property<String>
     val artifactId: Property<String>
 }
