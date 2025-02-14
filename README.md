@@ -37,7 +37,7 @@ The library provides a basic set of classes for working with date and time:
 
 - `OffsetHijrahDateTime` to represent hijrah date and time components with a fixed offset from UTC. It's similar to java `OffsetDateTime` except that it uses the `HijrahDateTime` instead of `LocalDateTime`.
 
-- `OffsetHijrahDate` to represent hijrah date components with a fixed offset from UTC. It's a combination of the `LocalHijrahDate` and the `ZoneOffset` classes.
+- `OffsetHijrahDate` to represent hijrah date components with a fixed offset from UTC. It's a combination of the `HijrahDate` and the `ZoneOffset` classes.
 
 - `HijrahMonth` to represent the hijrah months in a descriptive manner.
 
