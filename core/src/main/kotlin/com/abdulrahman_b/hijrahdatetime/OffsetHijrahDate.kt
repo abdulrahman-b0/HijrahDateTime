@@ -46,7 +46,7 @@ class OffsetHijrahDate private constructor(
 ) : AbstractHijrahDate<OffsetHijrahDate>(date), TemporalAdjuster, Serializable {
 
 
-    @Serial
+
     private val serialVersionUid: Long = 1L
 
     override fun isEqual(other: OffsetHijrahDate): Boolean {

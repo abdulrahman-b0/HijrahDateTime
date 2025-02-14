@@ -103,7 +103,7 @@ object HijrahFormatters {
      * the hijrah date-time format.
      * The format consists of:
      * * The [HIJRAH_DATE] formatter
-     * * The letter 'T'. Parsing is case insensitive.
+     * * The letter 'T'. Parsing is case-insensitive.
      * * The [ISO_LOCAL_TIME]
      * The returned formatter has a chronology of Hijrah set to ensure dates in
      * other calendar systems are correctly converted.
@@ -124,7 +124,7 @@ object HijrahFormatters {
      * * The [HIJRAH_DATE_TIME] formatter.
      * * The [ZoneOffset.getId]. If the offset has seconds then they will be handled.
      *  The offset parsing is lenient, which allows the minutes and seconds to be optional.
-     *  Parsing is case insensitive.
+     *  Parsing is case-insensitive.
      *
      * The returned formatter has a chronology of Hijrah set to ensure dates in
      * other calendar systems are correctly converted.
@@ -147,7 +147,7 @@ object HijrahFormatters {
      * * If the zone ID is not available or is a [ZoneOffset] then the format is done.
      * * An open square bracket '['.
      * * The [ZoneId.getId].
-     *  Parsing is case sensitive.
+     *  Parsing is case-sensitive.
      * * A close square bracket ']'.
      *
      * The returned formatter has a chronology of Hijrah set to ensure dates in
@@ -253,7 +253,7 @@ object HijrahFormatters {
      * This returns an immutable formatter capable of formatting and parsing the hijrah date-time format.
      * The format consists of:
      * * The [hijrahDateFormatter] formatter
-     * * The separator literal defined by the caller in the [datetimeSeparator] parameter. Parsing is case insensitive.
+     * * The separator literal defined by the caller in the [datetimeSeparator] parameter. Parsing is case-insensitive.
      * * The [timeFormatter] formatter
      *
      * The returned formatter has a chronology of Hijrah set to ensure dates in other calendar systems are correctly converted.
@@ -308,9 +308,9 @@ object HijrahFormatters {
      * This returns an immutable formatter capable of formatting and parsing the hijrah date-time format.
      * The format consists of:
      * * The [offsetHijrahDateTimeFormatter] formatter, which you can build using the [buildOffsetHijrahDateTimeFormatter] method or use the [HIJRAH_OFFSET_DATE_TIME] formatter constant.
-     * * The begin zone id encloser literal defined by the caller in the [beginZoneIdEncloser] parameter For example, '['. Empty string is allowed. Parsing is case sensitive.
-     * * The [ZoneId.getId]. Parsing is case sensitive.
-     * * The end zone id encloser literal defined by the caller in the [endZoneIdEncloser] parameter. For example, ']'. Empty string is allowed. Parsing is case sensitive.
+     * * The beginning zone id encloser literal defined by the caller in the [beginZoneIdEncloser] parameter For example, '['. Empty string is allowed. Parsing is case-sensitive.
+     * * The [ZoneId.getId]. Parsing is case-sensitive.
+     * * The end zone id encloser literal defined by the caller in the [endZoneIdEncloser] parameter. For example, ']'. Empty string is allowed. Parsing is case-sensitive.
      *
      * The returned formatter has a chronology of Hijrah set to ensure dates in other calendar systems are correctly converted.
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.

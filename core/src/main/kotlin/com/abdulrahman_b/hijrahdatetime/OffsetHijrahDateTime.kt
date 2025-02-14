@@ -47,7 +47,7 @@ class OffsetHijrahDateTime private constructor(
 ) : AbstractHijrahDateTime<OffsetHijrahDateTime>(dateTime), TemporalAdjuster, Serializable {
 
 
-    @Serial
+
     private val serialVersionUid: Long = 1L
 
     override fun truncatedTo(unit: TemporalUnit): OffsetHijrahDateTime {

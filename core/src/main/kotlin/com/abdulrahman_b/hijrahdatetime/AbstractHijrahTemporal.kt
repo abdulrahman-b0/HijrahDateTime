@@ -36,7 +36,7 @@ sealed class AbstractHijrahTemporal<T : AbstractHijrahTemporal<T>>(
     private val temporal: Temporal,
 ) : Temporal by temporal, Comparable<T>, Serializable {
 
-    @Serial
+
     private val serialVersionUid: Long = 1L
 
     val chronology: HijrahChronology =

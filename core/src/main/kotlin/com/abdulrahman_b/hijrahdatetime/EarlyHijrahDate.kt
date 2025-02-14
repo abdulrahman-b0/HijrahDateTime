@@ -1,7 +1,6 @@
 package com.abdulrahman_b.hijrahdatetime
 
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters
-import java.io.Serial
 import java.io.Serializable
 import java.time.DateTimeException
 import java.time.chrono.HijrahDate
@@ -36,7 +35,7 @@ class EarlyHijrahDate private constructor(
     val dayOfMonth: Int
 ) : TemporalAccessor, Comparable<EarlyHijrahDate>, Serializable {
 
-    @Serial
+
     private val serialVersionUID = 1L
 
     init {

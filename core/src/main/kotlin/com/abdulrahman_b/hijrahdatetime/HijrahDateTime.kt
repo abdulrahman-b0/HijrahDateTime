@@ -7,24 +7,14 @@ import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates.atLocalTime
 import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates.atStartOfDay
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters
 import com.abdulrahman_b.hijrahdatetime.utils.requireHijrahChronology
-import java.io.Serial
 import java.io.Serializable
-import java.time.Clock
-import java.time.DateTimeException
-import java.time.Instant
-import java.time.LocalTime
-import java.time.ZoneId
-import java.time.ZoneOffset
+import java.time.*
 import java.time.chrono.ChronoLocalDateTime
 import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
-import java.time.temporal.Temporal
-import java.time.temporal.TemporalAccessor
-import java.time.temporal.TemporalAdjuster
-import java.time.temporal.TemporalQuery
-import java.time.temporal.TemporalUnit
+import java.time.temporal.*
 import java.time.zone.ZoneRules
 
 /**
@@ -52,7 +42,7 @@ class HijrahDateTime private constructor(
     private val dateTime: ChronoLocalDateTime<HijrahDate>
 ) : AbstractHijrahDateTime<HijrahDateTime>(dateTime), TemporalAdjuster, Serializable {
 
-    @Serial
+
     private val serialVersionUid = 1L
 
     override fun adjustInto(temporal: Temporal): Temporal {
@@ -96,7 +86,7 @@ class HijrahDateTime private constructor(
      *
      * In the case of a gap, where clocks jump forward, there is no valid offset.
      * Instead, the local date-time is adjusted to be later by the length of the gap.
-     * For a typical one hour daylight savings change, the local date-time will be
+     * For a typical one-hour daylight savings change, the local date-time will be
      * moved one hour later into the offset typically corresponding to "summer".
      *
      * To obtain the later offset during an overlap, call

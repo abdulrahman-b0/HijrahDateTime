@@ -4,25 +4,14 @@ package com.abdulrahman_b.hijrahdatetime
 import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters
 import com.abdulrahman_b.hijrahdatetime.utils.requireHijrahChronology
-import java.io.Serial
 import java.io.Serializable
-import java.time.Clock
-import java.time.DateTimeException
-import java.time.Instant
-import java.time.LocalTime
-import java.time.ZoneId
-import java.time.ZoneOffset
+import java.time.*
 import java.time.chrono.ChronoZonedDateTime
 import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
-import java.time.temporal.Temporal
-import java.time.temporal.TemporalAccessor
-import java.time.temporal.TemporalField
-import java.time.temporal.TemporalQuery
-import java.time.temporal.TemporalUnit
-import java.time.temporal.ValueRange
+import java.time.temporal.*
 import java.time.zone.ZoneRules
 
 /**
@@ -53,7 +42,7 @@ import java.time.zone.ZoneRules
  * For Overlaps, the general strategy is that if the local date-time falls in the
  * middle of an Overlap, then the previous offset will be retained. If there is no
  * previous offset, or the previous offset is invalid, then the earlier offset is
- * used, typically "summer" time.. Two additional methods,
+ * used, typically "summer" time. Two additional methods,
  * [withEarlierOffsetAtOverlap] and [withLaterOffsetAtOverlap],
  * help manage the case of an overlap.
  *
@@ -73,7 +62,7 @@ open class ZonedHijrahDateTime private constructor(
     val zone: ZoneId get() = dateTime.zone
     val offset: ZoneOffset get() = dateTime.offset
 
-    @Serial
+
     private val serialVersionUid = 1L
 
     override fun truncatedTo(unit: TemporalUnit) = of(toHijrahDateTime().truncatedTo(unit), zone)
@@ -89,7 +78,7 @@ open class ZonedHijrahDateTime private constructor(
     /**
      * Returns a copy of `this` date-time changing the zone offset to the earlier of the two valid offsets at a local time-line overlap.
      *
-     * This method only has any effect when the local time-line overlaps, such as at an autumn daylight savings cutover.
+     * This method only has any effect when the local time-line overlaps, such as at an autumn daylight savings cut over.
      * In this scenario, there are two valid offsets for the local date-time. Calling this method will return a zoned date-time with the earlier of the two selected.
      * If this method is called when it is not an overlap, this is returned.
      * This instance is immutable and unaffected by this method call.
@@ -100,12 +89,12 @@ open class ZonedHijrahDateTime private constructor(
         ZonedHijrahDateTime(dateTime.withEarlierOffsetAtOverlap())
 
     /**
-     * Returns a copy of this date-time changing the zone offset to theclater of the two valid offsets at a local time-line overlap.
+     * Returns a copy of this date-time changing the zone offset to the latter of the two valid offsets at a local time-line overlap.
      *
      * This method only has any effect when the local time-line overlaps, such as
-     * at an autumn daylight savings cutover. In this scenario, there are two
+     * at an autumn daylight savings cut over. In this scenario, there are two
      * valid offsets for the local date-time. Calling this method will return
-     * a zoned date-time with the later of the two selected.
+     * a zoned date-time with the latter of the two selected.
      *
      * If this method is called when it is not an overlap, `this` is returned.
      *

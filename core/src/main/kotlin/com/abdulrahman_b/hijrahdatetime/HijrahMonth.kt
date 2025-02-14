@@ -100,7 +100,7 @@ enum class HijrahMonth(val value: Int) : TemporalAccessor, TemporalAdjuster {
      * If it is not possible to return the value, because the field is not supported
      * or for some other reason, an exception is thrown.
      * <p>
-     * If the field is [ChronoField.MONTH_OF_YEAR] MONTH_OF_YEAR} then the
+     * If the field is [ChronoField.MONTH_OF_YEAR] MONTH_OF_YEAR then the
      * value of the month-of-year, from 1 to 12, will be returned.
      * All other [ChronoField] instances throws an [UnsupportedTemporalTypeException].
      *
@@ -210,7 +210,7 @@ enum class HijrahMonth(val value: Int) : TemporalAccessor, TemporalAdjuster {
      * For example, given a date in Jumada Al-Awwal, the following are output:
      *
      *      dateInJumadaAlAwwal.with(MUHARRAM);    // four months earlier
-     *      dateInJumadaAlAwwal.with(RABI_AL_THANI);      // one months earlier
+     *      dateInJumadaAlAwwal.with(RABI_AL_THANI);      // one month earlier
      *      dateInJumadaAlAwwal.with(JUMADA_AL_AWWAL);        // same date
      *      dateInJumadaAlAwwal.with(JUMADA_AL_THANI);       // one month later
      *      dateInJumadaAlAwwal.with(DHU_AL_HIJJAH);   // seven months later
