@@ -242,11 +242,13 @@ object HijrahDates {
         HijrahDateTime.of(this, localTime)
 
     /**
-     * Obtains an [OffsetHijrahDateTime] with the specified [ZoneOffset].
-     * The time is set to midnight, 00:00.
+     * Converts this date to an [Instant].
      *
-     * @param offset the offset to use, not null
-     * @return the offset date-time, not null
+     * This combines this local date (At start of the day) and the specified offset to form
+     * an [Instant].
+     *
+     * @param offset  the offset to use for the conversion, not null
+     * @return an [Instant] representing the same instant, not null
      */
     @JvmStatic
     fun HijrahDate.toInstant(offset: ZoneOffset): Instant = atStartOfDay(offset).toInstant()
