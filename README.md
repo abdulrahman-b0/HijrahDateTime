@@ -1,8 +1,8 @@
 # HijrahDateTime
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-puregreen.svg)]()
+[![Version](https://img.shields.io/badge/Version-1.0.1-puregreen.svg)]()
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.1.0-purple.svg?logo=kotlin)]()
-[![Java](https://img.shields.io/badge/java-17-orange.svg?logo=java)]()
+[![Java](https://img.shields.io/badge/java-11-orange.svg?logo=java)]()
 [![Test Coverage](https://s3.amazonaws.com/assets.coveralls.io/badges/coveralls_99.svg)]()
 [![Donation](https://img.shields.io/badge/Donation-PayPal-blue.svg?logo=paypal)](https://www.paypal.com/paypalme/AbdulrahmanBahamel)
 
@@ -312,20 +312,20 @@ repositories {
 #### Using Gradle Kotlin DSL
 ```kotlin build.gradle.kts
 dependencies {
-    implementation("com.abdulrahman-b:HijrahDateTime:1.0.0") //Core library
-    implementation("com.abdulrahman-b:HijrahDateTime-serialization-kotlinx:1.0.0") //Kotlinx Serialization support
-    implementation("com.abdulrahman-b:HijrahDateTime-serialization-jackson:1.0.0") //Jackson Serialization support
-    implementation("com.abdulrahman-b:HijrahDateTime-jakarta-validation:1.0.0") //Jakarta Bean Validation support
+    implementation("com.abdulrahman-b:HijrahDateTime:1.0.1") //Core library
+    implementation("com.abdulrahman-b:HijrahDateTime-serialization-kotlinx:1.0.1") //Kotlinx Serialization support
+    implementation("com.abdulrahman-b:HijrahDateTime-serialization-jackson:1.0.1") //Jackson Serialization support
+    implementation("com.abdulrahman-b:HijrahDateTime-jakarta-validation:1.0.1") //Jakarta Bean Validation support
 }
 ```
 
 #### Using Gradle Groovy DSL
 ```groovy build.gradle
 dependencies {
-    implementation 'com.abdulrahman-b:HijrahDateTime:1.0.0' //Core library
-    implementation 'com.abdulrahman-b:HijrahDateTime-serialization-kotlinx:1.0.0' //Kotlinx Serialization support
-    implementation 'com.abdulrahman-b:HijrahDateTime-serialization-jackson:1.0.0' //Jackson Serialization support
-    implementation 'com.abdulrahman-b:HijrahDateTime-jakarta-validation:1.0.0' //Jakarta Bean Validation support
+    implementation 'com.abdulrahman-b:HijrahDateTime:1.0.1' //Core library
+    implementation 'com.abdulrahman-b:HijrahDateTime-serialization-kotlinx:1.0.1' //Kotlinx Serialization support
+    implementation 'com.abdulrahman-b:HijrahDateTime-serialization-jackson:1.0.1' //Jackson Serialization support
+    implementation 'com.abdulrahman-b:HijrahDateTime-jakarta-validation:1.0.1' //Jakarta Bean Validation support
 }
 ```
 
@@ -341,26 +341,26 @@ Add a dependency to the `<dependencies>` element:
     <dependency>
         <groupId>com.abdulrahman-b</groupId>
         <artifactId>HijrahDateTime</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency> <!--Core library-->
 
     <dependency>
         <groupId>com.abdulrahman-b</groupId>
         <artifactId>HijrahDateTime-serialization-kotlinx</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency> <!--Kotlinx Serialization support-->
 
     <dependency>
         <groupId>com.abdulrahman-b</groupId>
         <artifactId>HijrahDateTime-serialization-jackson</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency> <!--Jackson Serialization support-->
 
     <dependency>
         <groupId>com.abdulrahman-b</groupId>
 
         <artifactId>HijrahDateTime-jakarta-validation</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency> <!--Jakarta Bean Validation support-->
 </dependencies>
 
@@ -369,7 +369,7 @@ Add a dependency to the `<dependencies>` element:
 ## Building
 
 The library is compatible with the Kotlin Standard Library not lower than `1.9.0`.
-The library also requires JDK 17 or higher to build and run the dependencies.
+The library also requires JDK 11 or higher to build and run the dependencies.
 
 ## Support Me
 
