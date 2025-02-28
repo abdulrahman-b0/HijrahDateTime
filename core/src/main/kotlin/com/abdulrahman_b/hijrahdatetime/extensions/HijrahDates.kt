@@ -28,18 +28,114 @@ import java.time.temporal.TemporalAdjusters.lastDayOfMonth
  */
 object HijrahDates {
 
+    /**
+     * Represents the minimum year supported by the Hijrah calendar system.
+     *
+     * This value is derived from the range of years defined by the Hijrah chronology.
+     * It indicates the lowest possible year that can be represented in the calendar system.
+     *
+     * This constant is primarily used for validation or formatting tasks where
+     * limiting or verifying the year range is necessary within the Hijrah calendar.
+     */
     @JvmField val MIN_YEAR = HijrahChronology.INSTANCE.range(ChronoField.YEAR).minimum.toInt()
+    /**
+     * Represents the maximum year supported by the Hijrah calendar system.
+     *
+     * This value is derived from the range of years defined by the Hijrah chronology.
+     * It indicates the highest possible year that can be represented in the calendar system.
+     *
+     * This constant is primarily used for validation or formatting tasks where
+     * limiting or verifying the year range is necessary within the Hijrah calendar.
+     */
     @JvmField val MAX_YEAR = HijrahChronology.INSTANCE.range(ChronoField.YEAR).maximum.toInt()
+    /**
+     * Represents the minimum supported Hijrah date, defined as the first day of the minimum supported year.
+     *
+     * This constant marks the earliest point in the Hijrah calendar that can be represented.
+     * It is useful in various temporal calculations, comparisons, or when defining bounds
+     * for Hijrah date ranges.
+     *
+     * The value is statically defined as `HijrahDate.of(MIN_YEAR, 1, 1)`, where `MIN_YEAR` corresponds
+     * to the earliest valid year in the Hijrah chronological system supported by the implementation.
+     */
     @JvmField val MIN: HijrahDate = HijrahDate.of(MIN_YEAR, 1, 1)
+    /**
+     * The maximum valid `HijrahDate` supported by the system.
+     *
+     * This variable represents the maximum Hijrah date, specifically
+     * the last day of the 12th month in the maximum supported Hijrah year.
+     * It is computed by using the maximum year (`MAX_YEAR`), set to the last day
+     * of that month, and applying necessary adjustments.
+     *
+     * This value is primarily used for validation of date operations and
+     * ensuring calculations do not exceed the supported range for `HijrahDate`.
+     */
     @JvmField val MAX: HijrahDate = HijrahDate.of(MAX_YEAR, 12, 29).with(lastDayOfMonth())
+    /**
+     * Represents the Hijrah date at the Unix epoch
+     *
+     * This constant holds a precomputed instance of the Hijrah date for the epoch day 0,
+     * which aligns with the start of the Unix time-line. It is primarily used as a reference
+     * point for calculations or conversions involving the Hijrah calendar system and the Unix epoch.
+     */
     @JvmField val EPOCH: HijrahDate = ofEpochDay(0)
 
+    /**
+     * Represents the year in the Hijrah calendar system for the given [HijrahDate].
+     *
+     * This property retrieves the value of the `[ChronoField.YEAR]` field from the Hijrah calendar
+     * representation of the date.
+     *
+     * @return the year value as an integer within the Hijrah calendar.
+     */
     @get:JvmSynthetic inline val HijrahDate.year: Int get() = get(ChronoField.YEAR)
+    /**
+     * Returns the numeric value of the Hijrah month represented by this HijrahDate.
+     *
+     * The value will be an integer from 1 to 12, where 1 corresponds to Muharram,
+     * the first month of the Hijrah calendar, and 12 corresponds to Dhu al-Hijjah, the last month.
+     *
+     * This property retrieves the value associated with the field [ChronoField.MONTH_OF_YEAR]
+     * from the underlying temporal representation of the Hijrah date.
+     *
+     * @receiver The HijrahDate instance from which the month value is retrieved.
+     * @return The integer value corresponding to the month in the Hijrah calendar.
+     */
     @get:JvmSynthetic inline val HijrahDate.monthValue: Int get() = get(ChronoField.MONTH_OF_YEAR)
+    /**
+     * Retrieves the month-of-year field from the Hijrah date as an instance of [HijrahMonth].
+     *
+     * This property provides access to the specific [HijrahMonth] instance that corresponds to
+     * the `monthValue` of the Hijrah date.
+     *
+     * @receiver The Hijrah date from which the month instance is derived.
+     * @return The month in the Hijrah calendar as a [HijrahMonth] instance.
+     */
     @get:JvmSynthetic inline val HijrahDate.month: HijrahMonth get() = HijrahMonth.of(monthValue)
+    /**
+     * Retrieves the day of the year for a Hijrah calendar date.
+     * The value corresponds to the ordinal number of the day within the current year.
+     * For example, the first day of the year will return `1`, the second `2`, and so on.
+     *
+     * @return The day of the year based on the Hijrah calendar chronology.
+     */
     @get:JvmSynthetic inline val HijrahDate.dayOfYear: Int get() = get(ChronoField.DAY_OF_YEAR)
+    /**
+     * Represents the day of the month in the Hijrah calendar system.
+     *
+     * This property retrieves the value of the {@link ChronoField.DAY_OF_MONTH} field
+     * from the current instance of the HijrahDate.
+     *
+     * The returned value is an integer representing the numerical day within
+     * the current month of the Hijrah calendar.
+     *
+     * @return an [Int] representing the day of the month.
+     */
     @get:JvmSynthetic inline val HijrahDate.dayOfMonth: Int get() = get(ChronoField.DAY_OF_MONTH)
+
     @get:JvmSynthetic inline val HijrahDate.dayOfWeekValue: Int get() = get(ChronoField.DAY_OF_WEEK)
+
+
     @get:JvmSynthetic inline val HijrahDate.dayOfWeek: DayOfWeek get() = DayOfWeek.of(dayOfWeekValue)
 
     /**
