@@ -55,7 +55,7 @@ import java.time.zone.ZoneRules
  *
  */
 
-open class ZonedHijrahDateTime private constructor(
+open class ZonedHijrahDateTime(
     private val dateTime: ChronoZonedDateTime<HijrahDate>
 ): AbstractHijrahDateTime<ZonedHijrahDateTime>(dateTime), Serializable {
 
