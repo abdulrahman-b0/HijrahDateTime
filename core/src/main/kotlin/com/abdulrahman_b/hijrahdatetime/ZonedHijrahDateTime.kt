@@ -173,6 +173,18 @@ open class ZonedHijrahDateTime private constructor(
      */
     fun toOffsetHijrahDateTime() = OffsetHijrahDateTime.of(toHijrahDateTime(), offset)
 
+
+    /**
+     * Converts the current object to a `ChronoZonedDateTime`.
+     *
+     * This method retrieves the associated `ChronoZonedDateTime` representation
+     * of the current object, which includes the local date-time, time-zone,
+     * and offset.
+     *
+     * @return the `ChronoZonedDateTime` representation of this object.
+     */
+    fun toChronoZonedDateTime() = dateTime
+
     override fun toString() = dateTime.toString()
 
     @Suppress("UNCHECKED_CAST")
