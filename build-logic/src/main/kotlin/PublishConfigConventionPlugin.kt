@@ -6,14 +6,12 @@ import org.gradle.api.provider.Property
 import org.gradle.api.publish.maven.MavenPom
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.create
-import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.the
 import java.io.File
-import java.util.Properties
+import java.util.*
 
 class PublishConfigConventionPlugin : Plugin<Project> {
 
-    private lateinit var globalProperties: Properties
     private lateinit var publishProperties: Properties
     private lateinit var hijrahDateTimePublishing: HijrahDateTimePublishingExtension
 
@@ -43,10 +41,6 @@ class PublishConfigConventionPlugin : Plugin<Project> {
         publishProperties = Properties().apply {
             load(File("publish.properties").reader())
         }
-        globalProperties = Properties().apply {
-            val userHome = this@loadProperties.gradle.gradleUserHomeDir
-            load(File(userHome, "gradle.properties").reader())
-        }
     }
 
     private fun Project.configurePublishing() {
@@ -63,18 +57,6 @@ class PublishConfigConventionPlugin : Plugin<Project> {
 
             signAllPublications()
         }
-
-        publishing {
-            repositories {
-                maven("https://maven.abdulrahman-b.com/releases") {
-                    name = "Reposilite"
-                    credentials {
-                        this.username = globalProperties.getProperty("reposilite.username")
-                        this.password = globalProperties.getProperty("reposilite.password")
-                    }
-                }
-            }
-        }
     }
 
     private fun Project.configurePom(target: MavenPom) = with(target) {
@@ -90,9 +72,9 @@ class PublishConfigConventionPlugin : Plugin<Project> {
 
         developers {
             developer {
-                id = globalProperties.getProperty("developer.id")
-                name = globalProperties.getProperty("developer.name")
-                email = globalProperties.getProperty("developer.email")
+                id = publishProperties.getProperty("developer.id")
+                name = publishProperties.getProperty("developer.name")
+                email = publishProperties.getProperty("developer.email")
             }
         }
 
