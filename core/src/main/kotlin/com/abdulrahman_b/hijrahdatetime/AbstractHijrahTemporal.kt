@@ -134,7 +134,9 @@ sealed class AbstractHijrahTemporal<T : AbstractHijrahTemporal<T>>(
         return temporal.range(field)
     }
 
-
+    override fun get(field: TemporalField): Int {
+        return temporal.get(field)
+    }
 
 
     /**
