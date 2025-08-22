@@ -373,4 +373,4 @@ The library also requires JDK 11 or higher to build and run the dependencies.
 
 ## Support Me
 
-If you'd like to support me and my work on this project, you can do so via [Paypal](https://www.paypal.com/paypalme/AbdulrahmanBahamel). Your contributions are greatly appreciated! Thank you for your support!
+If you'd like to support me and my work on this project, you can do so via [PayPal](https://www.paypal.com/paypalme/AbdulrahmanBahamel). Your contributions are greatly appreciated! Thank you for your support!

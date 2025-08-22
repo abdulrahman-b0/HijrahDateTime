@@ -6,6 +6,7 @@ import com.abdulrahman_b.hijrahdatetime.EarlyHijrahDate
 import com.abdulrahman_b.hijrahdatetime.HijrahDateTime
 import com.abdulrahman_b.hijrahdatetime.OffsetHijrahDate
 import com.abdulrahman_b.hijrahdatetime.OffsetHijrahDateTime
+import com.abdulrahman_b.hijrahdatetime.SimpleHijrahDate
 import com.abdulrahman_b.hijrahdatetime.ZonedHijrahDateTime
 import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_DATE
@@ -182,7 +183,7 @@ object HijrahFormatters {
      */
     @JvmField
     val HIJRAH_OFFSET_DATE_TIME: DateTimeFormatter =
-        buildOffsetHijrahDateTimeFormatter(HIJRAH_DATE_TIME)
+        buildOffsetHijrahDateTimeFormatter(HIJRAH_LOCAL_DATE_TIME)
 
     /**
      * The Hijrah date-time formatter that formats or parses a date-time with
@@ -223,7 +224,7 @@ object HijrahFormatters {
     @JvmStatic
     fun getRecommendedFormatter(temporal: TemporalAccessor): DateTimeFormatter {
         return when (temporal) {
-            is HijrahDate, is EarlyHijrahDate -> HIJRAH_LOCAL_DATE
+            is HijrahDate, is EarlyHijrahDate, is SimpleHijrahDate -> HIJRAH_LOCAL_DATE
             is HijrahDateTime -> HIJRAH_LOCAL_DATE_TIME
             is OffsetHijrahDate -> HIJRAH_OFFSET_DATE
             is ZonedHijrahDateTime -> HIJRAH_ZONED_DATE_TIME

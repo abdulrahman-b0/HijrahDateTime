@@ -15,7 +15,7 @@ class SimpleHijrahDateTest {
     @DisplayName("Out of range values throw exceptions")
     fun outOfRange() {
         assertThrows<DateTimeException> {
-            SimpleHijrahDate.of(1446, 12, 5)
+            SimpleHijrahDate.of(1746, 12, 5)
         }
         assertThrows<DateTimeException> {
             SimpleHijrahDate.of(700, 12, 32)

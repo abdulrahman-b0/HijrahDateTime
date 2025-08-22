@@ -1,4 +1,3 @@
-import com.vanniktech.maven.publish.SonatypeHost
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -52,7 +51,6 @@ class PublishConfigConventionPlugin : Plugin<Project> {
                 version = rootProject.version.toString()
             )
 
-            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = false)
             pom { configurePom(this) }
 
             signAllPublications()

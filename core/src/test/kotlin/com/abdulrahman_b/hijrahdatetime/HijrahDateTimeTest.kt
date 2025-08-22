@@ -2,6 +2,8 @@ package com.abdulrahman_b.hijrahdatetime
 
 import com.abdulrahman_b.hijrahdatetime.extensions.HijrahTemporalQueries
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters
+import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE
+import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE_TIME
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -148,13 +150,13 @@ class HijrahDateTimeTest {
         @DisplayName("HijrahDateTime is formatted properly")
         fun hijrahDateTimeIsFormattedProperly() {
             val expected = "1446-02-05T12:43:18.0000001"
-            var actual = hijrahDateTime.format(HijrahFormatters.HIJRAH_DATE_TIME)
+            var actual = hijrahDateTime.format(HIJRAH_LOCAL_DATE_TIME)
             assertEquals(expected, actual)
 
             actual = hijrahDateTime.format()
             assertEquals(expected, actual)
 
-            actual = hijrahDateTime.format(HijrahFormatters.HIJRAH_DATE)
+            actual = hijrahDateTime.format(HIJRAH_LOCAL_DATE)
             assertEquals("1446-02-05", actual)
 
             actual = hijrahDateTime.format(DateTimeFormatter.ofPattern("yyyy/MM/dd").withChronology(HijrahChronology.INSTANCE))

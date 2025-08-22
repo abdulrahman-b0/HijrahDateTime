@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter
 /**
  * A container for Jackson serializer and deserializer for [EarlyHijrahDate] class.
  */
+@Deprecated("USe SimpleHijrahDate and SimpleHijrahDateSerialization instead.", ReplaceWith("SimpleHijrahDateSerialization"))
 object EarlyHijrahDateSerialization {
     /**
      * A Jackson serializer for [EarlyHijrahDate] class. It serializes the [EarlyHijrahDate] to a string using the provided [formatter].
