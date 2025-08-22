@@ -1,12 +1,12 @@
-# HijrahDateTime
+# hijrahdatetime
 
-[![Version](https://img.shields.io/badge/Version-1.0.1-puregreen.svg)]()
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.1.0-purple.svg?logo=kotlin)]()
+[![Version](https://img.shields.io/badge/Version-1.1.0-puregreen.svg)]()
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.0-purple.svg?logo=kotlin)]()
 [![Java](https://img.shields.io/badge/java-11-orange.svg?logo=java)]()
 [![Test Coverage](https://s3.amazonaws.com/assets.coveralls.io/badges/coveralls_99.svg)]()
 [![Donation](https://img.shields.io/badge/Donation-PayPal-blue.svg?logo=paypal)](https://www.paypal.com/paypalme/AbdulrahmanBahamel)
 
-HijrahDateTime is a Kotlin/JVM library that is built on top of java.time to facilitates work with Hijrah date and time APIs.
+hijrahdatetime is a Kotlin/JVM library that is built on top of java.time to facilitates work with Hijrah date and time APIs.
 
 See [Using in your projects](#using-in-your-projects) for the instructions how to set up a dependency in your project.
 
@@ -19,7 +19,7 @@ However, this is only limited to the georgian calendar. Although the API provide
 Some features are missing, while others are available but not straightforward to use and require a deeper understanding of Java.time APIs in order to use them, and there are almost no code shortcuts compared with the existing ISO calendar classes and functions.
 However, the Hijrah calendar is the main calendar used in daily life in the Islamic world, and it's important to have a comprehensive set of classes and functions to work with it effectively.
 
-The HijrahDateTime library aims to fill this gap and provide a comprehensive set of classes and functions to work with the Hijrah calendar effectively, and to provide shortcuts for working with the Hijrah calendar as there are for the ISO calendar in the java.time API.
+The hijrahdatetime library aims to fill this gap and provide a comprehensive set of classes and functions to work with the Hijrah calendar effectively, and to provide shortcuts for working with the Hijrah calendar as there are for the ISO calendar in the java.time API.
 Abstracting the work with the Hijrah calendar, and providing shortcuts for working with it, will make it easier to work with the Hijrah calendar, and will make the development process faster and more efficient, and will reduce the complexity of the code, by the well of Allah.
 
 
@@ -31,11 +31,11 @@ Abstracting the work with the Hijrah calendar, and providing shortcuts for worki
 
 The library provides a basic set of classes for working with date and time:
 
-- `HijrahDateTime` to represent hijrah date and time components without a reference to the particular time zone. It's similar to java `LocalDateTime` except that it uses the `HijrahDate` instead of `LocalDate`.
+- `hijrahdatetime` to represent hijrah date and time components without a reference to the particular time zone. It's similar to java `LocalDateTime` except that it uses the `HijrahDate` instead of `LocalDate`.
 
-- `ZonedHijrahDateTime` to represent hijrah date and time components with a reference to the particular time zone. It's similar to java `ZonedDateTime` except that it uses the `HijrahDateTime` instead of `LocalDateTime`.
+- `ZonedHijrahDateTime` to represent hijrah date and time components with a reference to the particular time zone. It's similar to java `ZonedDateTime` except that it uses the `hijrahdatetime` instead of `LocalDateTime`.
 
-- `OffsetHijrahDateTime` to represent hijrah date and time components with a fixed offset from UTC. It's similar to java `OffsetDateTime` except that it uses the `HijrahDateTime` instead of `LocalDateTime`.
+- `OffsetHijrahDateTime` to represent hijrah date and time components with a fixed offset from UTC. It's similar to java `OffsetDateTime` except that it uses the `hijrahdatetime` instead of `LocalDateTime`.
 
 - `OffsetHijrahDate` to represent hijrah date components with a fixed offset from UTC. It's a combination of the `LocalHijrahDate` and the `ZoneOffset` classes.
 
@@ -64,7 +64,7 @@ Some of those formatters are:
 
 - `HIJRAH_DATE` to parse and format the hijrah date in the format `yyyy-MM-dd`, which the main format for the `HijrahDate` class. For example, `1446-10-12`.
 
-- `HIJRAH_DATE_TIME` to parse and format the hijrah date and time in the format `yyyy-MM-ddTHH:mm:ss`, which the main format for the `HijrahDateTime` class. For example, `1446-10-12T12:30:00`.
+- `HIJRAH_DATE_TIME` to parse and format the hijrah date and time in the format `yyyy-MM-ddTHH:mm:ss`, which the main format for the `hijrahdatetime` class. For example, `1446-10-12T12:30:00`.
 
 - `HIJRAH_OFFSET_DATE` to parse and format the hijrah date with the offset in the format `yyyy-MM-ddZ`, which the main format for the `OffsetHijrahDate` class. For example, `1446-10-12+03:00`.
 
@@ -140,7 +140,7 @@ val dateTimeFormat = HijrahFormatters.buildHijrahDateTimeFormatter(
   datetimeSeparator = ' ', // Change the separator from 'T' to ' '
   timeFormatter= HijrahFormatters.LOCAL_TIME_12_HOURS // Use the 12-hour format
 )
-val dateTime: HijrahDateTime = dateTimeFormat.parse("1446/10/12 12:30:00 PM", HijrahDateTime::from)
+val dateTime: hijrahdatetime = dateTimeFormat.parse("1446/10/12 12:30:00 PM", hijrahdatetime::from)
 println(dateTime.format(dateTimeFormat)) // "1446/10/12 12:30:00 PM"
 
 
@@ -159,13 +159,13 @@ The library provides serialization support with java serialization. You can seri
 
 ### Using kotlinx.serialization
 
-The library provides serialization support with kotlinx.serialization library in the artifact `HijrahDateTime-serialization-kotlinx`.
+The library provides serialization support with kotlinx.serialization library in the artifact `hijrahdatetime-serialization-kotlinx`.
 The library provides a list of custom serializers, Each of which use the recommended built-in formatters to serialize and deserialize the datetime classes from and to `String`.
 The serializers are:
 
 - `HijrahDateSerializer` to serialize and deserialize the `HijrahDate` class.
 - `EarlyHijrahDateSerializer` to serialize and deserialize the `EarlyHijrahDate` class.
-- `HijrahDateTimeSerializer` to serialize and deserialize the `HijrahDateTime` class.
+- `HijrahDateTimeSerializer` to serialize and deserialize the `hijrahdatetime` class.
 - `OffsetHijrahDateSerializer` to serialize and deserialize the `OffsetHijrahDate` class.
 - `ZonedHijrahDateTimeSerializer` to serialize and deserialize the `ZonedHijrahDateTime` class.
 - `OffsetHijrahDateTimeSerializer` to serialize and deserialize the `OffsetHijrahDateTime` class.
@@ -181,11 +181,11 @@ fun main() {
 
     val json = Json {
         serializersModule = SerializersModule {
-            contextual(HijrahDateTime::class, HijrahDateTimeSerializer(formatter)) // Register the serializer with the custom format
+            contextual(hijrahdatetime::class, HijrahDateTimeSerializer(formatter)) // Register the serializer with the custom format
         }
     }
     
-    val date = HijrahDateTime.of(1446, 10, 12, 12, 30)
+    val date = hijrahdatetime.of(1446, 10, 12, 12, 30)
     val jsonString: String = json.encodeToString(date)
     println(jsonString) // "1446/10/12 12:30:00 PM"
 
@@ -205,7 +205,7 @@ val json = Json {
 
 ### Using Jackson:
 
-The library provides serialization support with Jackson library in the artifact `HijrahDateTime-serialization-jackson`.
+The library provides serialization support with Jackson library in the artifact `hijrahdatetime-serialization-jackson`.
 
 The library provides a list of custom serializers and deserializers, Each of which use the recommended built-in formatters to serialize and deserialize the datetime classes from and to `String`.
 
@@ -215,8 +215,8 @@ Since jackson defines separate classes for serializer and deserializer for each 
 - `HijrahDateSerialization.Deserializer` to deserialize the `HijrahDate` class.
 - `EarlyHijrahDateSerialization.Serializer` to serialize the `EarlyHijrahDate` class.
 - `EarlyHijrahDateSerialization.Deserializer` to deserialize the `EarlyHijrahDate` class.
-- `HijrahDateTimeSerialization.Serializer` to serialize the `HijrahDateTime` class. 
-- `HijrahDateTimeSerialization.Deserializer` to deserialize the `HijrahDateTime` class.
+- `HijrahDateTimeSerialization.Serializer` to serialize the `hijrahdatetime` class. 
+- `HijrahDateTimeSerialization.Deserializer` to deserialize the `hijrahdatetime` class.
 - `ZonedHijrahDateTimeSerialization.Serializer` to serialize the `ZonedHijrahDateTime` class.
 - `ZonedHijrahDateTimeSerialization.Deserializer` to deserialize the `ZonedHijrahDateTime` class.
 - `OffsetHijrahDateSerialization.Serializer` to serialize the `OffsetHijrahDate` class.
@@ -243,7 +243,7 @@ fun main() {
     val module = HijrahChronoSerializationModule(hijrahDateTimeFormatter = formatter)
     val mapper = ObjectMapper().registerModule(module)
 
-    val data = HijrahDateTime.of(1446, 10, 12, 12, 30)
+    val data = hijrahdatetime.of(1446, 10, 12, 12, 30)
     val json: String = mapper.writeValueAsString(data)
     println(json) // "1446/10/12 12:30:00 PM"
 }
@@ -256,20 +256,20 @@ Serialization done! If you have any questions or issues or a requirement to supp
 
 ## Jakarta Bean Validation
 
-The library provides support for Jakarta Bean Validation 3.0 API in the artifact `HijrahDateTime-jakarta-validation`.
+The library provides support for Jakarta Bean Validation 3.0 API in the artifact `hijrahdatetime-jakarta-validation`.
 
 The Jakarta Bean Validation API provides a set of standard constraints annotations to validate the classes, including `@Future`, `@Past`, `@FutureOrPresent`, and `@PastOrPresent` annotations.
 However, those annotations works only on java.time built-in classes, and they do not work on the hijrah datetime classes provided by this library.
 
-The library artifact `HijrahDateTime-jakarta-validation` adds support for validating the hijrah datetime classes using the standard constraints annotations provided by the Jakarta Bean Validation API.
+The library artifact `hijrahdatetime-jakarta-validation` adds support for validating the hijrah datetime classes using the standard constraints annotations provided by the Jakarta Bean Validation API.
 That means with this library artifact, you can use `@Future`, `@Past`, `@FutureOrPresent`, and `@PastOrPresent` annotations to validate the hijrah datetime classes. Cool, right?
 
-For example, in a Spring boot application, you can use the `@Future` annotation to validate the `HijrahDateTime` class like this:
+For example, in a Spring boot application, you can use the `@Future` annotation to validate the `hijrahdatetime` class like this:
 
 ```kotlin
 data class MyData(
     @field:Future //In kotlin, you have to use the field: prefix to apply the annotation to the field.
-    val date: HijrahDateTime
+    val date: hijrahdatetime
 )
 
 @Controller("/datetime")
@@ -286,7 +286,7 @@ In the above example, the `@Future` annotation validates the `date` field to ens
 If the date is not in the future, the validation will fail, and the Spring Boot will throw a `MethodArgumentNotValidException` exception, which you can handle in the global exception handler or in the controller advice.
 
 **Notes:**
-- `HijrahDateTime` class must be serializable to serialize and deserialize request/response body, refer to the [Serialization](#serialization) section for more information on how to serialize the datetime classes.
+- `hijrahdatetime` class must be serializable to serialize and deserialize request/response body, refer to the [Serialization](#serialization) section for more information on how to serialize the datetime classes.
 - `EarlyHijrahDate` class is not supported for Jakarta Bean Validation, because it inherently deals with dates that are always in the past, making such validation annotations irrelevant or meaningless.
 
 
@@ -312,20 +312,20 @@ repositories {
 #### Using Gradle Kotlin DSL
 ```kotlin build.gradle.kts
 dependencies {
-    implementation("com.abdulrahman-b:HijrahDateTime:1.0.1") //Core library
-    implementation("com.abdulrahman-b:HijrahDateTime-serialization-kotlinx:1.0.1") //Kotlinx Serialization support
-    implementation("com.abdulrahman-b:HijrahDateTime-serialization-jackson:1.0.1") //Jackson Serialization support
-    implementation("com.abdulrahman-b:HijrahDateTime-jakarta-validation:1.0.1") //Jakarta Bean Validation support
+    implementation("com.abdulrahman-b.hijrahdatetime:hijrahdatetime:1.1.0") //Core library
+    implementation("com.abdulrahman-b.hijrahdatetime:hijrahdatetime-serialization-kotlinx:1.1.0") //Kotlinx Serialization support
+    implementation("com.abdulrahman-b.hijrahdatetime:hijrahdatetime-serialization-jackson:1.1.0") //Jackson Serialization support
+    implementation("com.abdulrahman-b.hijrahdatetime:hijrahdatetime-jakarta-validation:1.1.0") //Jakarta Bean Validation support
 }
 ```
 
 #### Using Gradle Groovy DSL
 ```groovy build.gradle
 dependencies {
-    implementation 'com.abdulrahman-b:HijrahDateTime:1.0.1' //Core library
-    implementation 'com.abdulrahman-b:HijrahDateTime-serialization-kotlinx:1.0.1' //Kotlinx Serialization support
-    implementation 'com.abdulrahman-b:HijrahDateTime-serialization-jackson:1.0.1' //Jackson Serialization support
-    implementation 'com.abdulrahman-b:HijrahDateTime-jakarta-validation:1.0.1' //Jakarta Bean Validation support
+    implementation 'com.abdulrahman-b.hijrahdatetime:hijrahdatetime:1.1.0' //Core library
+    implementation 'com.abdulrahman-b.hijrahdatetime:hijrahdatetime-serialization-kotlinx:1.1.0' //Kotlinx Serialization support
+    implementation 'com.abdulrahman-b.hijrahdatetime:hijrahdatetime-serialization-jackson:1.1.0' //Jackson Serialization support
+    implementation 'com.abdulrahman-b.hijrahdatetime:hijrahdatetime-jakarta-validation:1.1.0' //Jakarta Bean Validation support
 }
 ```
 
@@ -339,28 +339,28 @@ Add a dependency to the `<dependencies>` element:
 <dependencies>
 
     <dependency>
-        <groupId>com.abdulrahman-b</groupId>
-        <artifactId>HijrahDateTime</artifactId>
-        <version>1.0.1</version>
+        <groupId>com.abdulrahman-b.hijrahdatetime</groupId>
+        <artifactId>hijrahdatetime</artifactId>
+        <version>1.1.0</version>
     </dependency> <!--Core library-->
 
     <dependency>
-        <groupId>com.abdulrahman-b</groupId>
-        <artifactId>HijrahDateTime-serialization-kotlinx</artifactId>
-        <version>1.0.1</version>
+        <groupId>com.abdulrahman-b.hijrahdatetime</groupId>
+        <artifactId>hijrahdatetime-serialization-kotlinx</artifactId>
+        <version>1.1.0</version>
     </dependency> <!--Kotlinx Serialization support-->
 
     <dependency>
-        <groupId>com.abdulrahman-b</groupId>
-        <artifactId>HijrahDateTime-serialization-jackson</artifactId>
-        <version>1.0.1</version>
+        <groupId>com.abdulrahman-b.hijrahdatetime</groupId>
+        <artifactId>hijrahdatetime -serialization-jackson</artifactId>
+        <version>1.1.0</version>
     </dependency> <!--Jackson Serialization support-->
 
     <dependency>
-        <groupId>com.abdulrahman-b</groupId>
+        <groupId>com.abdulrahman-b.hijrahdatetime</groupId>
 
-        <artifactId>HijrahDateTime-jakarta-validation</artifactId>
-        <version>1.0.1</version>
+        <artifactId>hijrahdatetime-jakarta-validation</artifactId>
+        <version>1.1.0</version>
     </dependency> <!--Jakarta Bean Validation support-->
 </dependencies>
 
@@ -368,7 +368,7 @@ Add a dependency to the `<dependencies>` element:
 
 ## Building
 
-The library is compatible with the Kotlin Standard Library not lower than `1.9.0`.
+The library is compatible with the Kotlin Standard Library not lower than `2.2.0`.
 The library also requires JDK 11 or higher to build and run the dependencies.
 
 ## Support Me

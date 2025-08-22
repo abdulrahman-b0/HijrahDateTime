@@ -7,8 +7,8 @@ plugins {
     alias(libs.plugins.kotlin.kover)
 }
 
-rootProject.group = "com.abdulrahman-b"
-rootProject.version = "1.0.2"
+rootProject.group = "com.abdulrahman-b.hijrahdatetime"
+rootProject.version = "1.1.0"
 rootProject.description =
     "HijrahDateTime is a Kotlin/JVM library that is built on top of java.time to facilitates work with Hijrah date and time APIs."
 
