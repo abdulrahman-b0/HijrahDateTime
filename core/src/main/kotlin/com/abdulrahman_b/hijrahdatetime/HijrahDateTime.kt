@@ -6,6 +6,7 @@ import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates
 import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates.atLocalTime
 import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates.atStartOfDay
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters
+import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE_TIME
 import com.abdulrahman_b.hijrahdatetime.utils.requireHijrahChronology
 import java.io.Serializable
 import java.time.*
@@ -312,7 +313,7 @@ class HijrahDateTime(
         @JvmOverloads
         fun parse(
             text: CharSequence,
-            formatter: DateTimeFormatter = HijrahFormatters.HIJRAH_DATE_TIME
+            formatter: DateTimeFormatter = HIJRAH_LOCAL_DATE_TIME
         ): HijrahDateTime = requireHijrahChronology(formatter).parse(text, Companion::from)
 
         /** The minimum supported [HijrahDateTime] */
