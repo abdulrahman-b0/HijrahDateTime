@@ -6,10 +6,13 @@ import com.abdulrahman_b.hijrahdatetime.EarlyHijrahDate
 import com.abdulrahman_b.hijrahdatetime.HijrahDateTime
 import com.abdulrahman_b.hijrahdatetime.OffsetHijrahDate
 import com.abdulrahman_b.hijrahdatetime.OffsetHijrahDateTime
+import com.abdulrahman_b.hijrahdatetime.SimpleHijrahDate
 import com.abdulrahman_b.hijrahdatetime.ZonedHijrahDateTime
 import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_DATE
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_DATE_TIME
+import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE
+import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE_TIME
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_OFFSET_DATE_TIME
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.buildHijrahDateFormatter
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.buildHijrahDateTimeFormatter
@@ -51,6 +54,8 @@ object HijrahFormatters {
         .toFormatter(ResolverStyle.STRICT, HijrahChronology.INSTANCE)
 
     /**
+     * **Deprecated**: Use [HIJRAH_LOCAL_DATE] instead.
+     *
      * The Hijrah date formatter that formats or parses a date without an
      * offset, such as '1446-04-18'.
      *
@@ -74,8 +79,34 @@ object HijrahFormatters {
      */
 
     @JvmField
+    @Deprecated("Use HIJRAH_LOCAL_DATE instead", ReplaceWith("HIJRAH_LOCAL_DATE", "com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE"))
     val HIJRAH_DATE: DateTimeFormatter = buildHijrahDateFormatter(separator = "-")
 
+    /**
+     * The Hijrah date formatter that formats or parses a date without an
+     * offset, such as '1446-04-18'.
+     *
+     * This returns an immutable formatter capable of formatting and parsing
+     * the Hijrah local date format.
+     * The format consists of:
+     *
+     * * Four digits or more for the [ChronoField.YEAR] year.
+     * Years in the range [HijrahDates.MIN_YEAR] to [HijrahDates.MAX_YEAR] that is pre-padded by zero to ensure four digits.
+     * Years outside that range will have a prefixed positive or negative symbol.
+     * * A dash
+     * * Two digits for the [ChronoField.MONTH_OF_YEAR] month-of-year.
+     *  This is pre-padded by zero to ensure two digits.
+     * * A dash
+     * * Two digits for the [ChronoField.DAY_OF_MONTH] day-of-month.
+     *  This is pre-padded by zero to ensure two digits.
+     *
+     * The returned formatter has a chronology of Hijrah set to ensure dates in
+     * other calendar systems are correctly converted.
+     * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
+     */
+
+    @JvmField
+    val HIJRAH_LOCAL_DATE: DateTimeFormatter = buildHijrahDateFormatter(separator = "-")
 
     /**
      * The Hijrah date formatter that formats or parses a date with an
@@ -96,6 +127,8 @@ object HijrahFormatters {
     val HIJRAH_OFFSET_DATE: DateTimeFormatter = buildOffsetHijrahDateFormatter()
 
     /**
+     * **Deprecated**: Use [HIJRAH_LOCAL_DATE_TIME] instead.
+     *
      * The Hijrah date-time formatter that formats or parses a date-time without
      * an offset, such as '1446-04-18T15:15:30'.
      *
@@ -110,7 +143,25 @@ object HijrahFormatters {
      * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
      */
     @JvmField
+    @Deprecated("Use HIJRAH_LOCAL_DATE_TIME instead", ReplaceWith("HIJRAH_LOCAL_DATE_TIME", "com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE_TIME"))
     val HIJRAH_DATE_TIME: DateTimeFormatter = buildHijrahDateTimeFormatter()
+
+    /**
+     * The Hijrah date-time formatter that formats or parses a date-time without
+     * an offset, such as '1446-04-18T15:15:30'.
+     *
+     * This returns an immutable formatter capable of formatting and parsing
+     * the hijrah date-time format.
+     * The format consists of:
+     * * The [HIJRAH_DATE] formatter
+     * * The letter 'T'. Parsing is case-insensitive.
+     * * The [ISO_LOCAL_TIME]
+     * The returned formatter has a chronology of Hijrah set to ensure dates in
+     * other calendar systems are correctly converted.
+     * It has no override zone and uses the [ResolverStyle.STRICT] resolver style.
+     */
+    @JvmField
+    val HIJRAH_LOCAL_DATE_TIME: DateTimeFormatter = buildHijrahDateTimeFormatter()
 
 
     /**
@@ -132,7 +183,7 @@ object HijrahFormatters {
      */
     @JvmField
     val HIJRAH_OFFSET_DATE_TIME: DateTimeFormatter =
-        buildOffsetHijrahDateTimeFormatter(HIJRAH_DATE_TIME)
+        buildOffsetHijrahDateTimeFormatter(HIJRAH_LOCAL_DATE_TIME)
 
     /**
      * The Hijrah date-time formatter that formats or parses a date-time with
@@ -173,9 +224,8 @@ object HijrahFormatters {
     @JvmStatic
     fun getRecommendedFormatter(temporal: TemporalAccessor): DateTimeFormatter {
         return when (temporal) {
-            is HijrahDate -> HIJRAH_DATE
-            is EarlyHijrahDate -> HIJRAH_DATE
-            is HijrahDateTime -> HIJRAH_DATE_TIME
+            is HijrahDate, is EarlyHijrahDate, is SimpleHijrahDate -> HIJRAH_LOCAL_DATE
+            is HijrahDateTime -> HIJRAH_LOCAL_DATE_TIME
             is OffsetHijrahDate -> HIJRAH_OFFSET_DATE
             is ZonedHijrahDateTime -> HIJRAH_ZONED_DATE_TIME
             is OffsetHijrahDateTime -> HIJRAH_OFFSET_DATE_TIME
@@ -236,7 +286,7 @@ object HijrahFormatters {
      */
     @JvmStatic
     @JvmOverloads
-    fun buildOffsetHijrahDateFormatter(hijrahDateFormatter: DateTimeFormatter = HIJRAH_DATE): DateTimeFormatter {
+    fun buildOffsetHijrahDateFormatter(hijrahDateFormatter: DateTimeFormatter = HIJRAH_LOCAL_DATE): DateTimeFormatter {
         return DateTimeFormatterBuilder()
             .parseCaseInsensitive()
             .append(hijrahDateFormatter)
@@ -262,7 +312,7 @@ object HijrahFormatters {
     @JvmStatic
     @JvmOverloads
     fun buildHijrahDateTimeFormatter(
-        hijrahDateFormatter: DateTimeFormatter = HIJRAH_DATE,
+        hijrahDateFormatter: DateTimeFormatter = HIJRAH_LOCAL_DATE,
         datetimeSeparator: String = "T",
         timeFormatter: DateTimeFormatter = ISO_LOCAL_TIME
     ): DateTimeFormatter {

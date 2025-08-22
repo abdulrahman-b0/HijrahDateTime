@@ -1,4 +1,3 @@
-import com.vanniktech.maven.publish.SonatypeHost
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -9,7 +8,7 @@ import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.the
 import java.io.File
-import java.util.Properties
+import java.util.*
 
 class PublishConfigConventionPlugin : Plugin<Project> {
 
@@ -58,11 +57,11 @@ class PublishConfigConventionPlugin : Plugin<Project> {
                 version = rootProject.version.toString()
             )
 
-            publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = false)
             pom { configurePom(this) }
 
             signAllPublications()
         }
+
 
         publishing {
             repositories {
@@ -90,9 +89,9 @@ class PublishConfigConventionPlugin : Plugin<Project> {
 
         developers {
             developer {
-                id = globalProperties.getProperty("developer.id")
-                name = globalProperties.getProperty("developer.name")
-                email = globalProperties.getProperty("developer.email")
+                id = publishProperties.getProperty("developer.id")
+                name = publishProperties.getProperty("developer.name")
+                email = publishProperties.getProperty("developer.email")
             }
         }
 

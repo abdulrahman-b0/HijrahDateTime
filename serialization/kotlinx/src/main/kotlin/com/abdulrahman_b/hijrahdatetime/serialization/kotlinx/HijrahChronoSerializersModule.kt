@@ -4,8 +4,11 @@ import com.abdulrahman_b.hijrahdatetime.EarlyHijrahDate
 import com.abdulrahman_b.hijrahdatetime.HijrahDateTime
 import com.abdulrahman_b.hijrahdatetime.OffsetHijrahDate
 import com.abdulrahman_b.hijrahdatetime.OffsetHijrahDateTime
+import com.abdulrahman_b.hijrahdatetime.SimpleHijrahDate
 import com.abdulrahman_b.hijrahdatetime.ZonedHijrahDateTime
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters
+import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE
+import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE_TIME
 import kotlinx.serialization.modules.SerializersModule
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
@@ -34,8 +37,8 @@ import java.time.format.DateTimeFormatter
  * @property zonedHijrahDateTimeFormatter Formatter for serializing and deserializing `ZonedHijrahDateTime`.
  */
 class HijrahChronoSerializersModule (
-    private val hijrahDateFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_DATE,
-    private val hijrahDateTimeFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_DATE_TIME,
+    private val hijrahDateFormatter : DateTimeFormatter = HIJRAH_LOCAL_DATE,
+    private val hijrahDateTimeFormatter : DateTimeFormatter = HIJRAH_LOCAL_DATE_TIME,
     private val offsetHijrahDateFormatter: DateTimeFormatter = HijrahFormatters.HIJRAH_OFFSET_DATE,
     private val offsetHijrahDateTimeFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_OFFSET_DATE_TIME,
     private val zonedHijrahDateTimeFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_ZONED_DATE_TIME,
@@ -51,6 +54,7 @@ class HijrahChronoSerializersModule (
     fun get() = SerializersModule {
         contextual(HijrahDate::class, HijrahDateSerializer(hijrahDateFormatter))
         contextual(EarlyHijrahDate::class, EarlyHijrahDateSerializer(hijrahDateFormatter))
+        contextual(SimpleHijrahDate::class, SimpleHijrahDateSerializer(hijrahDateFormatter))
         contextual(HijrahDateTime::class, HijrahDateTimeSerializer(hijrahDateTimeFormatter))
         contextual(OffsetHijrahDate::class, OffsetHijrahDateSerializer(offsetHijrahDateFormatter))
         contextual(OffsetHijrahDateTime::class, OffsetHijrahDateTimeSerializer(offsetHijrahDateTimeFormatter))

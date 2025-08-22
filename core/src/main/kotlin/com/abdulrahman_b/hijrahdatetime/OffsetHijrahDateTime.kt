@@ -152,8 +152,20 @@ class OffsetHijrahDateTime private constructor(
 
     override fun toLocalTime(): LocalTime = dateTime.toLocalTime()
 
+    /**
+     * Converts this [OffsetHijrahDateTime] to a [HijrahDateTime].
+     *
+     * @return the [HijrahDateTime] representation of this date-time
+     */
     fun toHijrahDateTime(): HijrahDateTime = dateTime
 
+    /**
+     * Converts this [OffsetHijrahDateTime] to an [OffsetHijrahDate].
+     *
+     * This method extracts the date component of this date-time and retains the associated offset.
+     *
+     * @return the OffsetHijrahDate representing the date and offset of this date-time
+     */
     fun toOffsetDate(): OffsetHijrahDate = OffsetHijrahDate.of(dateTime.toHijrahDate(), offset)
 
     override fun toHijrahDate(): HijrahDate = dateTime.toHijrahDate()

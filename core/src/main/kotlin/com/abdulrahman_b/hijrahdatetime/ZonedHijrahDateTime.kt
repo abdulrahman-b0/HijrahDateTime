@@ -55,7 +55,7 @@ import java.time.zone.ZoneRules
  *
  */
 
-open class ZonedHijrahDateTime private constructor(
+open class ZonedHijrahDateTime(
     private val dateTime: ChronoZonedDateTime<HijrahDate>
 ): AbstractHijrahDateTime<ZonedHijrahDateTime>(dateTime), Serializable {
 
@@ -172,6 +172,18 @@ open class ZonedHijrahDateTime private constructor(
      * @return an OffsetHijrahDateTime representing the same local date-time and offset
      */
     fun toOffsetHijrahDateTime() = OffsetHijrahDateTime.of(toHijrahDateTime(), offset)
+
+
+    /**
+     * Converts the current object to a `ChronoZonedDateTime`.
+     *
+     * This method retrieves the associated `ChronoZonedDateTime` representation
+     * of the current object, which includes the local date-time, time-zone,
+     * and offset.
+     *
+     * @return the `ChronoZonedDateTime` representation of this object.
+     */
+    fun toChronoZonedDateTime() = dateTime
 
     override fun toString() = dateTime.toString()
 

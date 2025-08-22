@@ -26,8 +26,17 @@ public class StaticMethodsCoverageTest {
     public void callEarlyHijrahDateStaticFunctions() {
         EarlyHijrahDate.of(1000, 5, 12);
         EarlyHijrahDate.parse("1000-05-12");
-        EarlyHijrahDate.parse("1000-05-12", HijrahFormatters.HIJRAH_DATE);
+        EarlyHijrahDate.parse("1000-05-12", HijrahFormatters.HIJRAH_LOCAL_DATE);
     }
+
+    @Test
+    @DisplayName("Call all static functions in SimpleHijrah")
+    public void callSimpleHijrahDateStaticFunctions() {
+        SimpleHijrahDate.of(1000, 5, 12);
+        SimpleHijrahDate.parse("1000-05-12");
+        SimpleHijrahDate.parse("1000-05-12", HijrahFormatters.HIJRAH_LOCAL_DATE);
+    }
+
 
     @Test
     @DisplayName("Call all static functions in HijrahDateTime")
@@ -42,7 +51,7 @@ public class StaticMethodsCoverageTest {
         HijrahDateTime.of(1443, 1, 1, 0, 0);
         HijrahDateTime.of(HijrahDate.now(), LocalTime.now());
         HijrahDateTime.parse("1443-01-01T00:00:00");
-        HijrahDateTime.parse("1443-01-01T00:00:00", HijrahFormatters.HIJRAH_DATE_TIME);
+        HijrahDateTime.parse("1443-01-01T00:00:00", HijrahFormatters.HIJRAH_LOCAL_DATE_TIME);
         HijrahDateTime.from(OffsetHijrahDateTime.now());
     }
 
@@ -105,15 +114,15 @@ public class StaticMethodsCoverageTest {
     @DisplayName("Call all static functions in HijrahFormatters")
     public void callHijrahFormattersStaticFunctions() {
         HijrahFormatters.buildHijrahDateFormatter("");
-        HijrahFormatters.buildHijrahDateTimeFormatter(HijrahFormatters.HIJRAH_DATE);
-        HijrahFormatters.buildHijrahDateTimeFormatter(HijrahFormatters.HIJRAH_DATE, " ");
-        HijrahFormatters.buildHijrahDateTimeFormatter(HijrahFormatters.HIJRAH_DATE, " ", HijrahFormatters.LOCAL_TIME_12_HOURS);
+        HijrahFormatters.buildHijrahDateTimeFormatter(HijrahFormatters.HIJRAH_LOCAL_DATE);
+        HijrahFormatters.buildHijrahDateTimeFormatter(HijrahFormatters.HIJRAH_LOCAL_DATE, " ");
+        HijrahFormatters.buildHijrahDateTimeFormatter(HijrahFormatters.HIJRAH_LOCAL_DATE, " ", HijrahFormatters.LOCAL_TIME_12_HOURS);
         HijrahFormatters.buildOffsetHijrahDateFormatter();
-        HijrahFormatters.buildOffsetHijrahDateTimeFormatter(HijrahFormatters.HIJRAH_DATE_TIME);
+        HijrahFormatters.buildOffsetHijrahDateTimeFormatter(HijrahFormatters.HIJRAH_LOCAL_DATE_TIME);
         HijrahFormatters.buildOffsetHijrahDateFormatter();
-        HijrahFormatters.buildOffsetHijrahDateFormatter(HijrahFormatters.HIJRAH_DATE_TIME);
+        HijrahFormatters.buildOffsetHijrahDateFormatter(HijrahFormatters.HIJRAH_LOCAL_DATE_TIME);
         HijrahFormatters.buildZonedHijrahDateTimeFormatter();
-        HijrahFormatters.buildZonedHijrahDateTimeFormatter(HijrahFormatters.HIJRAH_DATE_TIME);
+        HijrahFormatters.buildZonedHijrahDateTimeFormatter(HijrahFormatters.HIJRAH_LOCAL_DATE_TIME);
     }
 
     @Test
@@ -125,7 +134,7 @@ public class StaticMethodsCoverageTest {
         HijrahDates.ofInstant(Instant.now(), ZoneId.systemDefault());
         HijrahDates.ofYearDay(1443, 1);
         HijrahDates.parse("1443-01-01");
-        HijrahDates.parse("1443-01-01", HijrahFormatters.HIJRAH_DATE);
+        HijrahDates.parse("1443-01-01", HijrahFormatters.HIJRAH_LOCAL_DATE);
 
         HijrahDates.atLocalTime(date, LocalTime.now());
         HijrahDates.atStartOfDay(date);

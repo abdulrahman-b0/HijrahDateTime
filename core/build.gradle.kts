@@ -4,7 +4,7 @@ plugins {
 }
 
 hijrahDateTimePublishing {
-    artifactName = "HijrahDateTime"
+    artifactName = "hijrahdatetime"
     artifactDescription = rootProject.description
     artifactId = rootProject.name
 }

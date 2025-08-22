@@ -3,6 +3,7 @@ package com.abdulrahman_b.hijrahdatetime.serialization.kotlinx
 
 import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters
+import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -11,7 +12,7 @@ import kotlinx.serialization.encoding.Encoder
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
 
-object HijrahDateSerializer : KSerializer<HijrahDate> by HijrahDateSerializerImpl(HijrahFormatters.HIJRAH_DATE) {
+object HijrahDateSerializer : KSerializer<HijrahDate> by HijrahDateSerializerImpl(HIJRAH_LOCAL_DATE) {
 
     operator fun invoke(formatter: DateTimeFormatter): KSerializer<HijrahDate> =
         HijrahDateSerializerImpl(formatter)

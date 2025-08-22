@@ -4,8 +4,11 @@ import com.abdulrahman_b.hijrahdatetime.EarlyHijrahDate
 import com.abdulrahman_b.hijrahdatetime.HijrahDateTime
 import com.abdulrahman_b.hijrahdatetime.OffsetHijrahDate
 import com.abdulrahman_b.hijrahdatetime.OffsetHijrahDateTime
+import com.abdulrahman_b.hijrahdatetime.SimpleHijrahDate
 import com.abdulrahman_b.hijrahdatetime.ZonedHijrahDateTime
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters
+import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE
+import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE_TIME
 import com.fasterxml.jackson.databind.deser.Deserializers
 import com.fasterxml.jackson.databind.module.SimpleDeserializers
 import com.fasterxml.jackson.databind.module.SimpleModule
@@ -32,8 +35,8 @@ import java.time.format.DateTimeFormatter
  * @param zonedHijrahDateTimeFormatter Formatter for [ZonedHijrahDateTime] serialization and deserialization.
  */
 class HijrahChronoSerializersModule @JvmOverloads constructor(
-    private val hijrahDateFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_DATE,
-    private val hijrahDateTimeFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_DATE_TIME,
+    private val hijrahDateFormatter : DateTimeFormatter = HIJRAH_LOCAL_DATE,
+    private val hijrahDateTimeFormatter : DateTimeFormatter = HIJRAH_LOCAL_DATE_TIME,
     private val offsetHijrahDateFormatter: DateTimeFormatter = HijrahFormatters.HIJRAH_OFFSET_DATE,
     private val offsetHijrahDateTimeFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_OFFSET_DATE_TIME,
     private val zonedHijrahDateTimeFormatter : DateTimeFormatter = HijrahFormatters.HIJRAH_ZONED_DATE_TIME
@@ -49,6 +52,7 @@ class HijrahChronoSerializersModule @JvmOverloads constructor(
         return SimpleSerializers().apply {
             addSerializer(HijrahDate::class.java, HijrahDateSerialization.Serializer(hijrahDateFormatter))
             addSerializer(EarlyHijrahDate::class.java, EarlyHijrahDateSerialization.Serializer(hijrahDateFormatter))
+            addSerializer(SimpleHijrahDate::class.java, SimpleHijrahDateSerialization.Serializer(hijrahDateFormatter))
             addSerializer(HijrahDateTime::class.java, HijrahDateTimeSerialization.Serializer(hijrahDateTimeFormatter))
             addSerializer(OffsetHijrahDate::class.java, OffsetHijrahDateSerialization.Serializer(offsetHijrahDateFormatter))
             addSerializer(OffsetHijrahDateTime::class.java, OffsetHijrahDateTimeSerialization.Serializer(offsetHijrahDateTimeFormatter))
@@ -60,6 +64,7 @@ class HijrahChronoSerializersModule @JvmOverloads constructor(
         return SimpleDeserializers().apply {
             addDeserializer(HijrahDate::class.java, HijrahDateSerialization.Deserializer(hijrahDateFormatter))
             addDeserializer(EarlyHijrahDate::class.java, EarlyHijrahDateSerialization.Deserializer(hijrahDateFormatter))
+            addDeserializer(SimpleHijrahDate::class.java, SimpleHijrahDateSerialization.Deserializer(hijrahDateFormatter))
             addDeserializer(HijrahDateTime::class.java, HijrahDateTimeSerialization.Deserializer(hijrahDateTimeFormatter))
             addDeserializer(OffsetHijrahDate::class.java, OffsetHijrahDateSerialization.Deserializer(offsetHijrahDateFormatter))
             addDeserializer(OffsetHijrahDateTime::class.java, OffsetHijrahDateTimeSerialization.Deserializer(offsetHijrahDateTimeFormatter))

@@ -6,6 +6,7 @@ import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates
 import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates.atLocalTime
 import com.abdulrahman_b.hijrahdatetime.extensions.HijrahDates.atStartOfDay
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters
+import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE_TIME
 import com.abdulrahman_b.hijrahdatetime.utils.requireHijrahChronology
 import java.io.Serializable
 import java.time.*
@@ -38,7 +39,7 @@ import java.time.zone.ZoneRules
  * This class is immutable and thread-safe.
  */
 
-class HijrahDateTime private constructor(
+class HijrahDateTime(
     private val dateTime: ChronoLocalDateTime<HijrahDate>
 ) : AbstractHijrahDateTime<HijrahDateTime>(dateTime), TemporalAdjuster, Serializable {
 
@@ -66,6 +67,13 @@ class HijrahDateTime private constructor(
     override fun toLocalTime(): LocalTime = dateTime.toLocalTime()
 
     override fun toHijrahDate(): HijrahDate = dateTime.toLocalDate()
+
+    /**
+     * Converts this HijrahDateTime instance to a [ChronoLocalDateTime] representation.
+     *
+     * @return a ChronoLocalDateTime object corresponding to this HijrahDateTime, not null
+     */
+    fun toChronoLocalDateTime(): ChronoLocalDateTime<HijrahDate> = dateTime
 
 
     /**
@@ -305,7 +313,7 @@ class HijrahDateTime private constructor(
         @JvmOverloads
         fun parse(
             text: CharSequence,
-            formatter: DateTimeFormatter = HijrahFormatters.HIJRAH_DATE_TIME
+            formatter: DateTimeFormatter = HIJRAH_LOCAL_DATE_TIME
         ): HijrahDateTime = requireHijrahChronology(formatter).parse(text, Companion::from)
 
         /** The minimum supported [HijrahDateTime] */

@@ -1,6 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
-rootProject.name = "HijrahDateTime"
+rootProject.name = "hijrahdatetime"
 
 includeBuild("build-logic")
 include(":core")

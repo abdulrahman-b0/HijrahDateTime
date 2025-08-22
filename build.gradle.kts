@@ -7,8 +7,8 @@ plugins {
     alias(libs.plugins.kotlin.kover)
 }
 
-rootProject.group = "com.abdulrahman-b"
-rootProject.version = "1.0.1"
+rootProject.group = "com.abdulrahman-b.hijrahdatetime"
+rootProject.version = "1.1.0"
 rootProject.description =
     "HijrahDateTime is a Kotlin/JVM library that is built on top of java.time to facilitates work with Hijrah date and time APIs."
 
@@ -25,6 +25,7 @@ kover {
     reports.filters.excludes.classes(
         "com.abdulrahman_b.hijrahdatetime.serialization.jackson.HijrahDateSerialization",
         "com.abdulrahman_b.hijrahdatetime.serialization.jackson.EarlyHijrahDateSerialization",
+        "com.abdulrahman_b.hijrahdatetime.serialization.jackson.SimpleHijrahDateSerialization",
         "com.abdulrahman_b.hijrahdatetime.serialization.jackson.HijrahDateTimeSerialization",
         "com.abdulrahman_b.hijrahdatetime.serialization.jackson.OffsetHijrahDateSerialization",
         "com.abdulrahman_b.hijrahdatetime.serialization.jackson.OffsetHijrahDateTimeSerialization",
