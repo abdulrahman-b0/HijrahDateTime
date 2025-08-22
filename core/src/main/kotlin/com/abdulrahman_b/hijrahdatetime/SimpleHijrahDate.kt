@@ -1,6 +1,5 @@
 package com.abdulrahman_b.hijrahdatetime
 
-import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters
 import com.abdulrahman_b.hijrahdatetime.formats.HijrahFormatters.HIJRAH_LOCAL_DATE
 import java.io.Serializable
 import java.time.DateTimeException
@@ -10,43 +9,48 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.*
 
 /**
- * Represents a date in the early Hijrah calendar system. This class is a simple representation
- * not intended for use with modern Hijrah dates, but rather for historical or educational purposes
- * focusing on the early period of the Islamic calendar.
+ * A flexible representation of dates in the Hijrah (Islamic) calendar system that prioritizes display capabilities
+ * over arithmetic operations. This class extends the functionality of [HijrahDate] by offering more flexible date ranges
+ * and month lengths.
  *
- * @property year The Hijrah year, which must be between 1 and 1299 inclusively. If you need a higher value, use [HijrahDate] class.
- * @property month The Hijrah month represented by the [HijrahMonth] enum.
- * @property dayOfMonth The day of the month, which must be between 1 and 30.
+ * Key features and differences from standard [HijrahDate]:
+ * 1. Extended Year Range: Supports dates from year 1 to 1600 (compared to the standard 1300-1600 range)
+ * 2. Flexible Month Lengths: Always allows 30-day months, regardless of astronomical calculations
+ * 3. Historical Support: Particularly useful for educational and historical purposes
  *
- * Implements the [TemporalAccessor] interface providing support for accessing temporal fields.
+ * Primary use cases:
+ * - Display of historical Islamic dates (especially pre-1300 Hijri)
+ * - Educational applications requiring representation of early Islamic calendar dates
+ * - Scenarios where strict astronomical accuracy is less important than display flexibility
  *
- * Note: Arithmetic operations are not supported in this class.
+ * Important limitations:
+ * - Arithmetic operations (like plus/minus days/months) are NOT supported
+ * - Does not follow strict astronomical rules for month lengths
+ * - Not suitable for precise date calculations or conversions
  *
- * This class is immutable and thread safe.
+ * @property year The Hijrah year, which must be between 1 and 1600 inclusively
+ * @property month The Hijrah month represented by the [HijrahMonth] enum
+ * @property dayOfMonth The day of the month, which must be between 1 and 30
  *
- * @constructor Initializes a new instance of `EarlyHijrahDate` with the specified year, month, and dayOfMonth.
- * Ensures that the given year is within the allowable range and that the given day of the month is valid.
+ * This class is immutable and thread-safe.
  *
- * @throws DateTimeException if the year or dayOfMonth are out of their respective ranges.
+ * @constructor Creates a new instance of [SimpleHijrahDate] with the specified year, month, and dayOfMonth
+ * @throws DateTimeException if the year is not within 1-1600 or if dayOfMonth is not within 1-30
  *
+ * @see HijrahDate For standard Java implementation with strict astronomical rules
  */
-@Deprecated(
-    "Use SimpleHijrahDate instead. This class is deprecated and will be removed in future releases.",
-    ReplaceWith("SimpleHijrahDate"),
-    DeprecationLevel.WARNING
-)
-class EarlyHijrahDate private constructor(
+class SimpleHijrahDate private constructor(
     val year: Int,
     val month: HijrahMonth,
     val dayOfMonth: Int
-) : TemporalAccessor, Comparable<EarlyHijrahDate>, Serializable {
+) : TemporalAccessor, Comparable<SimpleHijrahDate>, Serializable {
 
 
     private val serialVersionUID = 1L
 
     init {
         if (year !in MIN_YEAR..MAX_YEAR ) {
-            throw DateTimeException("Out of range year value: $year. Valid range is from 1 to 1299.")
+            throw DateTimeException("Out of range year value: $year. Valid range is from 1 to 1600.")
         }
         if (dayOfMonth !in 1..30) {
             throw DateTimeException("Out of range dayOfMonth value: $dayOfMonth. Valid range is from 1 to 30.")
@@ -87,7 +91,7 @@ class EarlyHijrahDate private constructor(
 
     /**
      * Retrieves the valid range of values for the specified temporal field within the context
-     * of this EarlyHijrahDate implementation.
+     * of this SimpleHijrahDate implementation.
      *
      * @param field the temporal field for which the range is requested, not null
      * @return the range of valid values for the specified field
@@ -126,37 +130,37 @@ class EarlyHijrahDate private constructor(
     override fun getLong(field: TemporalField): Long = get(field).toLong()
 
     /**
-     * Returns a new instance of EarlyHijrahDate with the specified field set to a new value.
+     * Returns a new instance of SimpleHijrahDate with the specified field set to a new value.
      *
      * @param field the field to set, not null
      * @param newValue the new value of the field
      * @throws UnsupportedTemporalTypeException if the field is not supported
      */
-    fun with(field: TemporalField, newValue: Int): EarlyHijrahDate {
+    fun with(field: TemporalField, newValue: Int): SimpleHijrahDate {
         return when (field) {
-            ChronoField.YEAR -> EarlyHijrahDate(newValue, month, dayOfMonth)
-            ChronoField.MONTH_OF_YEAR -> EarlyHijrahDate(year, HijrahMonth.of(newValue), dayOfMonth)
-            ChronoField.DAY_OF_MONTH -> EarlyHijrahDate(year, month, newValue)
+            ChronoField.YEAR -> SimpleHijrahDate(newValue, month, dayOfMonth)
+            ChronoField.MONTH_OF_YEAR -> SimpleHijrahDate(year, HijrahMonth.of(newValue), dayOfMonth)
+            ChronoField.DAY_OF_MONTH -> SimpleHijrahDate(year, month, newValue)
             else -> throw UnsupportedTemporalTypeException("Unsupported field: $field")
         }
     }
 
     /**
-     * Returns a new instance of EarlyHijrahDate with the year set to the specified value.
+     * Returns a new instance of SimpleHijrahDate with the year set to the specified value.
      *
      * @param year the new year to set
      */
     fun withYear(year: Int) = with(ChronoField.YEAR, year)
 
     /**
-     * Returns a new instance of EarlyHijrahDate with the month set to the specified HijrahMonth.
+     * Returns a new instance of SimpleHijrahDate with the month set to the specified HijrahMonth.
      *
      * @param month the new month to set, not null
      */
     fun withMonth(month: HijrahMonth) = with(ChronoField.MONTH_OF_YEAR, month.value)
 
     /**
-     * Returns a new instance of EarlyHijrahDate with the day of the month set to the specified value.
+     * Returns a new instance of SimpleHijrahDate with the day of the month set to the specified value.
      *
      * @param dayOfMonth the new day of the month to set
      * @throws UnsupportedTemporalTypeException if the field ChronoField.DAY_OF_MONTH is not supported
@@ -168,18 +172,18 @@ class EarlyHijrahDate private constructor(
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other !is EarlyHijrahDate) return false
+        if (other !is SimpleHijrahDate) return false
 
         return year == other.year && month == other.month && dayOfMonth == other.dayOfMonth
     }
 
     /**
-     * Compares this EarlyHijrahDate object with the specified EarlyHijrahDate object for order.
+     * Compares this [SimpleHijrahDate] object with the specified [SimpleHijrahDate] object for order.
      *
-     * @param other the EarlyHijrahDate object to be compared with this object
+     * @param other the [SimpleHijrahDate] object to be compared with this object
      * @return a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than the specified object
      */
-    override fun compareTo(other: EarlyHijrahDate): Int {
+    override fun compareTo(other: SimpleHijrahDate): Int {
         return when {
             year > other.year -> 1
             year < other.year -> -1
@@ -194,39 +198,39 @@ class EarlyHijrahDate private constructor(
     companion object {
 
         /**
-         * Creates an instance of `EarlyHijrahDate` based on the specified year, month, and day of the month.
+         * Creates an instance of [SimpleHijrahDate] based on the specified year, month, and day of the month.
          *
          * @param year the year to represent
          * @param month the month to represent, where 1 is Muharram and 12 is Dhu al-Hijjah
          * @param dayOfMonth the day of the month to represent
-         * @return the [EarlyHijrahDate] instance representing the specified year, month, and day of the month.
+         * @return the [SimpleHijrahDate] instance representing the specified year, month, and day of the month.
          *
          * @throws DateTimeException if values are out of range.
          */
         @JvmStatic
-        fun of(year: Int, month: Int, dayOfMonth: Int): EarlyHijrahDate {
-            return EarlyHijrahDate(year, HijrahMonth.of(month), dayOfMonth)
+        fun of(year: Int, month: Int, dayOfMonth: Int): SimpleHijrahDate {
+            return SimpleHijrahDate(year, HijrahMonth.of(month), dayOfMonth)
         }
 
         /**
          * Parses the given text representation of a date using the provided formatter
-         * and converts it to an instance of [EarlyHijrahDate].
+         * and converts it to an instance of [SimpleHijrahDate].
          *
          * @param text the text containing the date to be parsed, not null
          * @param formatter the formatter to use for parsing; defaults to `HijrahFormatters.HIJRAH_DATE`
-         * @return an instance of `EarlyHijrahDate` representing the parsed date
-         * @throws DateTimeException if the text cannot be parsed to an `EarlyHijrahDate`
+         * @return an instance of `SimpleHijrahDate` representing the parsed date
+         * @throws DateTimeException if the text cannot be parsed to an `SimpleHijrahDate`
          */
         @JvmStatic
         @JvmOverloads
         fun parse(
             text: CharSequence,
             formatter: DateTimeFormatter = HIJRAH_LOCAL_DATE
-        ): EarlyHijrahDate {
-            /* Having `HijrahChronology.INSTANCE` requires year range from 1300 to 1600, which makes the parse fails. */
+        ): SimpleHijrahDate {
+            /* Having `HijrahChronology.INSTANCE` required year range from 1300 to 1600, which makes the parse fails. */
             return formatter.withChronology(null).parse(text) { accessor: TemporalAccessor ->
                 try {
-                    accessor as? EarlyHijrahDate
+                    accessor as? SimpleHijrahDate
                         ?: of(
                             accessor.get(ChronoField.YEAR),
                             accessor.get(ChronoField.MONTH_OF_YEAR),
@@ -234,13 +238,13 @@ class EarlyHijrahDate private constructor(
                         )
                 } catch (ex: UnsupportedTemporalTypeException) {
                     throw DateTimeException(
-                        "Unable to obtain EarlyHijrahDare from TemporalAccessor: $accessor of type ${accessor.javaClass.name}", ex
+                        "Unable to obtain SimpleHijrahDate from TemporalAccessor: $accessor of type ${accessor.javaClass.name}", ex
                     )
                 }
             }
         }
 
-        const val MAX_YEAR = 1299
+        const val MAX_YEAR = 1600
         const val MIN_YEAR = 1
     }
 
