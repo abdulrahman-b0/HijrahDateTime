@@ -22,5 +22,5 @@ sourceSets {
 }
 
 dependencies {
-    testImplementation(libs.threeTenExtra)
+    testImplementation(libs.threeTen.extra)
 }

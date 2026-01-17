@@ -1,0 +1,98 @@
+package com.abdulrahman_b.hijrahdatetime
+
+import kotlinx.datetime.*
+import platform.Foundation.*
+import kotlin.time.Instant
+
+actual fun LocalTime.format(format: HijrahDateTimeFormat): String {
+
+    val dateWithTime = requireNotNull(
+        format.nsFormatter.calendar.dateBySettingHour(
+            h = hour.toLong(),
+            minute = minute.toLong(),
+            second = second.toLong(),
+            ofDate = NSDate(),
+            options = 0UL
+        )
+    ) { "Invalid time components: $hour:$minute:$second" }
+
+    return format.nsFormatter.stringFromDate(dateWithTime)
+}
+
+internal fun DateTimeUnit.toNSCalendarUnit(): NSCalendarUnit {
+    return when (this) {
+        DateTimeUnit.NANOSECOND -> NSCalendarUnitNanosecond
+        DateTimeUnit.SECOND -> NSCalendarUnitSecond
+        DateTimeUnit.MINUTE -> NSCalendarUnitMinute
+        DateTimeUnit.HOUR -> NSCalendarUnitHour
+        DateTimeUnit.DAY -> NSCalendarUnitDay
+        DateTimeUnit.WEEK -> NSCalendarUnitWeekOfYear
+        DateTimeUnit.MONTH -> NSCalendarUnitMonth
+        DateTimeUnit.YEAR -> NSCalendarUnitYear
+        else -> throw IllegalArgumentException("Unsupported DateTimeUnit: The unit $this cannot be mapped to NSCalendarUnit")
+    }
+}
+
+internal fun DateTimeUnit.toNSDateComponents(value: Long): NSDateComponents {
+    val components = NSDateComponents()
+    when (this) {
+        DateTimeUnit.NANOSECOND -> components.nanosecond = value
+        DateTimeUnit.MICROSECOND -> components.nanosecond = value * 1_000
+        DateTimeUnit.MILLISECOND -> components.nanosecond = value * 1_000_000
+        DateTimeUnit.SECOND -> components.second = value
+        DateTimeUnit.MINUTE -> components.minute = value
+        DateTimeUnit.HOUR -> components.hour = value
+        DateTimeUnit.DAY -> components.day = value
+        DateTimeUnit.WEEK -> components.day = value * 7
+        DateTimeUnit.MONTH -> components.month = value
+        DateTimeUnit.YEAR -> components.year = value
+        DateTimeUnit.CENTURY -> components.year = value * 100
+        else -> throw IllegalArgumentException("Unsupported DateTimeUnit: $this")
+    }
+    return components
+}
+
+actual fun Instant.Companion.parseHijriOrNull(value: String): Instant? {
+    // Creating a dedicated ISO formatter for Hijri parsing
+    val formatter = NSDateFormatter().apply {
+        dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ" // The absolute standard for ISO with offset
+        calendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
+        locale = NSLocale.localeWithLocaleIdentifier("en_US_POSIX") // Essential for fixed-format parsing
+    }
+    return formatter.dateFromString(value)?.toKotlinInstant()
+}
+
+actual fun Instant.Companion.parseHijri(value: String): Instant {
+    return requireNotNull(parseHijriOrNull(value)) { "Invalid Hijri date: $value" }
+}
+
+actual fun DayOfWeek.getDisplayName(
+    nameStyle: NameStyle,
+    locale: FormatLocale
+): String {
+    val formatter = NSDateFormatter().apply {
+        this.locale = locale.nsLocale
+    }
+
+    val names = when (nameStyle) {
+        NameStyle.FULL -> formatter.standaloneWeekdaySymbols
+        NameStyle.ABBREVIATED -> formatter.shortStandaloneWeekdaySymbols
+    }
+
+    // kotlinx.datetime.DayOfWeek: Monday (1) .. Sunday (7)
+    // NSDateFormatter symbols: Sunday (index 0) .. Saturday (index 6)
+    val appleIndex = if (this.isoDayNumber == 7) 0 else this.isoDayNumber
+
+    return names[appleIndex] as String
+}
+
+
+internal fun DateTimePeriod.toNSDateComponents(multiplier: Int = 1): NSDateComponents = NSDateComponents().apply {
+    this.year = years.toLong() * multiplier
+    this.month = months.toLong() * multiplier
+    this.day = days.toLong() * multiplier
+    this.hour = hours.toLong() * multiplier
+    this.minute = minutes.toLong() * multiplier
+    this.second = seconds.toLong() * multiplier
+    this.nanosecond = nanoseconds.toLong() * multiplier
+}

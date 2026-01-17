@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":library")
+
+
 rootProject.name = "hijrahdatetime"
 
 includeBuild("build-logic")
@@ -11,15 +14,14 @@ include(":jakarta-validation")
 
 pluginManagement {
     repositories {
-        mavenLocal()
         mavenCentral()
+        google()
         gradlePluginPortal()
     }
 }
 
 dependencyResolutionManagement {
     repositories {
-        mavenLocal()
         mavenCentral()
     }
 
