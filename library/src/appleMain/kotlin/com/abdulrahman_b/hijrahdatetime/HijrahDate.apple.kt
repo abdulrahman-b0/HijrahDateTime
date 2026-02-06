@@ -1,21 +1,39 @@
 package com.abdulrahman_b.hijrahdatetime
 
+import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateComponentsSerializer
+import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateTimeComponentsSerializer
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.toNSDate
 import kotlinx.serialization.Serializable
 import platform.Foundation.*
+import kotlin.time.Clock
 
-@Serializable(with = HijrahDateSerializer::class)
+@Serializable(with = HijrahDateComponentsSerializer::class)
 actual class HijrahDate (
     override val calendarDatePair: Pair<NSCalendar, NSDate>,
 ): Comparable<HijrahDate>, ComponentAccessors.DateBased {
 
+    init {
+        if (this !in MIN..MAX) throw DateTimeException(
+            "HijrahDate is out of range. Valid range is from ${MIN.format(HijrahDateTimeFormats.DATE_ISO)} to ${MAX.format(HijrahDateTimeFormats.DATE_ISO)}"
+        )
+    }
+
 
     actual constructor(year: Int, month: Int, dayOfMonth: Int): this(createDate(year, month, dayOfMonth))
 
-    constructor(calendar: NSCalendar, date: NSDate): this(calendar to date)
+    constructor(calendar: NSCalendar, date: NSDate): this(calendar to date) {
+        val components = calendar.components(
+            NSCalendarUnitYear or NSCalendarUnitMonth or NSCalendarUnitDay,
+            fromDate = date
+        )
+        if (components.year != year.toLong() || components.month != month.toLong() || components.day != dayOfMonth.toLong()) {
+            throw IllegalArgumentException("Invalid date for Hijrah calendar: $year-$month-$dayOfMonth")
+        }
+    }
 
     actual override fun compareTo(other: HijrahDate): Int =
         calendarDatePair.second.compare(other.calendarDatePair.second).toInt()
@@ -59,9 +77,12 @@ actual class HijrahDate (
     actual fun toEpochDays(): Long {
         // 1. Create a date representing the Unix Epoch (Jan 1, 1970)
         val epochDate = NSDate.dateWithTimeIntervalSince1970(0.0)
+        val utcCalendar = NSCalendar.currentCalendar.apply {
+            timeZone = NSTimeZone.timeZoneWithAbbreviation("UTC")!!
+        }
 
         // 2. Use the calendar to calculate the components (days) between epoch and current date
-        val components = calendar.components(
+        val components = utcCalendar.components(
             NSCalendarUnitDay,
             fromDate = epochDate,
             toDate = calendarDatePair.second,
@@ -78,10 +99,25 @@ actual class HijrahDate (
         return format.nsFormatter.stringFromDate(calendarDatePair.second)
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is HijrahDate) return false
+        return this.toEpochDays() == other.toEpochDays()
+    }
+
+    override fun hashCode(): Int = this.toEpochDays().hashCode()
+
+    override fun toString(): String = format(HijrahDateTimeFormats.DATE_ISO)
+
     @OptIn(ExperimentalForeignApi::class)
     actual fun range(unit: DateTimeUnit.DateBased): ValueRange {
-        val unit = unit.toNSCalendarUnit()
-        calendar.rangeOfUnit(unit, inUnit = NSCalendarUnitEra, forDate = calendarDatePair.second).let { range ->
+        val nsUnit = unit.toNSCalendarUnit()
+        val inUnit = when (nsUnit) {
+            NSCalendarUnitDay -> NSCalendarUnitMonth
+            NSCalendarUnitMonth -> NSCalendarUnitYear
+            else -> NSCalendarUnitEra
+        }
+        calendar.rangeOfUnit(smaller = nsUnit, inUnit = inUnit, forDate = calendarDatePair.second).let { range ->
             range.useContents {
                 return ValueRange(minimum = location.toLong(), maximum = (location + length - 1u).toLong())
             }
@@ -93,9 +129,8 @@ actual class HijrahDate (
             string: String,
             format: HijrahDateTimeFormat,
         ): HijrahDate {
-            return requireNotNull(parseOrNull(string, format)) {
-                "Invalid date: $string"
-            }
+            return parseOrNull(string, format) ?:
+                throw DateTimeParseException("Could not parse `HijrahDate` from '$string' using the date format of '${format.nsFormatter.dateFormat}'")
         }
 
         actual fun parseOrNull(
@@ -105,23 +140,37 @@ actual class HijrahDate (
             format.nsFormatter.calendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
             return format.nsFormatter.dateFromString(string)?.let { nSDate ->
                 HijrahDate(calendar = format.nsFormatter.calendar, date = nSDate)
+            }?.also {
+                if (it > MAX) throw DateTimeException(
+                    "HijrahDate is out of range. Max is ${MAX.format(format)}"
+                )
             }
         }
 
         private fun createDate(year: Int, month: Int, dayOfMonth: Int): Pair<NSCalendar, NSDate> {
             val nsCalendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
+            nsCalendar.timeZone = NSTimeZone.timeZoneWithAbbreviation("UTC")!!
             val components = NSDateComponents().apply {
                 this.year = year.toLong()
                 this.month = month.toLong()
                 this.day = dayOfMonth.toLong()
             }
-            return nsCalendar to requireNotNull(nsCalendar.dateFromComponents(components)) {
-                "Invalid date components: $year-$month-$dayOfMonth"
+            val date = nsCalendar.dateFromComponents(components)
+            requireNotNull(date) { "Invalid date components: $year-$month-$dayOfMonth" }
+
+            val validated = nsCalendar.components(
+                NSCalendarUnitYear or NSCalendarUnitMonth or NSCalendarUnitDay,
+                fromDate = date
+            )
+            if (validated.year != year.toLong() || validated.month != month.toLong() || validated.day != dayOfMonth.toLong()) {
+                throw IllegalArgumentException("Invalid date for Hijrah calendar: $year-$month-$dayOfMonth")
             }
+            return nsCalendar to date
         }
 
         actual fun fromEpochDays(epochDay: Long): HijrahDate {
             val nsCalendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
+//            nsCalendar.timeZone = NSTimeZone.timeZoneWithAbbreviation("UTC")!!
             // One day has 86400 seconds.
             // NSDate expects TimeInterval (Double) in seconds since 1970-01-01 00:00:00 UTC
             val secondsSince1970 = epochDay * SECONDS_PER_DAY
@@ -130,40 +179,18 @@ actual class HijrahDate (
             return HijrahDate(nsCalendar, nsDate)
         }
 
+        private const val MIN_YEAR = 1300
+        private const val MAX_YEAR = 1600
+
         @OptIn(ExperimentalForeignApi::class)
         actual val MIN: HijrahDate by lazy {
-            val calendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
-            val yearRange = calendar.rangeOfUnit(NSCalendarUnitYear, inUnit = NSCalendarUnitEra, forDate = NSDate())
-            // .location is the start of the range (minimum year)
-            val minYear = yearRange.useContents { location.toInt() }
-
-            val components = NSDateComponents().apply {
-                this.year = minYear.toLong(); this.month = 1; this.day = 1
-            }
-            val date = requireNotNull(calendar.dateFromComponents(components)) {
-                "Failed to create NSDate for minimum HijrahDate"
-            }
-            HijrahDate(calendar, date)
+            //Hardcoded value to match the JVM behavior. I want the library behavior to be consistent as much as possible.
+            HijrahDate(MIN_YEAR, 1, 1)
         }
 
         @OptIn(ExperimentalForeignApi::class)
         actual val MAX: HijrahDate by lazy {
-            val calendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
-            val yearRange = calendar.rangeOfUnit(NSCalendarUnitYear, inUnit = NSCalendarUnitEra, forDate = NSDate())
-            // .length is the number of units; location + length - 1 is the last valid year
-            val maxYear = yearRange.useContents { (location + length - 1u).toInt() }
-
-            val components = NSDateComponents().apply {
-                this.year = maxYear.toLong()
-                this.month = 12
-            }
-            // Get the last day of the last month
-            val lastMonthDate = requireNotNull(calendar.dateFromComponents(components))
-            val dayRange = calendar.rangeOfUnit(NSCalendarUnitDay, inUnit = NSCalendarUnitMonth, forDate = lastMonthDate)
-            components.day = dayRange.useContents { (location + length - 1u).toLong() }
-
-            val date = requireNotNull(calendar.dateFromComponents(components))
-            HijrahDate(calendar, date)
+            HijrahDate(MAX_YEAR, 12, 1).withLastDayOfMonth()
         }
         private const val SECONDS_PER_DAY = 86400.0
     }

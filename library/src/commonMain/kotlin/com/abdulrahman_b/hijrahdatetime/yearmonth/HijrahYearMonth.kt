@@ -74,16 +74,20 @@ class HijrahYearMonth(val year: Int, val month: HijrahMonth) : Comparable<Hijrah
 
     private fun until(other: HijrahYearMonth, unit: DateTimeUnit): Long {
         return when (unit) {
-            DateTimeUnit.MONTH -> (other.date.year - date.year) * 12 + (other.date.month - date.month)
-            DateTimeUnit.YEAR -> other.date.year - date.year
+            DateTimeUnit.MONTH -> (other.year.toLong() - year) * 12 + (other.month.value - month.value)
+            DateTimeUnit.YEAR -> (other.year.toLong() - year).let { years ->
+                if (years > 0 && other.month.value < month.value) years - 1
+                else if (years < 0 && other.month.value > month.value) years + 1
+                else years
+            }
             else -> throw IllegalArgumentException("Unsupported unit: $unit")
-        }.toLong()
+        }
     }
 
     fun untilMonth(other: HijrahYearMonth) = until(other, DateTimeUnit.MONTH)
     fun untilYear(other: HijrahYearMonth) = until(other, DateTimeUnit.YEAR)
 
-    infix fun downTo(other: HijrahYearMonth) = HijrahYearMonthProgression(this, other, 1)
+    infix fun downTo(other: HijrahYearMonth) = HijrahYearMonthProgression(this, other, -1)
 
     fun format(format: HijrahDateTimeFormat): String = date.format(format)
 
@@ -95,9 +99,11 @@ class HijrahYearMonth(val year: Int, val month: HijrahMonth) : Comparable<Hijrah
      *
      * @throw IllegalArgumentException if the [day] is out of range for this year-month.
      */
-    fun onDay(day: Int): HijrahDate = runCatching {
-        HijrahDate(year, month.value, day)
-    }.onFailure { throw IllegalArgumentException("Invalid day of month: $day") }.getOrThrow()
+    fun onDay(day: Int): HijrahDate {
+        return runCatching {
+            HijrahDate(year, month.value, day)
+        }.onFailure { throw IllegalArgumentException("Invalid day of month: $day") }.getOrThrow()
+    }
 
 
     override fun equals(other: Any?): Boolean {
@@ -106,11 +112,16 @@ class HijrahYearMonth(val year: Int, val month: HijrahMonth) : Comparable<Hijrah
 
     override fun hashCode() = date.hashCode()
 
-    override fun toString() = "$year-$month"
+    override fun toString() = "$year-${month.value.toString().padStart(2, '0')}"
 
 
     companion object {
 
+        internal val Format by lazy {
+            HijrahDateTimeFormatBuilder().apply {
+                year(); char('-'); monthNumber()
+            }.build()
+        }
 
         internal fun fromProlepticMonth(prolepticMonth: Int): HijrahYearMonth {
             val year = prolepticMonth.floorDiv(12)

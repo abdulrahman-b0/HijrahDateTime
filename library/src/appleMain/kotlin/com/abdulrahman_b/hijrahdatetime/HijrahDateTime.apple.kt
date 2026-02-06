@@ -29,18 +29,23 @@ actual class HijrahDateTime(
         nanosecond: Int,
     ) : this(createDate(year, month, dayOfMonth, hour, minute, second, nanosecond))
 
-    constructor(calendar: NSCalendar, date: NSDate): this(calendar to date)
+    constructor(calendar: NSCalendar, date: NSDate): this(calendar to date) {
+        val components = calendar.components(
+            NSCalendarUnitYear or NSCalendarUnitMonth or NSCalendarUnitDay or
+                    NSCalendarUnitHour or NSCalendarUnitMinute or NSCalendarUnitSecond or NSCalendarUnitNanosecond,
+            fromDate = date
+        )
+        if (components.year != year.toLong() || components.month != month.toLong() || components.day != dayOfMonth.toLong() ||
+            components.hour != hour.toLong() || components.minute != minute.toLong() || components.second != second.toLong()
+        ) {
+            throw IllegalArgumentException("Invalid date-time for Hijrah calendar")
+        }
+    }
 
     actual override operator fun compareTo(other: HijrahDateTime): Int =
         calendarDatePair.second.compare(other.calendarDatePair.second).toInt()
 
     actual fun toInstant(timeZone: FixedOffsetTimeZone): Instant {
-        // We must ensure the calendar used for conversion respects the provided offset
-        val tempCalendar = calendar.copy() as NSCalendar
-        tempCalendar.timeZone = NSTimeZone.timeZoneForSecondsFromGMT(timeZone.offset.totalSeconds.toLong())
-
-        // date represents the absolute point in time.
-        // toKotlinInstant() from kotlinx.datetime is safe here as NSDate is always UTC based.
         return calendarDatePair.second.toKotlinInstant()
     }
 
@@ -53,15 +58,41 @@ actual class HijrahDateTime(
     }
 
     actual fun toLocalDateTime(): LocalDateTime {
-        return calendarDatePair.second.toKotlinInstant().toLocalDateTime(calendar.timeZone.toKotlinTimeZone())
+        val isoCalendar = NSCalendar(NSCalendarIdentifierGregorian).apply {
+            timeZone = NSTimeZone.timeZoneWithAbbreviation("UTC")!!
+        }
+        val date = calendarDatePair.second
+        val components = isoCalendar.components(
+            NSCalendarUnitYear or NSCalendarUnitMonth or NSCalendarUnitDay or
+                    NSCalendarUnitHour or NSCalendarUnitMinute or NSCalendarUnitSecond or NSCalendarUnitNanosecond,
+            fromDate = date
+        )
+        return LocalDateTime(
+            year = components.year.toInt(),
+            monthNumber = components.month.toInt(),
+            dayOfMonth = components.day.toInt(),
+            hour = components.hour.toInt(),
+            minute = components.minute.toInt(),
+            second = components.second.toInt(),
+            nanosecond = components.nanosecond.toInt()
+        )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is HijrahDateTime) return false
+        return this.calendarDatePair.second.isEqualToDate(other.calendarDatePair.second)
+    }
+
+    override fun hashCode(): Int = this.calendarDatePair.second.hashCode()
+
+    override fun toString(): String = "HijrahDateTime($date, $time)"
 
 
     actual companion object {
         actual fun parse(string: String, format: HijrahDateTimeFormat): HijrahDateTime {
-            return requireNotNull(parseOrNull(string, format)) {
-                "Invalid date: $string"
-            }
+            return parseOrNull(string, format) ?:
+                throw DateTimeParseException("Could not parse `HijrahDateTime` from '$string' using the date format of '${format.nsFormatter.dateFormat}'")
         }
 
         actual fun parseOrNull(
@@ -83,6 +114,7 @@ actual class HijrahDateTime(
             nanosecond: Int,
         ): Pair<NSCalendar, NSDate> {
             val nsCalendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
+            nsCalendar.timeZone = NSTimeZone.timeZoneWithAbbreviation("UTC")!!
             val components = NSDateComponents().apply {
                 this.year = year.toLong()
                 this.month = month.toLong()
@@ -92,9 +124,20 @@ actual class HijrahDateTime(
                 this.second = second.toLong()
                 this.nanosecond = nanosecond.toLong()
             }
-            return nsCalendar to requireNotNull(nsCalendar.dateFromComponents(components)) {
-                "Invalid date components: $year-$month-$dayOfMonth-$hour:$minute:$second.$nanosecond"
+            val date = nsCalendar.dateFromComponents(components)
+            requireNotNull(date) { "Invalid date-time components" }
+
+            val validated = nsCalendar.components(
+                NSCalendarUnitYear or NSCalendarUnitMonth or NSCalendarUnitDay or
+                        NSCalendarUnitHour or NSCalendarUnitMinute or NSCalendarUnitSecond,
+                fromDate = date
+            )
+            if (validated.year != year.toLong() || validated.month != month.toLong() || validated.day != dayOfMonth.toLong() ||
+                validated.hour != hour.toLong() || validated.minute != minute.toLong() || validated.second != second.toLong()
+            ) {
+                throw IllegalArgumentException("Invalid date-time for Hijrah calendar")
             }
+            return nsCalendar to date
         }
     }
 

@@ -54,9 +54,6 @@ fun Instant.toHijrahDate(timeZone: TimeZone = TimeZone.currentSystemDefault()): 
 
 
 
-//Expects
-
-
 fun LocalDate.toHijrahDate(): HijrahDate = HijrahDate.fromEpochDays(toEpochDays())
 fun HijrahDate.toLocalDate(): LocalDate = LocalDate.fromEpochDays(toEpochDays())
 

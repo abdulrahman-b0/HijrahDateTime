@@ -1,5 +1,6 @@
 package com.abdulrahman_b.hijrahdatetime
 
+import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateComponentsSerializer
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
@@ -12,7 +13,7 @@ import java.time.temporal.TemporalAdjusters
 import java.time.temporal.TemporalAdjusters.lastDayOfMonth
 import java.time.chrono.HijrahDate as JavaHijrahDate
 
-@Serializable(with = HijrahDateSerializer::class)
+@Serializable(with = HijrahDateComponentsSerializer::class)
 actual class HijrahDate internal constructor(private val javaDate: JavaHijrahDate) : Comparable<HijrahDate> {
 
     actual val year get() = javaDate.get(ChronoField.YEAR)
@@ -93,8 +94,11 @@ actual class HijrahDate internal constructor(private val javaDate: JavaHijrahDat
     }
 
 
-    override fun equals(other: Any?): Boolean =
-        this === other || (other is HijrahDate && javaDate == other.javaDate)
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is HijrahDate) return false
+        return toEpochDays() == other.toEpochDays()
+    }
 
     override fun hashCode(): Int = javaDate.hashCode()
 

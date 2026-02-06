@@ -1,0 +1,4 @@
+package com.abdulrahman_b.hijrahdatetime
+
+expect open class DateTimeException: RuntimeException
+expect class DateTimeParseException: DateTimeException

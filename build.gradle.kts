@@ -15,12 +15,12 @@ rootProject.description =
     "HijrahDateTime is a Kotlin/JVM library that is built on top of java.time to facilitates work with Hijrah date and time APIs."
 
 
-dependencies {
-    kover(projects.core)
-    kover(projects.serialization.kotlinx)
-    kover(projects.serialization.jackson)
-    kover(projects.jakartaValidation)
-}
+//dependencies {
+//    kover(projects.core)
+//    kover(projects.serialization.kotlinx)
+//    kover(projects.serialization.jackson)
+//    kover(projects.jakartaValidation)
+//}
 
 kover {
     //Those classes are only containers for nested classes. For organization purposes.
