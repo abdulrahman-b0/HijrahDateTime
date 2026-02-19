@@ -51,4 +51,4 @@ jobs:
         with:
           name: ios-test-reports
           path: |
-            **/build/reports/tests/iosSimulatorArm64Test/*
+            **/build/reports/tests/**/*
