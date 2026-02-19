@@ -43,7 +43,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run Tests
-        run: ./gradlew ${{ inputs.module || ':library' }}:iosSimulatorArm64Test --no-daemon
+        run: ./gradlew ${{ inputs.module || ':library' }}:iosSimulatorArm64Test --no-daemon --stacktrace
 
       - name: Upload Test Reports
         if: always()

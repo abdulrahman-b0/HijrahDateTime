@@ -42,7 +42,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run Tests
-        run: ./gradlew ${{ inputs.module || ':library' }}:macosArm64Test --no-daemon
+        run: ./gradlew ${{ inputs.module || ':library' }}:macosArm64Test --no-daemon --stacktrace
 
       - name: Upload Test Reports
         if: always()
@@ -50,4 +50,4 @@ jobs:
         with:
           name: macos-test-reports
           path: |
-            **/build/reports/tests/macosArm64Test/*
+            **/build/reports/tests/**/*
