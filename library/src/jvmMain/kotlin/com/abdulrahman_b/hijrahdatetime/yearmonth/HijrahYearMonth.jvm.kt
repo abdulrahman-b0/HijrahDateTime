@@ -1,20 +1,23 @@
 package com.abdulrahman_b.hijrahdatetime.yearmonth
 
+import com.abdulrahman_b.hijrahdatetime.HijrahDateTimeFormat
+import java.time.chrono.HijrahChronology
+import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoField
 
-actual fun HijrahYearMonth.Companion.parse(text: String): HijrahYearMonth {
-    val formatter = HijrahYearMonth.Format.javaFormatter
-    val accessor = formatter.parse(text)
-    return HijrahYearMonth(
-        accessor.get(ChronoField.YEAR), accessor.get(ChronoField.MONTH_OF_YEAR)
-    )
+private val Format by lazy {
+
+    DateTimeFormatter.ofPattern("yyyy-MM").withChronology(HijrahChronology.INSTANCE)
 }
 
-actual fun HijrahYearMonth.Companion.parseOrNull(text: String): HijrahYearMonth? {
-    return try {
-        parse(text)
-    } catch (_: DateTimeParseException) {
-        null
-    }
+actual fun HijrahYearMonth.Companion.parse(text: String): HijrahYearMonth {
+    val temporal = Format.javaFormatter.parse(text)
+    return HijrahYearMonth(year = temporal.get(ChronoField.YEAR), month = temporal.get(ChronoField.MONTH_OF_YEAR))
+}
+
+actual fun HijrahYearMonth.Companion.parseOrNull(text: String): HijrahYearMonth? = try {
+    parse(text)
+} catch (_: DateTimeParseException) {
+    null
 }

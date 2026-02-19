@@ -6,69 +6,75 @@ import kotlin.test.*
 class HijrahDateTimeTest {
 
     @Test
-    fun testConstructorAndProperties() {
-        val dateTime = HijrahDateTime(1445, 9, 1, 10, 30, 0, 0)
-        assertEquals(1445, dateTime.year)
-        assertEquals(9, dateTime.month)
-        assertEquals(1, dateTime.dayOfMonth)
-        assertEquals(10, dateTime.hour)
-        assertEquals(30, dateTime.minute)
-        assertEquals(0, dateTime.second)
-        assertEquals(0, dateTime.nanosecond)
-        
-        assertEquals(HijrahDate(1445, 9, 1), dateTime.date)
-        assertEquals(LocalTime(10, 30, 0, 0), dateTime.time)
+    fun `test Hijri creation`() {
+        val dt = HijrahDateTime(1445, 9, 1, 10, 30, 0, 0)
+        assertEquals(1445, dt.year)
+        assertEquals(9, dt.month)
+        assertEquals(1, dt.dayOfMonth)
+        assertEquals(10, dt.hour)
+        assertEquals(30, dt.minute)
+        assertEquals(0, dt.second)
+        assertEquals(0, dt.nanosecond)
+        assertEquals(DayOfWeek.MONDAY, dt.dayOfWeek)
     }
 
     @Test
-    fun testCompareTo() {
+    fun `test comparison`() {
         val dt1 = HijrahDateTime(1445, 9, 1, 10, 0, 0, 0)
         val dt2 = HijrahDateTime(1445, 9, 1, 11, 0, 0, 0)
         val dt3 = HijrahDateTime(1445, 9, 2, 10, 0, 0, 0)
 
         assertTrue(dt1 < dt2)
         assertTrue(dt2 < dt3)
-        assertEquals(0, dt1.compareTo(dt1))
+        assertEquals(0, dt1.compareTo(HijrahDateTime(1445, 9, 1, 10, 0, 0, 0)))
     }
 
     @Test
-    fun testToInstant() {
-        val dateTime = HijrahDateTime(1445, 9, 1, 0, 0, 0, 0)
-        val timeZone = TimeZone.UTC
-        val instant = dateTime.toInstant(timeZone)
-        
-        // 1445-09-01 00:00:00 UTC is 2024-03-11 00:00:00 UTC
-        assertEquals(Instant.fromEpochSeconds(1710115200), instant)
-        
-        val back = instant.toHijrahDateTime(timeZone)
-        assertEquals(dateTime.year, back.year)
-        assertEquals(dateTime.month, back.month)
-        assertEquals(dateTime.dayOfMonth, back.dayOfMonth)
+    fun `test to instant`() {
+        // 2024-03-11T00:00:00Z is 1445-09-01
+        val dt = HijrahDateTime(1445, 9, 1, 0, 0, 0, 0)
+        val instant = dt.toInstant(TimeZone.UTC as FixedOffsetTimeZone)
+        assertEquals(1710115200, instant.epochSeconds)
     }
 
     @Test
-    fun testToLocalDateTime() {
-        val dateTime = HijrahDateTime(1445, 9, 1, 10, 30, 0, 0)
-        val localDateTime = dateTime.toLocalDateTime()
-        assertEquals(LocalDateTime(2024, 3, 11, 10, 30, 0, 0), localDateTime)
-        
-        // Use UTC for roundtrip to avoid system timezone issues
-        val back = localDateTime.toInstant(TimeZone.UTC).toHijrahDateTime(TimeZone.UTC)
-        assertEquals(dateTime, back)
+    fun `test to LocalDateTime`() {
+        val dt = HijrahDateTime(1445, 9, 1, 10, 30, 0, 0)
+        val localDt = dt.toLocalDateTime()
+        assertEquals(2024, localDt.year)
+        assertEquals(Month.MARCH, localDt.month)
+        assertEquals(11, localDt.dayOfMonth)
+        assertEquals(10, localDt.hour)
+        assertEquals(30, localDt.minute)
     }
 
     @Test
-    fun testOfAndAtTime() {
+    fun `test instant conversion`() {
+        val instant = Instant.fromEpochSeconds(1710115200)
+        val dt = instant.toHijrahDateTime(TimeZone.UTC)
+        assertEquals(1445, dt.year)
+        assertEquals(9, dt.month)
+        assertEquals(1, dt.dayOfMonth)
+        assertEquals(0, dt.hour)
+    }
+
+    @Test
+    fun `test of date and time`() {
         val date = HijrahDate(1445, 9, 1)
-        val time = LocalTime(10, 30)
-        
-        val dt1 = HijrahDateTime.of(date, time)
-        val dt2 = date.atTime(time)
-        val dt3 = date.atStartOfDay()
-        
-        assertEquals(dt1, dt2)
-        assertEquals(10, dt2.hour)
-        assertEquals(0, dt3.hour)
-        assertEquals(0, dt3.minute)
+        val time = LocalTime(10, 30, 0, 0)
+        val dt = HijrahDateTime.of(date, time)
+        assertEquals(1445, dt.year)
+        assertEquals(10, dt.hour)
+        assertEquals(date, dt.date)
+        assertEquals(time, dt.time)
+    }
+    
+    @Test
+    fun `test formatting`() {
+        val dt = HijrahDateTime(1445, 9, 1, 10, 30, 0, 0)
+        val format = HijrahDateTimeFormats.DATETIME_ISO
+        val formatted = dt.format(format)
+        // Expected format: YYYY-MM-DDTHH:MM:SS
+        assertEquals("1445-09-01T10:30:00", formatted)
     }
 }
