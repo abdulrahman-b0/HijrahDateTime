@@ -1,64 +1,74 @@
 package com.abdulrahman_b.hijrahdatetime
 
+import io.kotest.assertions.throwables.shouldNotThrowAny
+import io.kotest.matchers.comparables.shouldBeGreaterThan
+import io.kotest.matchers.comparables.shouldBeLessThan
+import io.kotest.matchers.equals.shouldBeEqual
+import io.kotest.matchers.ranges.shouldBeIn
+import io.kotest.matchers.ranges.shouldNotBeIn
+import io.kotest.matchers.shouldBe
 import kotlinx.datetime.*
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.time.Instant
 
 class HijrahDateTest {
 
     @Test
     fun `test Hijri creation`() {
-        val date = HijrahDate(1445, 9, 1)
-        assertEquals(1445, date.year)
-        assertEquals(9, date.month)
-        assertEquals(1, date.dayOfMonth)
-        assertEquals(DayOfWeek.MONDAY, date.dayOfWeek)
+        val date = shouldNotThrowAny { HijrahDate(1445, 9, 1) }
+        date.year shouldBe 1445
+        date.month shouldBe 9
+        date.dayOfMonth shouldBe 1
+        date.dayOfWeek shouldBe DayOfWeek.MONDAY
     }
 
     @Test
     fun `test arithmetic days`() {
         // 1445-09-29 + 1 day should be 1445-09-30 (Ramadan 1445 has 30 days)
-        val date = HijrahDate(1445, 9, 29)
-        val nextDay = date plusDays 1
-        
-        assertEquals(30, nextDay.dayOfMonth)
-        assertEquals(9, nextDay.month)
-        
-        val nextMonthFirst = nextDay plusDays 1
-        assertEquals(10, nextMonthFirst.month)
-        assertEquals(1, nextMonthFirst.dayOfMonth)
+        val date = shouldNotThrowAny { HijrahDate(1445, 9, 29) }
+        val nextDay = shouldNotThrowAny { date plusDays 1 }
 
-        val prevDay = nextMonthFirst minusDays 1
-        assertEquals(30, prevDay.dayOfMonth)
-        assertEquals(9, prevDay.month)
+        nextDay.dayOfMonth shouldBe 30
+        nextDay.month shouldBe 9
+        
+        val nextMonthFirst = shouldNotThrowAny { nextDay plusDays 1 }
+        nextMonthFirst.dayOfMonth shouldBe 1
+        nextMonthFirst.month shouldBe 10
+
+        val prevDay = shouldNotThrowAny { nextMonthFirst minusDays 1 }
+        prevDay.dayOfMonth shouldBe 30
+        prevDay.month shouldBe 9
     }
 
     @Test
     fun `test arithmetic months`() {
         val date = HijrahDate(1446, 1, 29)
-        val nextMonth = date plusMonths 1
-        assertEquals(2, nextMonth.month)
-        assertEquals(29, nextMonth.dayOfMonth)
+        val nextMonth = shouldNotThrowAny { date plusMonths 1 }
+        nextMonth.month shouldBe 2
+        nextMonth.dayOfMonth shouldBe 29
 
-        val nextYear = date plusYears 1
-        assertEquals(1447, nextYear.year)
-        assertEquals(1, nextYear.month)
-        assertEquals(29, nextYear.dayOfMonth)
+        val nextYear = shouldNotThrowAny { date plusYears 1 }
+        nextYear.year shouldBe 1447
+        nextYear.month shouldBe 1
+        nextYear.dayOfMonth shouldBe 29
         
-        val minusMonth = nextMonth minusMonths 1
-        assertEquals(1, minusMonth.month)
-        assertEquals(29, minusMonth.dayOfMonth)
+        val minusMonth = shouldNotThrowAny { nextMonth minusMonths 1 }
+        minusMonth.month shouldBe 1
+        minusMonth.dayOfMonth shouldBe 29
     }
 
     @Test
     fun `test comparison`() {
+
         val date1 = HijrahDate(1446, 3, 11)
         val date2 = HijrahDate(1446, 3, 12)
         val date3 = HijrahDate(1446, 2, 11)
 
-        assertTrue(date1 < date2)
-        assertTrue(date1 > date3)
-        assertEquals(0, date1.compareTo(HijrahDate(1446, 3, 11)))
-        assertEquals(date1, HijrahDate(1446, 3, 11))
+        date1 shouldBeLessThan date2
+        date1 shouldBeGreaterThan date3
+
+        date1.compareTo(HijrahDate(1446, 3, 11)) shouldBe 0
+        date1 shouldBeEqual HijrahDate(1446, 3, 11)
     }
 
     @Test
@@ -66,21 +76,21 @@ class HijrahDateTest {
         // 1446-01-01 AH is 2024-07-07 ISO. 
         // Epoch days for 2024-07-07 is 19911
         val date = HijrahDate(1446, 1, 1)
-        assertEquals(19911, date.toEpochDays())
-        
+        date.toEpochDays() shouldBe 19911
+
         val dateFromEpoch = HijrahDate.fromEpochDays(19911)
-        assertEquals(1446, dateFromEpoch.year)
-        assertEquals(1, dateFromEpoch.month)
-        assertEquals(1, dateFromEpoch.dayOfMonth)
+        dateFromEpoch.year shouldBe 1446
+        dateFromEpoch.month shouldBe 1
+        dateFromEpoch.dayOfMonth shouldBe 1
     }
 
     @Test
     fun `test to LocalDate`() {
         val date = HijrahDate(1445, 9, 1) // 2024-03-11
         val localDate = date.toLocalDate()
-        assertEquals(2024, localDate.year)
-        assertEquals(3, localDate.monthNumber)
-        assertEquals(11, localDate.dayOfMonth)
+        localDate.year shouldBe 2024
+        localDate.month shouldBe Month.MARCH
+        localDate.day shouldBe 11
     }
 
     @Test
@@ -88,26 +98,26 @@ class HijrahDateTest {
         // 2024-03-11T00:00:00Z is 1445-09-01
         val instant = Instant.fromEpochSeconds(1710115200)
         val date = instant.toHijrahDate(TimeZone.UTC)
-        assertEquals(1445, date.year)
-        assertEquals(9, date.month)
-        assertEquals(1, date.dayOfMonth)
+        date.year shouldBe 1445
+        date.month shouldBe 9
+        date.dayOfMonth shouldBe 1
     }
 
     @Test
     fun `test withNextDayOfWeek`() {
         // 1445-09-01 is Monday
         val monday = HijrahDate(1445, 9, 1)
-        assertEquals(DayOfWeek.MONDAY, monday.dayOfWeek)
+        monday.dayOfWeek shouldBe DayOfWeek.MONDAY
 
         // Next Wednesday should be 1445-09-03
         val nextWednesday = monday.withNextDayOfWeek(DayOfWeek.WEDNESDAY)
-        assertEquals(3, nextWednesday.dayOfMonth)
-        assertEquals(DayOfWeek.WEDNESDAY, nextWednesday.dayOfWeek)
+        nextWednesday.dayOfWeek shouldBe DayOfWeek.WEDNESDAY
+        nextWednesday.dayOfMonth shouldBe 3
 
         // Next Monday should be 1445-09-08
         val nextMonday = monday.withNextDayOfWeek(DayOfWeek.MONDAY)
-        assertEquals(8, nextMonday.dayOfMonth)
-        assertEquals(DayOfWeek.MONDAY, nextMonday.dayOfWeek)
+        nextMonday.dayOfMonth shouldBe 8
+        nextMonday.dayOfWeek shouldBe DayOfWeek.MONDAY
     }
 
     @Test
@@ -117,16 +127,16 @@ class HijrahDateTest {
 
         // Previous Friday should be 1445-08-27
         // 2024-03-08 is 1445-08-27
-        val prevFriday = monday.withPreviousDayOfWeek(DayOfWeek.FRIDAY)
-        assertEquals(27, prevFriday.dayOfMonth)
-        assertEquals(8, prevFriday.month)
-        assertEquals(DayOfWeek.FRIDAY, prevFriday.dayOfWeek)
+        val prevFriday = shouldNotThrowAny { monday.withPreviousDayOfWeek(DayOfWeek.FRIDAY) }
+        prevFriday.dayOfMonth shouldBe 27
+        prevFriday.month shouldBe 8
+        prevFriday.dayOfWeek shouldBe DayOfWeek.FRIDAY
 
         // Previous Monday should be 1445-08-23
-        val prevMonday = monday.withPreviousDayOfWeek(DayOfWeek.MONDAY)
-        assertEquals(23, prevMonday.dayOfMonth)
-        assertEquals(8, prevMonday.month)
-        assertEquals(DayOfWeek.MONDAY, prevMonday.dayOfWeek)
+        val prevMonday = shouldNotThrowAny { monday.withPreviousDayOfWeek(DayOfWeek.MONDAY) }
+        prevMonday.dayOfWeek shouldBe DayOfWeek.MONDAY
+        prevMonday.dayOfMonth shouldBe 23
+        prevMonday.month shouldBe 8
     }
 
     @Test
@@ -134,12 +144,12 @@ class HijrahDateTest {
         val monday = HijrahDate(1445, 9, 1)
 
         // Same or next Monday should be Today
-        val sameMonday = monday.withSameOrNextDayOfWeek(DayOfWeek.MONDAY)
-        assertEquals(1, sameMonday.dayOfMonth)
+        val sameMonday = shouldNotThrowAny { monday.withSameOrNextDayOfWeek(DayOfWeek.MONDAY) }
+        sameMonday.dayOfMonth shouldBe 1
 
         // Same or next Tuesday should be Tomorrow
-        val nextTuesday = monday.withSameOrNextDayOfWeek(DayOfWeek.TUESDAY)
-        assertEquals(2, nextTuesday.dayOfMonth)
+        val nextTuesday = shouldNotThrowAny { monday.withSameOrNextDayOfWeek(DayOfWeek.TUESDAY) }
+        nextTuesday.dayOfMonth shouldBe 2
     }
 
     @Test
@@ -147,36 +157,36 @@ class HijrahDateTest {
         val monday = HijrahDate(1445, 9, 1)
 
         // Same or previous Monday should be Today
-        val sameMonday = monday.withSameOrPreviousDayOfWeek(DayOfWeek.MONDAY)
-        assertEquals(1, sameMonday.dayOfMonth)
+        val sameMonday = shouldNotThrowAny { monday.withSameOrPreviousDayOfWeek(DayOfWeek.MONDAY) }
+        sameMonday.dayOfMonth shouldBe 1
 
         // Same or previous Sunday should be Yesterday
-        val prevSunday = monday.withSameOrPreviousDayOfWeek(DayOfWeek.SUNDAY)
-        assertEquals(DayOfWeek.SUNDAY, prevSunday.dayOfWeek)
-        assertTrue(prevSunday < monday)
+        val prevSunday = shouldNotThrowAny { monday.withSameOrPreviousDayOfWeek(DayOfWeek.SUNDAY) }
+        prevSunday.dayOfWeek shouldBe DayOfWeek.SUNDAY
+        prevSunday shouldBeLessThan monday
     }
 
     @Test
     fun `test withLastDayOfMonth`() {
         val date = HijrahDate(1445, 9, 1)
-        val lastDay = date.withLastDayOfMonth()
+        val lastDay = shouldNotThrowAny { date.withLastDayOfMonth() }
         
         // Ramadan 1445 had 30 days
-        assertEquals(30, lastDay.dayOfMonth)
-        assertEquals(9, lastDay.month)
+        lastDay.dayOfMonth shouldBe 30
+        lastDay.month shouldBe 9
         
         val date2 = HijrahDate(1445, 10, 1)
-        val lastDay2 = date2.withLastDayOfMonth()
+        val lastDay2 = shouldNotThrowAny { date2.withLastDayOfMonth() }
         // Shawwal 1445 had 29 days
-        assertEquals(29, lastDay2.dayOfMonth)
+        lastDay2.dayOfMonth shouldBe 29
     }
 
     @Test
     fun `test with components`() {
         val date = HijrahDate(1445, 9, 1)
-        assertEquals(1446, date.withYear(1446).year)
-        assertEquals(10, date.withMonth(10).month)
-        assertEquals(15, date.withDayOfMonth(15).dayOfMonth)
+        date.withYear(1446).year shouldBe 1446
+        date.withMonth(10).month shouldBe 10
+        date.withDayOfMonth(15).dayOfMonth shouldBe 15
     }
 
     @Test
@@ -184,27 +194,28 @@ class HijrahDateTest {
         val start = HijrahDate(1445, 9, 1)
         val end = HijrahDate(1445, 9, 10)
         val range: ClosedRange<HijrahDate> = start..end
-        
-        assertEquals(start, range.start)
-        assertEquals(end, range.endInclusive)
-        assertTrue(range.contains(HijrahDate(1445, 9, 5)))
-        assertFalse(range.contains(HijrahDate(1445, 9, 11)))
-        
+
+        range.start shouldBeEqual start
+        range.endInclusive shouldBeEqual end
+
+        HijrahDate(1445, 9, 5) shouldBeIn range
+        HijrahDate(1445, 9, 11) shouldNotBeIn range
+
         val untilRange: ClosedRange<HijrahDate> = start..<end
-        assertEquals(start, untilRange.start)
-        assertEquals(HijrahDate(1445, 9, 9), untilRange.endInclusive)
+        untilRange.start shouldBeEqual start
+        untilRange.endInclusive shouldBeEqual HijrahDate(1445, 9, 9)
     }
 
     @Test
     fun `test value range`() {
         val date = HijrahDate(1445, 9, 1)
-        val dayRange = date.range(DateTimeUnit.DAY)
-        assertEquals(1, dayRange.minimum)
-        assertEquals(30, dayRange.maximum)
+        val dayRange = shouldNotThrowAny { date.range(DateTimeUnit.DAY) }
+        dayRange.minimum shouldBe 1
+        dayRange.maximum shouldBe 30
         
-        val monthRange = date.range(DateTimeUnit.MONTH)
-        assertEquals(1, monthRange.minimum)
-        assertEquals(12, monthRange.maximum)
+        val monthRange = shouldNotThrowAny { date.range(DateTimeUnit.MONTH) }
+        monthRange.minimum shouldBe 1
+        monthRange.maximum shouldBe 12
     }
 
     @Test
@@ -212,12 +223,12 @@ class HijrahDateTest {
         val date = HijrahDate(1445, 9, 1)
         val time = LocalTime(10, 30)
         val dateTime = date.atTime(time)
-        
-        assertEquals(date, dateTime.date)
-        assertEquals(time, dateTime.time)
+
+        dateTime.date shouldBe date
+        dateTime.time shouldBe time
         
         val startOfDay = date.atStartOfDay()
-        assertEquals(0, startOfDay.hour)
-        assertEquals(0, startOfDay.minute)
+        startOfDay.hour shouldBe 0
+        startOfDay.minute shouldBe 0
     }
 }

@@ -11,6 +11,7 @@ mockk = "1.14.7"
 kover = "0.9.4"
 kotlinStdlib = "2.3.0"
 kotlinTest = "2.3.0"
+kotest = "6.1.3"
 agp = "8.13.2"
 
 [libraries]
@@ -36,6 +37,8 @@ junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.re
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinTest" }
+
+kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 
 [plugins]
 #noinspection GradleDependency
