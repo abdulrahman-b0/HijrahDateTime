@@ -22,7 +22,9 @@ class PublishConfigConventionPlugin : Plugin<Project> {
         plugins.apply(libs.plugins.vanniktechMavenPublish.get().pluginId)
         extensions.create<HijrahDateTimePublishingExtension>("hijrahDateTimePublishing")
 
-        loadProperties()
+        val loaded = loadProperties()
+        if (!loaded)
+            return@with
 
         afterEvaluate {
             hijrahDateTimePublishing = the<HijrahDateTimePublishingExtension>()
@@ -38,14 +40,19 @@ class PublishConfigConventionPlugin : Plugin<Project> {
 
     }
 
-    private fun Project.loadProperties() {
+    private fun Project.loadProperties(): Boolean {
         publishProperties = Properties().apply {
-            load(File("publish.properties").reader())
+            val file = File("publish.properties")
+            if (!file.exists()) return false
+            load(file.reader())
         }
         globalProperties = Properties().apply {
             val userHome = this@loadProperties.gradle.gradleUserHomeDir
-            load(File(userHome, "gradle.properties").reader())
+            val file = File(userHome, "gradle.properties")
+            if (!file.exists()) return false
+            load(file.reader())
         }
+        return true
     }
 
     private fun Project.configurePublishing() {
