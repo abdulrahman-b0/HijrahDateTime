@@ -84,13 +84,15 @@ actual class HijrahDate internal constructor(private val javaDate: JavaHijrahDat
                 ).with(lastDayOfMonth())
             )
         }
-        actual val MAX = HijrahDate(
-            JavaHijrahDate.of(
-                /* prolepticYear = */ INSTANCE.range(ChronoField.YEAR).maximum.toInt(),
-                /* month = */ 12,
-                /* dayOfMonth = */ 29
-            ).with(TemporalAdjusters.lastDayOfMonth())
-        )
+        actual val MAX by lazy {
+            HijrahDate(
+                JavaHijrahDate.of(
+                    /* prolepticYear = */ INSTANCE.range(ChronoField.YEAR).maximum.toInt(),
+                    /* month = */ 12,
+                    /* dayOfMonth = */ 29
+                ).with(TemporalAdjusters.lastDayOfMonth())
+            )
+        }
     }
 
 
