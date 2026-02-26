@@ -12,18 +12,22 @@ import platform.Foundation.*
 import kotlin.time.Clock
 
 @Serializable(with = HijrahDateComponentsSerializer::class)
-actual class HijrahDate (
+actual class HijrahDate private constructor(
     override val calendarDatePair: Pair<NSCalendar, NSDate>,
+    skipValidation: Boolean //Internal flag to avoid infinite recursion in init block check.
 ): Comparable<HijrahDate>, ComponentAccessors.DateBased {
 
     init {
-        if (this !in MIN..MAX) throw DateTimeException(
+        if (!skipValidation && this !in MIN..MAX) throw DateTimeException(
             "HijrahDate is out of range. Valid range is from ${MIN.format(HijrahDateTimeFormats.DATE_ISO)} to ${MAX.format(HijrahDateTimeFormats.DATE_ISO)}"
         )
     }
 
+    constructor(calendarDatePair: Pair<NSCalendar, NSDate>): this(calendarDatePair, skipValidation = false)
 
     actual constructor(year: Int, month: Int, dayOfMonth: Int): this(createDate(year, month, dayOfMonth))
+
+    private constructor(year: Int, month: Int, dayOfMonth: Int, skipValidation: Boolean = false): this(createDate(year, month, dayOfMonth), skipValidation)
 
     constructor(calendar: NSCalendar, date: NSDate): this(calendar to date) {
         val components = calendar.components(
@@ -185,12 +189,12 @@ actual class HijrahDate (
         @OptIn(ExperimentalForeignApi::class)
         actual val MIN: HijrahDate by lazy {
             //Hardcoded value to match the JVM behavior. I want the library behavior to be consistent as much as possible.
-            HijrahDate(MIN_YEAR, 1, 1)
+            HijrahDate(MIN_YEAR, 1, 1, skipValidation = true)
         }
 
         @OptIn(ExperimentalForeignApi::class)
         actual val MAX: HijrahDate by lazy {
-            HijrahDate(MAX_YEAR, 12, 1).withLastDayOfMonth()
+            HijrahDate(MAX_YEAR, 12, 1, skipValidation = true).withLastDayOfMonth()
         }
         private const val SECONDS_PER_DAY = 86400.0
     }
