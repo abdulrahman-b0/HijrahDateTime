@@ -42,12 +42,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run Tests
-        run: ./gradlew ${{ inputs.module || ':library' }}:macosArm64Test --no-daemon --stacktrace
+        run: ./gradlew ${{ inputs.module || ':library' }}:macosArm64Test --no-daemon
 
       - name: Upload Test Reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: macos-test-reports
+          name: hijrahdatetime-macos-test-reports
           path: |
             **/build/reports/tests/**/*
