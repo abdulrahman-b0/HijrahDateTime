@@ -30,7 +30,7 @@ class HijrahDateTest {
 
         nextDay.dayOfMonth shouldBe 30
         nextDay.month shouldBe 9
-        
+
         val nextMonthFirst = shouldNotThrowAny { nextDay plusDays 1 }
         nextMonthFirst.dayOfMonth shouldBe 1
         nextMonthFirst.month shouldBe 10
@@ -51,7 +51,7 @@ class HijrahDateTest {
         nextYear.year shouldBe 1447
         nextYear.month shouldBe 1
         nextYear.dayOfMonth shouldBe 29
-        
+
         val minusMonth = shouldNotThrowAny { nextMonth minusMonths 1 }
         minusMonth.month shouldBe 1
         minusMonth.dayOfMonth shouldBe 29
@@ -170,11 +170,11 @@ class HijrahDateTest {
     fun `test withLastDayOfMonth`() {
         val date = HijrahDate(1445, 9, 1)
         val lastDay = shouldNotThrowAny { date.withLastDayOfMonth() }
-        
+
         // Ramadan 1445 had 30 days
         lastDay.dayOfMonth shouldBe 30
         lastDay.month shouldBe 9
-        
+
         val date2 = HijrahDate(1445, 10, 1)
         val lastDay2 = shouldNotThrowAny { date2.withLastDayOfMonth() }
         // Shawwal 1445 had 29 days
@@ -212,7 +212,7 @@ class HijrahDateTest {
         val dayRange = shouldNotThrowAny { date.range(DateTimeUnit.DAY) }
         dayRange.minimum shouldBe 1
         dayRange.maximum shouldBe 30
-        
+
         val monthRange = shouldNotThrowAny { date.range(DateTimeUnit.MONTH) }
         monthRange.minimum shouldBe 1
         monthRange.maximum shouldBe 12
@@ -226,9 +226,26 @@ class HijrahDateTest {
 
         dateTime.date shouldBe date
         dateTime.time shouldBe time
-        
+
         val startOfDay = date.atStartOfDay()
         startOfDay.hour shouldBe 0
         startOfDay.minute shouldBe 0
+    }
+
+    @Test
+    fun `test MIN and MAX`() {
+        val minDate = shouldNotThrowAny {
+            val minDate = HijrahDate.MIN
+            println("HijrahDate.MIN: $minDate")
+            minDate
+        }
+        val maxDate = shouldNotThrowAny {
+            val maxDate = HijrahDate.MAX
+            println("HijrahDate.MAX: $maxDate")
+            maxDate
+        }
+        minDate.year shouldBe 1300
+        maxDate.year shouldBe 1600
+
     }
 }

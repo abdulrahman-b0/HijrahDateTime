@@ -1,15 +1,12 @@
 package com.abdulrahman_b.hijrahdatetime
 
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateComponentsSerializer
-import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateTimeComponentsSerializer
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.toNSDate
 import kotlinx.serialization.Serializable
 import platform.Foundation.*
-import kotlin.time.Clock
 
 @Serializable(with = HijrahDateComponentsSerializer::class)
 actual class HijrahDate private constructor(
@@ -194,7 +191,7 @@ actual class HijrahDate private constructor(
 
         @OptIn(ExperimentalForeignApi::class)
         actual val MAX: HijrahDate by lazy {
-            HijrahDate(MAX_YEAR, 12, 1, skipValidation = true).withLastDayOfMonth()
+            HijrahDate(MAX_YEAR, 12, 30, skipValidation = true)
         }
         private const val SECONDS_PER_DAY = 86400.0
     }
