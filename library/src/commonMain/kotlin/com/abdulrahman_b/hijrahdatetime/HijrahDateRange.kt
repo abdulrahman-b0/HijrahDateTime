@@ -11,7 +11,7 @@ class HijrahDateRange(start: HijrahDate, endInclusive: HijrahDate) : HijrahDateP
 
     override val start get() = first
 
-    override val endInclusive = last
+    override val endInclusive get() = last
 
 }
 
