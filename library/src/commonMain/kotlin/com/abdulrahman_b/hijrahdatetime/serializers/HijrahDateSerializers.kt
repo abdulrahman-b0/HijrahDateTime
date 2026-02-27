@@ -6,7 +6,6 @@ import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateComponentsSerializ
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.Decoder
@@ -33,8 +32,8 @@ object HijrahDateComponentsSerializer : KSerializer<HijrahDate> {
     override fun serialize(encoder: Encoder, value: HijrahDate) {
         encoder.encodeStructure(descriptor) {
             encodeStringElement(descriptor, 0, value.year.toString())
-            encodeIntElement(descriptor, 1, value.month)
-            encodeIntElement(descriptor, 2, value.dayOfMonth)
+            encodeIntElement(descriptor, 1, value.month.number)
+            encodeIntElement(descriptor, 2, value.day)
         }
     }
 

@@ -6,8 +6,12 @@ import kotlinx.datetime.DateTimeArithmeticException
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.toJavaLocalDate
 import kotlinx.serialization.Serializable
 import java.time.DateTimeException
+import java.time.chrono.Chronology
 import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahChronology.INSTANCE
 import java.time.format.DateTimeParseException
@@ -21,8 +25,8 @@ import java.time.chrono.HijrahDate as JavaHijrahDate
 actual class HijrahDate internal constructor(private val javaDate: JavaHijrahDate) : Comparable<HijrahDate> {
 
     actual val year get() = javaDate.get(ChronoField.YEAR)
-    actual val month get() = javaDate.get(ChronoField.MONTH_OF_YEAR)
-    actual val dayOfMonth get() = javaDate.get(ChronoField.DAY_OF_MONTH)
+    actual val month get() = HijrahMonth.of(javaDate.get(ChronoField.MONTH_OF_YEAR))
+    actual val day get() = javaDate.get(ChronoField.DAY_OF_MONTH)
     actual val dayOfWeek get() = DayOfWeek.entries[javaDate.get(ChronoField.DAY_OF_WEEK) - 1]
     actual val dayOfYear get() = javaDate.get(ChronoField.DAY_OF_YEAR)
 

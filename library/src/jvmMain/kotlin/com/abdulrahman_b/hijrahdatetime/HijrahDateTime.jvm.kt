@@ -23,8 +23,8 @@ actual class HijrahDateTime(
     actual val time = javaDatetime.toLocalTime().toKotlinLocalTime()
 
     actual val year get() = javaDatetime.get(ChronoField.YEAR)
-    actual val month get() = javaDatetime.get(ChronoField.MONTH_OF_YEAR)
-    actual val dayOfMonth get() = javaDatetime.get(ChronoField.DAY_OF_MONTH)
+    actual val month get() = HijrahMonth.of(javaDatetime.get(ChronoField.MONTH_OF_YEAR))
+    actual val day get() = javaDatetime.get(ChronoField.DAY_OF_MONTH)
     actual val dayOfWeek get() = DayOfWeek.entries[javaDatetime.get(ChronoField.DAY_OF_WEEK) - 1]
     actual val dayOfYear get() = javaDatetime.get(ChronoField.DAY_OF_YEAR)
     actual val hour get() = javaDatetime.get(ChronoField.HOUR_OF_DAY)

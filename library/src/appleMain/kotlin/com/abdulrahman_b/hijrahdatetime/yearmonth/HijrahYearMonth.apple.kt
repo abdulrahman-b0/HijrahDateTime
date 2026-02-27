@@ -21,6 +21,6 @@ fun HijrahYearMonth.toNSDateComponents(): NSDateComponents {
     return NSDateComponents().apply {
         this.calendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
         this.year = this@toNSDateComponents.year.toLong()
-        this.month = this@toNSDateComponents.month.value.toLong()
+        this.month = this@toNSDateComponents.month.number.toLong()
     }
 }

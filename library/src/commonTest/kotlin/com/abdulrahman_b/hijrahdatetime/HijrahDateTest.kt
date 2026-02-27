@@ -9,7 +9,6 @@ import io.kotest.matchers.ranges.shouldBeIn
 import io.kotest.matchers.ranges.shouldNotBeIn
 import io.kotest.matchers.shouldBe
 import kotlinx.datetime.*
-import kotlin.math.max
 import kotlin.test.Test
 import kotlin.time.Instant
 
@@ -19,8 +18,8 @@ class HijrahDateTest {
     fun `test Hijri creation`() {
         val date = shouldNotThrowAny { HijrahDate(1445, 9, 1) }
         date.year shouldBe 1445
-        date.month shouldBe 9
-        date.dayOfMonth shouldBe 1
+        date.month.number shouldBe 9
+        date.day shouldBe 1
         date.dayOfWeek shouldBe DayOfWeek.MONDAY
 
         shouldThrow<IllegalArgumentException> {
@@ -34,33 +33,33 @@ class HijrahDateTest {
         val date = shouldNotThrowAny { HijrahDate(1445, 9, 29) }
         val nextDay = shouldNotThrowAny { date plusDays 1 }
 
-        nextDay.dayOfMonth shouldBe 30
-        nextDay.month shouldBe 9
+        nextDay.day shouldBe 30
+        nextDay.month shouldBe HijrahMonth.RAMADAN
 
         val nextMonthFirst = shouldNotThrowAny { nextDay plusDays 1 }
-        nextMonthFirst.dayOfMonth shouldBe 1
-        nextMonthFirst.month shouldBe 10
+        nextMonthFirst.day shouldBe 1
+        nextMonthFirst.month shouldBe HijrahMonth.SHAWWAL
 
         val prevDay = shouldNotThrowAny { nextMonthFirst minusDays 1 }
-        prevDay.dayOfMonth shouldBe 30
-        prevDay.month shouldBe 9
+        prevDay.day shouldBe 30
+        prevDay.month.number shouldBe 9
     }
 
     @Test
     fun `test arithmetic months`() {
         val date = HijrahDate(1446, 1, 29)
         val nextMonth = shouldNotThrowAny { date plusMonths 1 }
-        nextMonth.month shouldBe 2
-        nextMonth.dayOfMonth shouldBe 29
+        nextMonth.month.number shouldBe 2
+        nextMonth.day shouldBe 29
 
         val nextYear = shouldNotThrowAny { date plusYears 1 }
         nextYear.year shouldBe 1447
-        nextYear.month shouldBe 1
-        nextYear.dayOfMonth shouldBe 29
+        nextYear.month.number shouldBe 1
+        nextYear.day shouldBe 29
 
         val minusMonth = shouldNotThrowAny { nextMonth minusMonths 1 }
-        minusMonth.month shouldBe 1
-        minusMonth.dayOfMonth shouldBe 29
+        minusMonth.month.number shouldBe 1
+        minusMonth.day shouldBe 29
     }
 
     @Test
@@ -86,8 +85,8 @@ class HijrahDateTest {
 
         val dateFromEpoch = HijrahDate.fromEpochDays(19911)
         dateFromEpoch.year shouldBe 1446
-        dateFromEpoch.month shouldBe 1
-        dateFromEpoch.dayOfMonth shouldBe 1
+        dateFromEpoch.month.number shouldBe 1
+        dateFromEpoch.day shouldBe 1
     }
 
     @Test
@@ -105,8 +104,8 @@ class HijrahDateTest {
         val instant = Instant.fromEpochSeconds(1710115200)
         val date = instant.toHijrahDate(TimeZone.UTC)
         date.year shouldBe 1445
-        date.month shouldBe 9
-        date.dayOfMonth shouldBe 1
+        date.month.number shouldBe 9
+        date.day shouldBe 1
     }
 
     @Test
@@ -118,11 +117,11 @@ class HijrahDateTest {
         // Next Wednesday should be 1445-09-03
         val nextWednesday = monday.withNextDayOfWeek(DayOfWeek.WEDNESDAY)
         nextWednesday.dayOfWeek shouldBe DayOfWeek.WEDNESDAY
-        nextWednesday.dayOfMonth shouldBe 3
+        nextWednesday.day shouldBe 3
 
         // Next Monday should be 1445-09-08
         val nextMonday = monday.withNextDayOfWeek(DayOfWeek.MONDAY)
-        nextMonday.dayOfMonth shouldBe 8
+        nextMonday.day shouldBe 8
         nextMonday.dayOfWeek shouldBe DayOfWeek.MONDAY
     }
 
@@ -134,15 +133,15 @@ class HijrahDateTest {
         // Previous Friday should be 1445-08-27
         // 2024-03-08 is 1445-08-27
         val prevFriday = shouldNotThrowAny { monday.withPreviousDayOfWeek(DayOfWeek.FRIDAY) }
-        prevFriday.dayOfMonth shouldBe 27
-        prevFriday.month shouldBe 8
+        prevFriday.day shouldBe 27
+        prevFriday.month.number shouldBe 8
         prevFriday.dayOfWeek shouldBe DayOfWeek.FRIDAY
 
         // Previous Monday should be 1445-08-23
         val prevMonday = shouldNotThrowAny { monday.withPreviousDayOfWeek(DayOfWeek.MONDAY) }
         prevMonday.dayOfWeek shouldBe DayOfWeek.MONDAY
-        prevMonday.dayOfMonth shouldBe 23
-        prevMonday.month shouldBe 8
+        prevMonday.day shouldBe 23
+        prevMonday.month.number shouldBe 8
     }
 
     @Test
@@ -151,11 +150,11 @@ class HijrahDateTest {
 
         // Same or next Monday should be Today
         val sameMonday = shouldNotThrowAny { monday.withSameOrNextDayOfWeek(DayOfWeek.MONDAY) }
-        sameMonday.dayOfMonth shouldBe 1
+        sameMonday.day shouldBe 1
 
         // Same or next Tuesday should be Tomorrow
         val nextTuesday = shouldNotThrowAny { monday.withSameOrNextDayOfWeek(DayOfWeek.TUESDAY) }
-        nextTuesday.dayOfMonth shouldBe 2
+        nextTuesday.day shouldBe 2
     }
 
     @Test
@@ -164,7 +163,7 @@ class HijrahDateTest {
 
         // Same or previous Monday should be Today
         val sameMonday = shouldNotThrowAny { monday.withSameOrPreviousDayOfWeek(DayOfWeek.MONDAY) }
-        sameMonday.dayOfMonth shouldBe 1
+        sameMonday.day shouldBe 1
 
         // Same or previous Sunday should be Yesterday
         val prevSunday = shouldNotThrowAny { monday.withSameOrPreviousDayOfWeek(DayOfWeek.SUNDAY) }
@@ -178,21 +177,21 @@ class HijrahDateTest {
         val lastDay = shouldNotThrowAny { date.withLastDayOfMonth() }
 
         // Ramadan 1445 had 30 days
-        lastDay.dayOfMonth shouldBe 30
-        lastDay.month shouldBe 9
+        lastDay.day shouldBe 30
+        lastDay.month.number shouldBe 9
 
         val date2 = HijrahDate(1445, 10, 1)
         val lastDay2 = shouldNotThrowAny { date2.withLastDayOfMonth() }
         // Shawwal 1445 had 29 days
-        lastDay2.dayOfMonth shouldBe 29
+        lastDay2.day shouldBe 29
     }
 
     @Test
     fun `test with components`() {
         val date = HijrahDate(1445, 9, 1)
         date.withYear(1446).year shouldBe 1446
-        date.withMonth(10).month shouldBe 10
-        date.withDayOfMonth(15).dayOfMonth shouldBe 15
+        date.withMonth(10).month.number shouldBe 10
+        date.withDayOfMonth(15).day shouldBe 15
     }
 
     @Test
@@ -233,7 +232,7 @@ class HijrahDateTest {
         dateTime.date shouldBe date
         dateTime.time shouldBe time
 
-        val startOfDay = date.atStartOfDay()
+        val startOfDay = date.atStartOfDay(FixedOffsetTimeZone(UtcOffset(3)))
         startOfDay.hour shouldBe 0
         startOfDay.minute shouldBe 0
     }

@@ -11,8 +11,8 @@ class HijrahDateTimeTest {
     fun `test Hijri creation`() {
         var dt = HijrahDateTime(1445, 9, 1, 10, 30, 0, 0)
         assertEquals(1445, dt.year)
-        assertEquals(9, dt.month)
-        assertEquals(1, dt.dayOfMonth)
+        assertEquals(9, dt.month.number)
+        assertEquals(1, dt.day)
         assertEquals(10, dt.hour)
         assertEquals(30, dt.minute)
         assertEquals(0, dt.second)
@@ -59,8 +59,8 @@ class HijrahDateTimeTest {
         val instant = Instant.fromEpochSeconds(1710115200)
         val dt = instant.toHijrahDateTime(TimeZone.UTC)
         assertEquals(1445, dt.year)
-        assertEquals(9, dt.month)
-        assertEquals(1, dt.dayOfMonth)
+        assertEquals(9, dt.month.number)
+        assertEquals(1, dt.day)
         assertEquals(0, dt.hour)
     }
 

@@ -38,7 +38,7 @@ actual class HijrahDateTime(
                     NSCalendarUnitHour or NSCalendarUnitMinute or NSCalendarUnitSecond or NSCalendarUnitNanosecond,
             fromDate = nsDate
         )
-        if (components.year != year.toLong() || components.month != month.toLong() || components.day != dayOfMonth.toLong() ||
+        if (components.year != year.toLong() || components.month != month.number.toLong() || components.day != day.toLong() ||
             components.hour != hour.toLong() || components.minute != minute.toLong() || components.second != second.toLong()
         ) {
             throw IllegalArgumentException("Invalid date-time for Hijrah calendar")

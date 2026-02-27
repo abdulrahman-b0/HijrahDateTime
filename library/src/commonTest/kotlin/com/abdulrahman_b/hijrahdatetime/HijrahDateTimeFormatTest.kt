@@ -22,8 +22,8 @@ class HijrahDateTimeFormatTest {
 
         val parsed = HijrahDate.parse(formatted, format)
         assertEquals(1445, parsed.year)
-        assertEquals(9, parsed.month)
-        assertEquals(1, parsed.dayOfMonth)
+        assertEquals(9, parsed.month.number)
+        assertEquals(1, parsed.day)
     }
 
     @Test

@@ -21,9 +21,16 @@ enum class HijrahMonth {
     THUL_QIDAH,
     THUL_HIJJAH;
 
-    val value get() = ordinal + 1
+    val number get() = ordinal + 1
 
-    companion object
+    companion object {
+
+        fun of(number: Int): HijrahMonth {
+            require(number in 1..12) { "Month number must be between 1 and 12" }
+            return entries[number - 1]
+        }
+
+    }
 }
 
 val HijrahDate.yearMonth get() = HijrahYearMonth(year, month)

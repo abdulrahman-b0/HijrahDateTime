@@ -10,10 +10,10 @@ class HijrahYearMonthTest {
         val ym = HijrahYearMonth(1445, 9)
         assertEquals(1445, ym.year)
         assertEquals(HijrahMonth.RAMADAN, ym.month)
-        assertEquals(9, ym.month.value)
+        assertEquals(9, ym.month.number)
 
         val ym2 = HijrahYearMonth(1445, HijrahMonth.SHAWWAL)
-        assertEquals(10, ym2.month.value)
+        assertEquals(10, ym2.month.number)
     }
 
     @Test
@@ -21,15 +21,15 @@ class HijrahYearMonthTest {
         val ym = HijrahYearMonth(1445, 12)
         val next = ym.plusMonth(1)
         assertEquals(1446, next.year)
-        assertEquals(1, next.month.value)
+        assertEquals(1, next.month.number)
 
         val prev = next.minusMonth(1)
         assertEquals(1445, prev.year)
-        assertEquals(12, prev.month.value)
+        assertEquals(12, prev.month.number)
 
         val nextYear = ym.plusYear(1)
         assertEquals(1446, nextYear.year)
-        assertEquals(12, nextYear.month.value)
+        assertEquals(12, nextYear.month.number)
     }
 
     @Test
@@ -45,15 +45,15 @@ class HijrahYearMonthTest {
         val ym = HijrahYearMonth(1445, 9)
         val date = ym.onDay(1)
         assertEquals(1445, date.year)
-        assertEquals(9, date.month)
-        assertEquals(1, date.dayOfMonth)
+        assertEquals(9, date.month.number)
+        assertEquals(1, date.day)
 
         val firstDay = ym.firstDay
-        assertEquals(1, firstDay.dayOfMonth)
+        assertEquals(1, firstDay.day)
 
         val lastDay = ym.lastDay
         // Ramadan 1445 had 30 days
-        assertEquals(30, lastDay.dayOfMonth)
+        assertEquals(30, lastDay.day)
         assertEquals(30, ym.numberOfDays)
     }
 

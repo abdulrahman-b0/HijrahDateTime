@@ -10,8 +10,8 @@ expect class HijrahDate(year: Int, month: Int, dayOfMonth: Int) : Comparable<Hij
 
 
     val year: Int
-    val month: Int
-    val dayOfMonth: Int
+    val month: HijrahMonth
+    val day: Int
     val dayOfWeek: DayOfWeek
     val dayOfYear: Int
 
@@ -70,19 +70,22 @@ infix fun HijrahDate.minusYears(value: Int) = minus(value, DateTimeUnit.YEAR)
 fun HijrahDate.atTime(time: LocalTime): HijrahDateTime =
     HijrahDateTime.of(this, time)
 
-fun HijrahDate.atStartOfDay(): HijrahDateTime = atTime(LocalTime(0, 0))
+fun HijrahDate.atStartOfDay(timeZone: TimeZone): HijrahDateTime {
+    val instant = toLocalDate().atStartOfDayIn(timeZone)
+    return instant.toHijrahDateTime(timeZone)
+}
 
 fun HijrahDate.with(value: Int, unit: DateTimeUnit.DateBased): HijrahDate {
     return HijrahDate(
         year = if (unit == DateTimeUnit.YEAR) value else year,
-        month = if (unit == DateTimeUnit.MONTH) value else month,
-        dayOfMonth = if (unit == DateTimeUnit.DAY) value else dayOfMonth
+        month = if (unit == DateTimeUnit.MONTH) value else month.number,
+        dayOfMonth = if (unit == DateTimeUnit.DAY) value else day
     )
 }
 
 fun HijrahDate.withDayOfMonth(value: Int): HijrahDate = with(value, DateTimeUnit.DAY)
 fun HijrahDate.withMonth(value: Int): HijrahDate = with(value, DateTimeUnit.MONTH)
-fun HijrahDate.withMonth(month: HijrahMonth): HijrahDate = with(month.value, DateTimeUnit.MONTH)
+fun HijrahDate.withMonth(month: HijrahMonth): HijrahDate = with(month.number, DateTimeUnit.MONTH)
 fun HijrahDate.withYear(value: Int): HijrahDate = with(value, DateTimeUnit.YEAR)
 
 fun HijrahDate.withPreviousDayOfWeek(target: DayOfWeek): HijrahDate {

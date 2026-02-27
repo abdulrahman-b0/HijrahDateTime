@@ -34,8 +34,8 @@ actual class HijrahDate private constructor(
             NSCalendarUnitYear or NSCalendarUnitMonth or NSCalendarUnitDay,
             fromDate = date
         )
-        if (components.year != year.toLong() || components.month != month.toLong() || components.day != dayOfMonth.toLong()) {
-            throw IllegalArgumentException("Invalid date for Hijrah calendar: $year-$month-$dayOfMonth")
+        if (components.year != year.toLong() || components.month != month.number.toLong() || components.day != day.toLong()) {
+            throw IllegalArgumentException("Invalid date for Hijrah calendar: $year-$month-$day")
         }
     }
 

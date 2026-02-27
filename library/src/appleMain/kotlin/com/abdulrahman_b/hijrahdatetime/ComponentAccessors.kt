@@ -1,7 +1,6 @@
 package com.abdulrahman_b.hijrahdatetime
 
 import kotlinx.datetime.DayOfWeek
-import kotlinx.datetime.FixedOffsetTimeZone
 import platform.Foundation.*
 
 
@@ -14,8 +13,8 @@ internal sealed interface ComponentAccessors {
         val nsDate: NSDate
 
         val year get() = nsCalendar.component(NSCalendarUnitYear, nsDate).toInt()
-        val month get() = nsCalendar.component(NSCalendarUnitMonth, nsDate).toInt()
-        val dayOfMonth get() = nsCalendar.component(NSCalendarUnitDay, nsDate).toInt()
+        val month get() = HijrahMonth.of(nsCalendar.component(NSCalendarUnitMonth, nsDate).toInt())
+        val day get() = nsCalendar.component(NSCalendarUnitDay, nsDate).toInt()
         val dayOfWeek: DayOfWeek get() {
             val sundayIndexed = nsCalendar.component(NSCalendarUnitWeekday, nsDate).toInt()
             // Apple: 1=Sun, 2=Mon... 7=Sat.

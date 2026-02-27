@@ -20,8 +20,8 @@ expect class HijrahDateTime(
     val time: LocalTime
 
     val year: Int
-    val month: Int
-    val dayOfMonth: Int
+    val month: HijrahMonth
+    val day: Int
     val dayOfWeek: DayOfWeek
     val dayOfYear: Int
     val hour: Int
@@ -49,6 +49,6 @@ expect fun Instant.toHijrahDateTime(timeZone: TimeZone): HijrahDateTime
 expect fun LocalDateTime.toHijrahDateTime(): HijrahDateTime
 
 fun HijrahDateTime.Companion.of(date: HijrahDate, time: LocalTime) =
-    HijrahDateTime(date.year, date.month, date.dayOfMonth, time.hour, time.minute, time.second, time.nanosecond)
+    HijrahDateTime(date.year, date.month.number, date.day, time.hour, time.minute, time.second, time.nanosecond)
 
 

@@ -36,8 +36,8 @@ object HijrahDateTimeComponentsSerializer: KSerializer<HijrahDateTime> {
     override fun serialize(encoder: Encoder, value: HijrahDateTime) {
         encoder.encodeStructure(descriptor) {
             encodeIntElement(descriptor, 0, value.year)
-            encodeIntElement(descriptor, 1, value.month)
-            encodeIntElement(descriptor, 2, value.dayOfMonth)
+            encodeIntElement(descriptor, 1, value.month.number)
+            encodeIntElement(descriptor, 2, value.day)
             encodeIntElement(descriptor, 3, value.hour)
             encodeIntElement(descriptor, 4, value.minute)
             encodeIntElement(descriptor, 5, value.second)
