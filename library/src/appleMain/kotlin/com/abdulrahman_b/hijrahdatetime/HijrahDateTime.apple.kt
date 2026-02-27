@@ -49,7 +49,26 @@ actual class HijrahDateTime(
         nsDate.compare(other.nsDate).toInt()
 
     actual fun toInstant(timeZone: FixedOffsetTimeZone): Instant {
-        return nsDate.toKotlinInstant()
+        val tz = timeZone.toNSTimeZone()
+        val calendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura).apply {
+            this.timeZone = tz
+        }
+
+        val components = NSDateComponents().apply {
+            this.year = this@HijrahDateTime.year.toLong()
+            this.month = this@HijrahDateTime.month.number.toLong()
+            this.day = this@HijrahDateTime.day.toLong()
+            this.hour = this@HijrahDateTime.hour.toLong()
+            this.minute = this@HijrahDateTime.minute.toLong()
+            this.second = this@HijrahDateTime.second.toLong()
+            this.nanosecond = this@HijrahDateTime.nanosecond.toLong()
+            this.timeZone = tz
+        }
+
+        val date = calendar.dateFromComponents(components)
+            ?: throw DateTimeArithmeticException("Could not convert HijrahDateTime to Instant: $this")
+
+        return date.toKotlinInstant()
     }
 
 
