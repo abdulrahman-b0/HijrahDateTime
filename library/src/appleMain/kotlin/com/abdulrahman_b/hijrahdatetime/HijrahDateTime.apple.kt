@@ -72,8 +72,8 @@ actual class HijrahDateTime(
         )
         return LocalDateTime(
             year = components.year.toInt(),
-            monthNumber = components.month.toInt(),
-            dayOfMonth = components.day.toInt(),
+            month = Month(components.month.toInt()),
+            day = components.day.toInt(),
             hour = components.hour.toInt(),
             minute = components.minute.toInt(),
             second = components.second.toInt(),
@@ -138,7 +138,7 @@ actual class HijrahDateTime(
             if (validated.year != year.toLong() || validated.month != month.toLong() || validated.day != dayOfMonth.toLong() ||
                 validated.hour != hour.toLong() || validated.minute != minute.toLong() || validated.second != second.toLong()
             ) {
-                throw IllegalArgumentException("Invalid date-time for Hijrah calendar")
+                throw IllegalArgumentException("Invalid date-time for Hijrah calendar: $year-$month-$dayOfMonth $hour:$minute:$second")
             }
             return nsCalendar to date
         }

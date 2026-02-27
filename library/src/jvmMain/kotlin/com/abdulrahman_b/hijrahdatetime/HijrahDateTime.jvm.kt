@@ -3,15 +3,16 @@ package com.abdulrahman_b.hijrahdatetime
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateTimeComponentsSerializer
 import kotlinx.datetime.*
 import kotlinx.serialization.Serializable
-import java.time.chrono.ChronoLocalDateTime
-import java.time.chrono.HijrahDate as JavaHijrahDate
-import java.time.format.DateTimeParseException
+import java.time.DateTimeException
 import java.time.LocalTime
+import java.time.chrono.ChronoLocalDateTime
 import java.time.chrono.HijrahChronology
+import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoField
 import kotlin.time.Instant
 import kotlin.time.toJavaInstant
 import kotlin.time.toKotlinInstant
+import java.time.chrono.HijrahDate as JavaHijrahDate
 
 @Serializable(with = HijrahDateTimeComponentsSerializer::class)
 actual class HijrahDateTime(
@@ -39,7 +40,12 @@ actual class HijrahDateTime(
         minute: Int,
         second: Int,
         nanosecond: Int,
-    ) : this(JavaHijrahDate.of(year, month, dayOfMonth).atTime(LocalTime.of(hour, minute, second, nanosecond)))
+    ) : this(
+        try {
+            JavaHijrahDate.of(year, month, dayOfMonth).atTime(LocalTime.of(hour, minute, second, nanosecond))
+        } catch (e: DateTimeException) {
+            throw IllegalArgumentException("Invalid datetime: $year-$month-$dayOfMonth $hour:$minute:$second", e)
+        })
 
     actual override operator fun compareTo(other: HijrahDateTime): Int = javaDatetime.compareTo(other.javaDatetime)
 
