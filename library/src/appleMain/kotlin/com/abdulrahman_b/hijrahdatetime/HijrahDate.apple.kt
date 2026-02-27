@@ -43,33 +43,49 @@ actual class HijrahDate private constructor(
         nsDate.compare(other.nsDate).toInt()
 
     actual operator fun plus(period: DatePeriod): HijrahDate {
-        return HijrahDate(
-            calendar = nsCalendar,
-            date = nsCalendar.dateByAddingComponents(period.toNSDateComponents(), nsDate, 0UL)
-                ?: throw DateTimeArithmeticException("Invalid date after addition: $period")
-        )
+        return try {
+            HijrahDate(
+                calendar = nsCalendar,
+                date = nsCalendar.dateByAddingComponents(period.toNSDateComponents(), nsDate, 0UL)
+                    ?: throw DateTimeArithmeticException("Invalid date after addition: $period")
+            )
+        } catch (e: IllegalArgumentException) {
+            throw DateTimeArithmeticException(e.message.toString(), e)
+        }
     }
 
     actual operator fun minus(period: DatePeriod): HijrahDate {
-        return HijrahDate(
-            calendar = nsCalendar,
-            date = nsCalendar.dateByAddingComponents(period.toNSDateComponents(-1), nsDate, 0UL)
-                ?: throw DateTimeArithmeticException("Invalid date after subtraction: $period")
-        )
+        return try {
+            HijrahDate(
+                calendar = nsCalendar,
+                date = nsCalendar.dateByAddingComponents(period.toNSDateComponents(-1), nsDate, 0UL)
+                    ?: throw DateTimeArithmeticException("Invalid date after subtraction: $period")
+            )
+        } catch (e: IllegalArgumentException) {
+            throw DateTimeArithmeticException(e.message.toString(), e)
+        }
     }
 
 
     actual fun plus(value: Int, unit: DateTimeUnit.DateBased): HijrahDate {
         val newDate = nsCalendar.dateByAddingComponents(unit.toNSDateComponents(value.toLong()), nsDate, options = 0UL) ?:
             throw DateTimeArithmeticException("Invalid date after addition: $value $unit")
-        return HijrahDate(nsCalendar, newDate)
+        return try {
+            HijrahDate(nsCalendar, newDate)
+        } catch (e: IllegalArgumentException) {
+            throw DateTimeArithmeticException(e.message.toString(), e)
+        }
     }
 
     actual fun minus(value: Int, unit: DateTimeUnit.DateBased): HijrahDate {
         val newDate = nsCalendar.dateByAddingComponents(unit.toNSDateComponents(-value.toLong()),
             nsDate, options = 0UL) ?:
                 throw DateTimeArithmeticException("Invalid date after subtraction: $value $unit")
-        return HijrahDate(nsCalendar, newDate)
+        return try {
+            HijrahDate(nsCalendar, newDate)
+        } catch (e: IllegalArgumentException) {
+            throw DateTimeArithmeticException(e.message.toString(), e)
+        }
     }
 
 
