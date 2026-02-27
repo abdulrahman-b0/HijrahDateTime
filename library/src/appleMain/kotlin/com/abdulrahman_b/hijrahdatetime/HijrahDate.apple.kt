@@ -14,11 +14,11 @@ actual class HijrahDate private constructor(
     skipValidation: Boolean //Internal flag to avoid infinite recursion in init block check.
 ): Comparable<HijrahDate>, ComponentAccessors.DateBased {
 
-    init {
-        if (!skipValidation && this !in MIN..MAX) throw DateTimeException(
-            "HijrahDate is out of range. Valid range is from ${MIN.format(HijrahDateTimeFormats.DATE_ISO)} to ${MAX.format(HijrahDateTimeFormats.DATE_ISO)}"
-        )
-    }
+//    init {
+//        if (!skipValidation && this !in MIN..MAX) throw DateTimeException(
+//            "HijrahDate is out of range. Valid range is from ${MIN.format(HijrahDateTimeFormats.DATE_ISO)} to ${MAX.format(HijrahDateTimeFormats.DATE_ISO)}"
+//        )
+//    }
 
     constructor(calendarDatePair: Pair<NSCalendar, NSDate>): this(calendarDatePair, skipValidation = false)
 
