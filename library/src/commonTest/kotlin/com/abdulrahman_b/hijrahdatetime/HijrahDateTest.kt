@@ -1,6 +1,7 @@
 package com.abdulrahman_b.hijrahdatetime
 
 import io.kotest.assertions.throwables.shouldNotThrowAny
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.comparables.shouldBeLessThan
 import io.kotest.matchers.equals.shouldBeEqual
@@ -8,6 +9,7 @@ import io.kotest.matchers.ranges.shouldBeIn
 import io.kotest.matchers.ranges.shouldNotBeIn
 import io.kotest.matchers.shouldBe
 import kotlinx.datetime.*
+import kotlin.math.max
 import kotlin.test.Test
 import kotlin.time.Instant
 
@@ -20,6 +22,10 @@ class HijrahDateTest {
         date.month shouldBe 9
         date.dayOfMonth shouldBe 1
         date.dayOfWeek shouldBe DayOfWeek.MONDAY
+
+        shouldThrow<IllegalArgumentException> {
+            HijrahDate(1445, 9, 31)
+        }
     }
 
     @Test
@@ -246,6 +252,16 @@ class HijrahDateTest {
         }
         minDate.year shouldBe 1300
         maxDate.year shouldBe 1600
+
+        shouldThrow<DateTimeArithmeticException> {
+            val invalid = minDate.minusDays(1)
+            println("Invalid: $invalid")
+        }
+
+        shouldThrow<DateTimeArithmeticException> {
+            val invalid = maxDate.plusDays(1)
+            println("Invalid: $invalid")
+        }
 
     }
 }

@@ -58,18 +58,18 @@ actual class HijrahDateTime(
             string: String,
             format: HijrahDateTimeFormat,
         ): HijrahDateTime {
-            val chronoLocalDateTime = format.javaFormatter.parse(string, ChronoLocalDateTime<JavaHijrahDate>::from)
-            return HijrahDateTime(chronoLocalDateTime as ChronoLocalDateTime<JavaHijrahDate>)
+            try {
+                val chronoLocalDateTime = format.javaFormatter.parse(string, ChronoLocalDateTime<JavaHijrahDate>::from)
+                return HijrahDateTime(chronoLocalDateTime as ChronoLocalDateTime<JavaHijrahDate>)
+            } catch (e: DateTimeParseException) {
+                throw IllegalArgumentException(e.message)
+            }
         }
 
         actual fun parseOrNull(
             string: String,
             format: HijrahDateTimeFormat,
-        ): HijrahDateTime? = try {
-            parse(string, format)
-        } catch (_: DateTimeParseException) {
-            null
-        }
+        ): HijrahDateTime? = runCatching { parse(string, format) }.getOrNull()
     }
 
     actual fun toLocalDateTime(): LocalDateTime {

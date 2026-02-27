@@ -1,13 +1,11 @@
 package com.abdulrahman_b.hijrahdatetime
 
-import kotlin.ranges.rangeTo
-
 class HijrahDateRange(start: HijrahDate, endInclusive: HijrahDate) : HijrahDateProgression(start, endInclusive, 1L),
     ClosedRange<HijrahDate> {
 
 
     override fun contains(value: HijrahDate) =
-        value in start..endInclusive
+        longProgression.contains(value.toEpochDays())
 
     override fun isEmpty() = longProgression.isEmpty()
 

@@ -8,15 +8,16 @@ import platform.Foundation.*
 internal sealed interface ComponentAccessors {
 
     interface DateBased {
-        val calendarDatePair: Pair<NSCalendar, NSDate>
 
-        val calendar: NSCalendar get() = calendarDatePair.first
+        val nsCalendar: NSCalendar
 
-        val year get() = calendar.component(NSCalendarUnitYear, calendarDatePair.second).toInt()
-        val month get() = calendar.component(NSCalendarUnitMonth, calendarDatePair.second).toInt()
-        val dayOfMonth get() = calendar.component(NSCalendarUnitDay, calendarDatePair.second).toInt()
+        val nsDate: NSDate
+
+        val year get() = nsCalendar.component(NSCalendarUnitYear, nsDate).toInt()
+        val month get() = nsCalendar.component(NSCalendarUnitMonth, nsDate).toInt()
+        val dayOfMonth get() = nsCalendar.component(NSCalendarUnitDay, nsDate).toInt()
         val dayOfWeek: DayOfWeek get() {
-            val sundayIndexed = calendar.component(NSCalendarUnitWeekday, calendarDatePair.second).toInt()
+            val sundayIndexed = nsCalendar.component(NSCalendarUnitWeekday, nsDate).toInt()
             // Apple: 1=Sun, 2=Mon... 7=Sat.
             // kotlinx.datetime.DayOfWeek: Mon=1, Tue=2... Sun=7
             return when(sundayIndexed) {
@@ -29,18 +30,14 @@ internal sealed interface ComponentAccessors {
                 else -> DayOfWeek.SATURDAY
             }
         }
-        val dayOfYear get() = calendar.component(NSCalendarUnitDayOfYear, calendarDatePair.second).toInt()
+        val dayOfYear get() = nsCalendar.component(NSCalendarUnitDayOfYear, nsDate).toInt()
     }
 
     interface DateTimeBased : DateBased {
-        val hour get() = calendar.component(NSCalendarUnitHour, calendarDatePair.second).toInt()
-        val minute get() = calendar.component(NSCalendarUnitMinute, calendarDatePair.second).toInt()
-        val second get() = calendar.component(NSCalendarUnitSecond, calendarDatePair.second).toInt()
-        val nanosecond get() = calendar.component(NSCalendarUnitNanosecond, calendarDatePair.second).toInt()
-    }
-
-    interface OffsetDateTimeBased : DateTimeBased {
-        val offset: FixedOffsetTimeZone
+        val hour get() = nsCalendar.component(NSCalendarUnitHour, nsDate).toInt()
+        val minute get() = nsCalendar.component(NSCalendarUnitMinute, nsDate).toInt()
+        val second get() = nsCalendar.component(NSCalendarUnitSecond, nsDate).toInt()
+        val nanosecond get() = nsCalendar.component(NSCalendarUnitNanosecond, nsDate).toInt()
     }
 
 }

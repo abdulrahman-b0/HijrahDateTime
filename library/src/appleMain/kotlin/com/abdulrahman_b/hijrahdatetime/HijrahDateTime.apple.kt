@@ -8,15 +8,16 @@ import kotlin.time.Instant
 
 @Serializable(with = HijrahDateTimeComponentsSerializer::class)
 actual class HijrahDateTime(
-    override val calendarDatePair: Pair<NSCalendar, NSDate>,
+    override val nsCalendar: NSCalendar,
+    override val nsDate: NSDate
 ) : Comparable<HijrahDateTime>, ComponentAccessors.DateTimeBased {
 
-    actual val date: HijrahDate = HijrahDate(calendarDatePair)
+    actual val date: HijrahDate = HijrahDate(nsCalendar, nsDate)
     actual val time: LocalTime = LocalTime(
-        hour = calendar.component(NSCalendarUnitHour, calendarDatePair.second).toInt(),
-        minute = calendar.component(NSCalendarUnitMinute, calendarDatePair.second).toInt(),
-        second = calendar.component(NSCalendarUnitSecond, calendarDatePair.second).toInt(),
-        nanosecond = calendar.component(NSCalendarUnitNanosecond, calendarDatePair.second).toInt()
+        hour = nsCalendar.component(NSCalendarUnitHour, nsDate).toInt(),
+        minute = nsCalendar.component(NSCalendarUnitMinute, nsDate).toInt(),
+        second = nsCalendar.component(NSCalendarUnitSecond, nsDate).toInt(),
+        nanosecond = nsCalendar.component(NSCalendarUnitNanosecond, nsDate).toInt()
     )
 
     actual constructor(
@@ -28,12 +29,14 @@ actual class HijrahDateTime(
         second: Int,
         nanosecond: Int,
     ) : this(createDate(year, month, dayOfMonth, hour, minute, second, nanosecond))
+    
+    private constructor(calendarDatePair: Pair<NSCalendar, NSDate>) : this(calendarDatePair.first, calendarDatePair.second)
 
-    constructor(calendar: NSCalendar, date: NSDate): this(calendar to date) {
-        val components = calendar.components(
+    init {
+        val components = nsCalendar.components(
             NSCalendarUnitYear or NSCalendarUnitMonth or NSCalendarUnitDay or
                     NSCalendarUnitHour or NSCalendarUnitMinute or NSCalendarUnitSecond or NSCalendarUnitNanosecond,
-            fromDate = date
+            fromDate = nsDate
         )
         if (components.year != year.toLong() || components.month != month.toLong() || components.day != dayOfMonth.toLong() ||
             components.hour != hour.toLong() || components.minute != minute.toLong() || components.second != second.toLong()
@@ -43,25 +46,25 @@ actual class HijrahDateTime(
     }
 
     actual override operator fun compareTo(other: HijrahDateTime): Int =
-        calendarDatePair.second.compare(other.calendarDatePair.second).toInt()
+        nsDate.compare(other.nsDate).toInt()
 
     actual fun toInstant(timeZone: FixedOffsetTimeZone): Instant {
-        return calendarDatePair.second.toKotlinInstant()
+        return nsDate.toKotlinInstant()
     }
 
 
     actual fun format(format: HijrahDateTimeFormat): String {
         // Ensure the formatter uses this date's specific calendar instance
         // if it wasn't already set during build()
-        format.nsFormatter.calendar = this.calendar
-        return format.nsFormatter.stringFromDate(calendarDatePair.second)
+        format.nsFormatter.calendar = this.nsCalendar
+        return format.nsFormatter.stringFromDate(nsDate)
     }
 
     actual fun toLocalDateTime(): LocalDateTime {
         val isoCalendar = NSCalendar(NSCalendarIdentifierGregorian).apply {
             timeZone = NSTimeZone.timeZoneWithAbbreviation("UTC")!!
         }
-        val date = calendarDatePair.second
+        val date = nsDate
         val components = isoCalendar.components(
             NSCalendarUnitYear or NSCalendarUnitMonth or NSCalendarUnitDay or
                     NSCalendarUnitHour or NSCalendarUnitMinute or NSCalendarUnitSecond or NSCalendarUnitNanosecond,
@@ -81,18 +84,18 @@ actual class HijrahDateTime(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is HijrahDateTime) return false
-        return this.calendarDatePair.second.isEqualToDate(other.calendarDatePair.second)
+        return this.nsDate.isEqualToDate(other.nsDate)
     }
 
-    override fun hashCode(): Int = this.calendarDatePair.second.hashCode()
+    override fun hashCode(): Int = this.nsDate.hashCode()
 
-    override fun toString(): String = "HijrahDateTime($date, $time)"
+    override fun toString(): String = "HijrahDateTime($nsDate, $time)"
 
 
     actual companion object {
         actual fun parse(string: String, format: HijrahDateTimeFormat): HijrahDateTime {
             return parseOrNull(string, format) ?:
-                throw DateTimeParseException("Could not parse `HijrahDateTime` from '$string' using the date format of '${format.nsFormatter.dateFormat}'")
+                throw IllegalArgumentException("Could not parse `HijrahDateTime` from '$string' using the date format of '${format.nsFormatter.dateFormat}'")
         }
 
         actual fun parseOrNull(

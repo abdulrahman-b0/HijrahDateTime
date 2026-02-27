@@ -1,13 +1,15 @@
 package com.abdulrahman_b.hijrahdatetime
 
+import io.kotest.assertions.throwables.shouldThrow
 import kotlinx.datetime.*
 import kotlin.test.*
+import kotlin.time.Instant
 
 class HijrahDateTimeTest {
 
     @Test
     fun `test Hijri creation`() {
-        val dt = HijrahDateTime(1445, 9, 1, 10, 30, 0, 0)
+        var dt = HijrahDateTime(1445, 9, 1, 10, 30, 0, 0)
         assertEquals(1445, dt.year)
         assertEquals(9, dt.month)
         assertEquals(1, dt.dayOfMonth)
@@ -16,6 +18,10 @@ class HijrahDateTimeTest {
         assertEquals(0, dt.second)
         assertEquals(0, dt.nanosecond)
         assertEquals(DayOfWeek.MONDAY, dt.dayOfWeek)
+
+        shouldThrow<IllegalArgumentException> {
+            HijrahDateTime(1445, 9, 31, 10, 30, 0, 0) //Invalid day of month
+        }
     }
 
     @Test
