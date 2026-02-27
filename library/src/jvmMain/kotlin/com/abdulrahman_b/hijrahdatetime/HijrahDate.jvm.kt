@@ -5,20 +5,14 @@ import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.DateTimeArithmeticException
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atStartOfDayIn
-import kotlinx.datetime.toJavaLocalDate
 import kotlinx.serialization.Serializable
 import java.time.DateTimeException
-import java.time.chrono.Chronology
 import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahChronology.INSTANCE
 import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
-import java.time.temporal.TemporalAdjusters.lastDayOfMonth
 import java.time.chrono.HijrahDate as JavaHijrahDate
 
 @Serializable(with = HijrahDateComponentsSerializer::class)
@@ -34,6 +28,10 @@ actual class HijrahDate internal constructor(private val javaDate: JavaHijrahDat
         try {
             JavaHijrahDate.of(year, month, dayOfMonth)
         } catch (e: DateTimeException) {
+            throw IllegalArgumentException("Invalid date: $year-$month-$dayOfMonth", e)
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            throw IllegalArgumentException("Invalid date: $year-$month-$dayOfMonth", e)
+        } catch (e: IndexOutOfBoundsException) {
             throw IllegalArgumentException("Invalid date: $year-$month-$dayOfMonth", e)
         }
     )

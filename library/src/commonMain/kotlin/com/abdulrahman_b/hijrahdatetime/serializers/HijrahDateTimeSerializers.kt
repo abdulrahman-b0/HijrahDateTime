@@ -47,14 +47,34 @@ object HijrahDateTimeComponentsSerializer: KSerializer<HijrahDateTime> {
 
     override fun deserialize(decoder: Decoder): HijrahDateTime {
         return decoder.decodeStructure(descriptor) {
+            var year = 0
+            var month = 0
+            var dayOfMonth = 0
+            var hour = 0
+            var minute = 0
+            var second = 0
+            var nanosecond = 0
+            while (true) {
+                when (val index = decodeElementIndex(descriptor)) {
+                    0 -> year = decodeIntElement(descriptor, 0)
+                    1 -> month = decodeIntElement(descriptor, 1)
+                    2 -> dayOfMonth = decodeIntElement(descriptor, 2)
+                    3 -> hour = decodeIntElement(descriptor, 3)
+                    4 -> minute = decodeIntElement(descriptor, 4)
+                    5 -> second = decodeIntElement(descriptor, 5)
+                    6 -> nanosecond = decodeIntElement(descriptor, 6)
+                    -1 -> break
+                    else -> throw kotlinx.serialization.SerializationException("Unexpected index: ${index}")
+                }
+            }
             HijrahDateTime(
-                year = decodeIntElement(descriptor, 0),
-                month = decodeIntElement(descriptor, 1),
-                dayOfMonth = decodeIntElement(descriptor, 2),
-                hour = decodeIntElement(descriptor, 3),
-                minute = decodeIntElement(descriptor, 4),
-                second = decodeIntElement(descriptor, 5),
-                nanosecond = decodeIntElement(descriptor, 6)
+                year = year,
+                month = month,
+                dayOfMonth = dayOfMonth,
+                hour = hour,
+                minute = minute,
+                second = second,
+                nanosecond = nanosecond
             )
         }
     }

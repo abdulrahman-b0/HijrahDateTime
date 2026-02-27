@@ -8,6 +8,7 @@ import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element
+import kotlinx.serialization.encoding.CompositeDecoder.Companion.DECODE_DONE
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
@@ -24,14 +25,14 @@ import kotlinx.serialization.encoding.encodeStructure
 object HijrahDateComponentsSerializer : KSerializer<HijrahDate> {
 
     override val descriptor = buildClassSerialDescriptor("HijrahDate") {
-        element<String>("year")
+        element<Int>("year")
         element<Int>("month")
         element<Int>("dayOfMonth")
     }
 
     override fun serialize(encoder: Encoder, value: HijrahDate) {
         encoder.encodeStructure(descriptor) {
-            encodeStringElement(descriptor, 0, value.year.toString())
+            encodeIntElement(descriptor, 0, value.year)
             encodeIntElement(descriptor, 1, value.month.number)
             encodeIntElement(descriptor, 2, value.day)
         }
@@ -39,11 +40,19 @@ object HijrahDateComponentsSerializer : KSerializer<HijrahDate> {
 
     override fun deserialize(decoder: Decoder): HijrahDate {
         return decoder.decodeStructure(descriptor) {
-            HijrahDate(
-                year = decodeStringElement(descriptor, 0).toInt(),
-                month = decodeIntElement(descriptor, 1),
-                dayOfMonth = decodeIntElement(descriptor, 2)
-            )
+            var year = 0
+            var month = 0
+            var dayOfMonth = 0
+            while (true) {
+                when (val index = decodeElementIndex(descriptor)) {
+                    0 -> year = decodeIntElement(descriptor, 0)
+                    1 -> month = decodeIntElement(descriptor, 1)
+                    2 -> dayOfMonth = decodeIntElement(descriptor, 2)
+                    DECODE_DONE -> break
+                    else -> throw kotlinx.serialization.SerializationException("Unexpected index: ${index}")
+                }
+            }
+            HijrahDate(year, month, dayOfMonth)
         }
     }
 

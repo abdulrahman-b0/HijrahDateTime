@@ -20,12 +20,14 @@ import kotlinx.datetime.YearMonth
  *
  * Operations with [DateTimeUnit.MonthBased] are provided for [HijrahYearMonth]:
  * - [HijrahYearMonth.plus] and [HijrahYearMonth.minus] allow expressing concepts like "two months later".
- * - [HijrahYearMonth.until] and its shortcuts [HijrahYearMonth.monthsUntil] and [HijrahYearMonth.yearsUntil]
+ * - [HijrahYearMonth.until] and its shortcuts [HijrahYearMonth.m] and [HijrahYearMonth.yearsUntil]
  *   can be used to find the number of months or years between two dates.
  *  */
 class HijrahYearMonth(val year: Int, val month: HijrahMonth) : Comparable<HijrahYearMonth> {
 
-    constructor(year: Int, month: Int): this(year, HijrahMonth.entries[month - 1])
+    constructor(year: Int, month: Int) : this(
+        year, HijrahMonth.entries.getOrElse(month - 1) { throw IllegalArgumentException("Invalid HijrahYearMonth: $year-$month") }
+    )
 
     private val date = HijrahDate(year, month.number, 1)
 
@@ -51,7 +53,6 @@ class HijrahYearMonth(val year: Int, val month: HijrahMonth) : Comparable<Hijrah
     val numberOfDays: Int = lastDay.day
 
     val prolepticMonth: Int get() = year * 12 + (month.number - 1)
-
 
 
     fun plus(value: Int, unit: DateTimeUnit.MonthBased): HijrahYearMonth = date.plus(value, unit).yearMonth
@@ -80,6 +81,7 @@ class HijrahYearMonth(val year: Int, val month: HijrahMonth) : Comparable<Hijrah
                 else if (years < 0 && other.month.number > month.number) years + 1
                 else years
             }
+
             else -> throw IllegalArgumentException("Unsupported unit: $unit")
         }
     }

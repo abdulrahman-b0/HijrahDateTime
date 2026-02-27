@@ -2,14 +2,17 @@ package com.abdulrahman_b.hijrahdatetime
 
 import io.kotest.assertions.throwables.shouldThrow
 import kotlinx.datetime.*
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import kotlin.time.Instant
 
 class HijrahDateTimeTest {
 
     @Test
     fun `test Hijri creation`() {
-        var dt = HijrahDateTime(1445, 9, 1, 10, 30, 0, 0)
+        val dt = HijrahDateTime(1445, 9, 1, 10, 30, 0, 0)
         assertEquals(1445, dt.year)
         assertEquals(9, dt.month.number)
         assertEquals(1, dt.day)
@@ -21,6 +24,18 @@ class HijrahDateTimeTest {
 
         shouldThrow<IllegalArgumentException> {
             HijrahDateTime(1445, 9, 31, 10, 30, 0, 0) //Invalid day of month
+        }
+
+        shouldThrow<IllegalArgumentException> {
+            HijrahDateTime(1445, 13, 1, 10, 30, 0, 0)
+        }
+
+        shouldThrow<IllegalArgumentException> {
+            HijrahDateTime(1445, 9, 1, 24, 0, 0, 0)
+        }
+
+        shouldThrow<IllegalArgumentException> {
+            HijrahDateTime(1445, 9, 1, 10, 60, 0, 0)
         }
     }
 
@@ -39,7 +54,7 @@ class HijrahDateTimeTest {
     fun `test to instant`() {
         // 2024-03-11T00:00:00Z is 1445-09-01
         val dt = HijrahDateTime(1445, 9, 1, 0, 0, 0, 0)
-        val instant = dt.toInstant(TimeZone.UTC as FixedOffsetTimeZone)
+        val instant = dt.toInstant(TimeZone.UTC)
         assertEquals(1710115200, instant.epochSeconds)
     }
 
@@ -49,7 +64,7 @@ class HijrahDateTimeTest {
         val localDt = dt.toLocalDateTime()
         assertEquals(2024, localDt.year)
         assertEquals(Month.MARCH, localDt.month)
-        assertEquals(11, localDt.dayOfMonth)
+        assertEquals(11, localDt.day)
         assertEquals(10, localDt.hour)
         assertEquals(30, localDt.minute)
     }
@@ -76,11 +91,32 @@ class HijrahDateTimeTest {
     }
     
     @Test
-    fun `test formatting`() {
+    fun `test LocalDateTime conversion`() {
+        val ldt = LocalDateTime(2024, 3, 11, 10, 30)
+        val dt = ldt.toHijrahDateTime()
+        assertEquals(1445, dt.year)
+        assertEquals(9, dt.month.number)
+        assertEquals(1, dt.day)
+        assertEquals(10, dt.hour)
+        assertEquals(30, dt.minute)
+    }
+
+    @Test
+    fun `test parsing`() {
         val dt = HijrahDateTime(1445, 9, 1, 10, 30, 0, 0)
         val format = HijrahDateTimeFormats.DATETIME_ISO
-        val formatted = dt.format(format)
-        // Expected format: YYYY-MM-DDTHH:MM:SS
-        assertEquals("1445-09-01T10:30:00", formatted)
+        val string = dt.format(format)
+        
+        val parsed = HijrahDateTime.parse(string, format)
+        assertEquals(dt.year, parsed.year)
+        assertEquals(dt.month, parsed.month)
+        assertEquals(dt.day, parsed.day)
+        assertEquals(dt.hour, parsed.hour)
+        assertEquals(dt.minute, parsed.minute)
+        
+        val parsedOrNull = HijrahDateTime.parseOrNull(string, format)
+        assertEquals(dt.year, parsedOrNull?.year)
+        
+        assertNull(HijrahDateTime.parseOrNull("invalid", format))
     }
 }

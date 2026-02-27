@@ -19,7 +19,7 @@ actual class HijrahDateTime(
     private val javaDatetime: ChronoLocalDateTime<JavaHijrahDate>
 ) : Comparable<HijrahDateTime> {
 
-    actual val date: HijrahDate = javaDatetime.toLocalDate().toKotlinHijrahDate()
+    actual val date: HijrahDate = (javaDatetime.toLocalDate() as JavaHijrahDate).toKotlinHijrahDate()
     actual val time = javaDatetime.toLocalTime().toKotlinLocalTime()
 
     actual val year get() = javaDatetime.get(ChronoField.YEAR)
@@ -65,9 +65,25 @@ actual class HijrahDateTime(
             format: HijrahDateTimeFormat,
         ): HijrahDateTime {
             try {
-                val chronoLocalDateTime = format.javaFormatter.parse(string, ChronoLocalDateTime<JavaHijrahDate>::from)
-                return HijrahDateTime(chronoLocalDateTime as ChronoLocalDateTime<JavaHijrahDate>)
+                val accessor = format.javaFormatter.parse(string)
+                val javaDate = try {
+                    JavaHijrahDate.from(accessor)
+                } catch (e: Exception) {
+                    try {
+                        val ld = java.time.LocalDate.from(accessor)
+                        HijrahChronology.INSTANCE.date(ld)
+                    } catch (e2: Exception) {
+                        val y = accessor.get(ChronoField.YEAR)
+                        val m = accessor.get(ChronoField.MONTH_OF_YEAR)
+                        val d = accessor.get(ChronoField.DAY_OF_MONTH)
+                        JavaHijrahDate.of(y, m, d)
+                    }
+                }
+                val javaTime = LocalTime.from(accessor)
+                return HijrahDateTime(javaDate.atTime(javaTime))
             } catch (e: DateTimeParseException) {
+                throw IllegalArgumentException(e.message)
+            } catch (e: DateTimeException) {
                 throw IllegalArgumentException(e.message)
             }
         }
