@@ -17,7 +17,7 @@ actual class HijrahDate private constructor(
 ): Comparable<HijrahDate>, ComponentAccessors.DateBased {
 
     init {
-        @Suppress("ConvertTwoComparisonsToRangeCheck") //It shouldn't, it causes a recursive calls because the range class is constructing HijrahDate internally.
+        @Suppress("ConvertTwoComparisonsToRangeCheck") //It shouldn't, it causes recursive calls because the range class is constructing HijrahDate internally.
         if (!skipValidation && (this < MIN || this > MAX)) {
             throw IllegalArgumentException(
                 "HijrahDate is out of range. Valid range is from ${MIN.format(HijrahDateTimeFormats.DATE_ISO)} to ${MAX.format(HijrahDateTimeFormats.DATE_ISO)}"
