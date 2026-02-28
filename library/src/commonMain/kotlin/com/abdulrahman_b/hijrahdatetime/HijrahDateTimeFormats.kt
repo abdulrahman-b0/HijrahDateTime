@@ -1,0 +1,56 @@
+package com.abdulrahman_b.hijrahdatetime
+
+object HijrahDateTimeFormats {
+
+    val DATE_ISO = buildDateFormat(FormatLocale.English, DecimalStyle.Standard)
+    val TIME_ISO = buildTimeFormat(FormatLocale.English, DecimalStyle.Standard)
+    val DATETIME_ISO = buildDateTimeFormatter(FormatLocale.English, DecimalStyle.Standard)
+    val OFFSET_DATE_TIME_ISO = buildDateTimeFormat {
+        format(DATETIME_ISO)
+        zoneOffset()
+    }
+
+    fun buildDateFormat(
+        locale: FormatLocale,
+        decimalStyle: DecimalStyle,
+        separator: Char = '-',
+    ) = buildDateTimeFormat {
+        this.locale = locale
+        this.decimalStyle = decimalStyle
+
+        year()
+        char(separator)
+        monthNumber()
+        char(separator)
+        dayOfMonth()
+    }
+
+    fun buildTimeFormat(
+        locale: FormatLocale,
+        decimalStyle: DecimalStyle,
+    ) = buildDateTimeFormat {
+        this.locale = locale
+        this.decimalStyle = decimalStyle
+
+        hour()
+        char(':')
+        minute()
+        char(':')
+        second()
+    }
+    fun buildDateTimeFormatter(
+        locale: FormatLocale,
+        decimalStyle: DecimalStyle,
+        separator: Char = 'T',
+    ) = buildDateTimeFormat {
+        this.locale = locale
+        this.decimalStyle = decimalStyle
+
+        format(buildDateFormat(locale, decimalStyle))
+        char(separator)
+        format(buildTimeFormat(locale, decimalStyle))
+    }
+
+
+
+}

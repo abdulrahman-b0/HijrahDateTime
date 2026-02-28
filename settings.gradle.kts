@@ -1,25 +1,20 @@
 @file:Suppress("UnstableApiUsage")
 
-rootProject.name = "hijrahdatetime"
+include(":library")
 
-includeBuild("build-logic")
-include(":core")
-include(":serialization")
-include(":serialization:kotlinx")
-include(":serialization:jackson")
-include(":jakarta-validation")
+
+rootProject.name = "hijrahdatetime"
 
 pluginManagement {
     repositories {
-        mavenLocal()
         mavenCentral()
+        google()
         gradlePluginPortal()
     }
 }
 
 dependencyResolutionManagement {
     repositories {
-        mavenLocal()
         mavenCentral()
     }
 

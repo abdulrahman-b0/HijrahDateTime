@@ -1,41 +1,27 @@
 [versions]
-junitJupiter = "5.11.1"
-kotlin = "2.2.0"
-serialization = "1.9.0"
-jackson = "2.18.1"
-jakarta-validation = "3.1.0"
-hibernate-validator = "8.0.1.Final"
-expressly = "5.0.0"
-mockk = "1.13.13"
-kover = "0.9.1"
+kotlin = "2.3.10"
+kotlin-datetime = "0.7.1"
+kotlin-serialization = "1.9.0"
+kover = "0.9.4"
+kotlinTest = "2.3.0"
+kotest = "6.1.3"
+agp = "8.13.2"
 
 [libraries]
 
-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
-
-kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
-jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
-jackson-core-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
-jackson-core-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
-jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
-jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version.ref = "jakarta-validation" }
-hibernate-validator = { module = "org.hibernate.validator:hibernate-validator", version.ref = "hibernate-validator" }
-expressly = { module = "org.glassfish.expressly:expressly", version.ref = "expressly" }
-threeTenExtra = { module = "org.threeten:threeten-extra", version = "1.8.0" }
-#Testing
-#noinspection GradleDependency
-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
-junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junitJupiter" }
-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin-datetime" }
+kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinTest" }
+kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 
 [plugins]
 #noinspection GradleDependency
-hijrahDatetime-library = { id = "com.abdulrahman-b.hijrahdatetime.library" }
-hijrahDatetime-publish = { id = "com.abdulrahman-b.hijrahdatetime.publish" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 kotlin-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-vanniktechMavenPublish = { id = "com.vanniktech.maven.publish",  version = "0.34.0"}
+vanniktechMavenPublish = { id = "com.vanniktech.maven.publish",  version = "0.35.0"}
 
 
 [bundles]
