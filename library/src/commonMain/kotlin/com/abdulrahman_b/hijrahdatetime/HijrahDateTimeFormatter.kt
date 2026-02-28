@@ -48,7 +48,3 @@ fun buildDateTimeFormat(block: HijrahDateTimeFormatBuilder.() -> Unit): HijrahDa
 enum class NameStyle {
     FULL, ABBREVIATED
 }
-
-
-fun formattingTest() {
-}
