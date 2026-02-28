@@ -29,15 +29,7 @@ actual class HijrahDate private constructor(
     private constructor(year: Int, month: Int, dayOfMonth: Int, skipValidation: Boolean): this(createDate(year, month, dayOfMonth), skipValidation = skipValidation)
     private constructor(calendarDatePair: Pair<NSCalendar, NSDate>, skipValidation: Boolean): this(calendarDatePair.first, calendarDatePair.second, skipValidation)
 
-    constructor(calendar: NSCalendar, date: NSDate): this(calendar, date, skipValidation = false) {
-        val components = calendar.components(
-            NSCalendarUnitYear or NSCalendarUnitMonth or NSCalendarUnitDay,
-            fromDate = date
-        )
-        if (components.year != year.toLong() || components.month != month.number.toLong() || components.day != day.toLong()) {
-            throw IllegalArgumentException("Invalid date for Hijrah calendar: $year-$month-$day")
-        }
-    }
+    constructor(calendar: NSCalendar, date: NSDate): this(calendar, date, skipValidation = false)
 
     actual override fun compareTo(other: HijrahDate): Int =
         nsDate.compare(other.nsDate).toInt()
@@ -92,12 +84,9 @@ actual class HijrahDate private constructor(
     actual fun toEpochDays(): Long {
         // 1. Create a date representing the Unix Epoch (Jan 1, 1970)
         val epochDate = NSDate.dateWithTimeIntervalSince1970(0.0)
-        val utcCalendar = NSCalendar.currentCalendar.apply {
-            timeZone = NSTimeZone.timeZoneWithAbbreviation("UTC")!!
-        }
 
         // 2. Use the calendar to calculate the components (days) between epoch and current date
-        val components = utcCalendar.components(
+        val components = nsCalendar.components(
             NSCalendarUnitDay,
             fromDate = epochDate,
             toDate = nsDate,

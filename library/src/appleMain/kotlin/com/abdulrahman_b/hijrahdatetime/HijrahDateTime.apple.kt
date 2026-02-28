@@ -136,7 +136,6 @@ actual class HijrahDateTime(
             nanosecond: Int,
         ): Pair<NSCalendar, NSDate> {
             val nsCalendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
-            nsCalendar.timeZone = NSTimeZone.timeZoneWithAbbreviation("UTC")!!
             val components = NSDateComponents().apply {
                 this.year = year.toLong()
                 this.month = month.toLong()
@@ -166,10 +165,7 @@ actual class HijrahDateTime(
 }
 
 actual fun Instant.toHijrahDateTime(timeZone: TimeZone): HijrahDateTime {
-    val nsDate = this.toNSDate()
-    val nsCalendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
-    nsCalendar.timeZone = timeZone.toNSTimeZone()
-    return HijrahDateTime(nsCalendar, nsDate)
+    return this.toLocalDateTime(timeZone).toHijrahDateTime()
 }
 
 actual fun LocalDateTime.toHijrahDateTime(): HijrahDateTime {

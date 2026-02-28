@@ -72,7 +72,7 @@ fun HijrahDate.atTime(time: LocalTime): HijrahDateTime =
 
 fun HijrahDate.atStartOfDay(timeZone: TimeZone): HijrahDateTime {
     val instant = toLocalDate().atStartOfDayIn(timeZone)
-    return instant.toLocalDateTime(timeZone).toHijrahDateTime()
+    return instant.toHijrahDateTime(timeZone)
 }
 
 fun HijrahDate.with(value: Int, unit: DateTimeUnit.DateBased): HijrahDate {
