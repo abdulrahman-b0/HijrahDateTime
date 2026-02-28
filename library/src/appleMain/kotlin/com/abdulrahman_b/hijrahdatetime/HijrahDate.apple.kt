@@ -86,7 +86,10 @@ actual class HijrahDate private constructor(
         val epochDate = NSDate.dateWithTimeIntervalSince1970(0.0)
 
         // 2. Use the calendar to calculate the components (days) between epoch and current date
-        val components = nsCalendar.components(
+        val utcCalendar = NSCalendar.currentCalendar.apply {
+            timeZone = NSTimeZone.timeZoneWithAbbreviation("UTC")!!
+        }
+        val components = utcCalendar.components(
             NSCalendarUnitDay,
             fromDate = epochDate,
             toDate = nsDate,

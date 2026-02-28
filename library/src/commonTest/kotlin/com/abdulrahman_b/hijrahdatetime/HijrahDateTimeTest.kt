@@ -119,4 +119,13 @@ class HijrahDateTimeTest {
         
         assertNull(HijrahDateTime.parseOrNull("invalid", format))
     }
+
+    @Test
+    fun `test instant round trip with fixed offset`() {
+        val tz = TimeZone.of("UTC+03:00") as FixedOffsetTimeZone
+        val instant = Instant.fromEpochSeconds(1710115200) // 2024-03-11T00:00:00Z
+        val dt = instant.toHijrahDateTime(tz)
+        val roundTrip = dt.toInstant(tz)
+        assertEquals(instant.epochSeconds, roundTrip.epochSeconds)
+    }
 }
