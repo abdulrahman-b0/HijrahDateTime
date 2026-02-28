@@ -16,4 +16,3 @@ Could you attach a code snippet or test data if possible?
 
 **Environment**
  - Library version: [e.g. 0.11.0]
- - Language: [e.g. Kotlin or Java]
