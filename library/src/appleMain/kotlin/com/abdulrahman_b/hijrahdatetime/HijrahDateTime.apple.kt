@@ -164,14 +164,6 @@ actual class HijrahDateTime(
 
 }
 
-actual fun Instant.toHijrahDateTime(timeZone: TimeZone): HijrahDateTime {
-    val nsDate = this.toNSDate()
-    val nsCalendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura).apply {
-        this.timeZone = timeZone.toNSTimeZone()
-    }
-    return HijrahDateTime(nsCalendar, nsDate)
-}
-
 actual fun LocalDateTime.toHijrahDateTime(): HijrahDateTime {
     val nsDate = this.toInstant(TimeZone.currentSystemDefault()).toNSDate()
     val nsCalendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.abdulrahman_b.hijrahdatetime
 
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateComponentsSerializer
@@ -49,9 +51,7 @@ expect class HijrahDate(year: Int, month: Int, dayOfMonth: Int) : Comparable<Hij
 }
 
 fun Instant.toHijrahDate(timeZone: TimeZone = TimeZone.currentSystemDefault()): HijrahDate =
-    toHijrahDateTime(timeZone).date
-
-
+    toLocalDateTime(timeZone).toHijrahDateTime().date
 
 
 fun LocalDate.toHijrahDate(): HijrahDate = HijrahDate.fromEpochDays(toEpochDays())

@@ -5,6 +5,7 @@ import kotlinx.datetime.*
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
 
+@Suppress("unused")
 @Serializable(with = HijrahDateTimeComponentsSerializer::class)
 expect class HijrahDateTime(
     year: Int,
@@ -44,7 +45,9 @@ expect class HijrahDateTime(
     }
 }
 
-expect fun Instant.toHijrahDateTime(timeZone: TimeZone): HijrahDateTime
+fun Instant.toHijrahDateTime(timeZone: TimeZone): HijrahDateTime {
+    return toLocalDateTime(timeZone).toHijrahDateTime()
+}
 
 expect fun LocalDateTime.toHijrahDateTime(): HijrahDateTime
 

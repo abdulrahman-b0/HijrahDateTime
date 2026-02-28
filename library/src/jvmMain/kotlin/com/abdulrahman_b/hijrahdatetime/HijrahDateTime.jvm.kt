@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.abdulrahman_b.hijrahdatetime
 
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateTimeComponentsSerializer
@@ -10,7 +12,6 @@ import java.time.chrono.HijrahChronology
 import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoField
 import kotlin.time.Instant
-import kotlin.time.toJavaInstant
 import kotlin.time.toKotlinInstant
 import java.time.chrono.HijrahDate as JavaHijrahDate
 
@@ -65,22 +66,8 @@ actual class HijrahDateTime(
             format: HijrahDateTimeFormat,
         ): HijrahDateTime {
             try {
-                val accessor = format.javaFormatter.parse(string)
-                val javaDate = try {
-                    JavaHijrahDate.from(accessor)
-                } catch (e: Exception) {
-                    try {
-                        val ld = java.time.LocalDate.from(accessor)
-                        HijrahChronology.INSTANCE.date(ld)
-                    } catch (e2: Exception) {
-                        val y = accessor.get(ChronoField.YEAR)
-                        val m = accessor.get(ChronoField.MONTH_OF_YEAR)
-                        val d = accessor.get(ChronoField.DAY_OF_MONTH)
-                        JavaHijrahDate.of(y, m, d)
-                    }
-                }
-                val javaTime = LocalTime.from(accessor)
-                return HijrahDateTime(javaDate.atTime(javaTime))
+                val accessor = format.javaFormatter.withChronology(HijrahChronology.INSTANCE).parse(string)
+                return HijrahDateTime(HijrahChronology.INSTANCE.localDateTime(accessor))
             } catch (e: DateTimeParseException) {
                 throw IllegalArgumentException(e.message)
             } catch (e: DateTimeException) {
@@ -105,11 +92,6 @@ actual class HijrahDateTime(
 
     override fun toString(): String = javaDatetime.toString()
 
-}
-
-actual fun Instant.toHijrahDateTime(timeZone: TimeZone): HijrahDateTime {
-    val ldt = toJavaInstant().atZone(timeZone.toJavaZoneId()).toLocalDateTime()
-    return HijrahDateTime(JavaHijrahDate.from(ldt).atTime(ldt.toLocalTime()))
 }
 
 actual fun LocalDateTime.toHijrahDateTime(): HijrahDateTime {
