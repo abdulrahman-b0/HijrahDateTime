@@ -54,16 +54,6 @@ kotlin {
 }
 ```
 
-### Maven (JVM only)
-
-```xml
-<dependency>
-    <groupId>com.abdulrahman-b.hijrahdatetime</groupId>
-    <artifactId>hijrahdatetime-jvm</artifactId>
-    <version>2.0.0-alpha01</version>
-</dependency>
-```
-
 ---
 
 ## Core Concepts
