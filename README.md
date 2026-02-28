@@ -42,7 +42,7 @@ Add the dependency to your `commonMain` source set:
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.abdulrahman-b.hijrahdatetime:hijrahdatetime:2.0.0")
+            implementation("com.abdulrahman-b.hijrahdatetime:hijrahdatetime:2.0.0-alpha01")
         }
     }
 }
@@ -54,7 +54,7 @@ kotlin {
 <dependency>
     <groupId>com.abdulrahman-b.hijrahdatetime</groupId>
     <artifactId>hijrahdatetime-jvm</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.0-alpha01</version>
 </dependency>
 ```
 
