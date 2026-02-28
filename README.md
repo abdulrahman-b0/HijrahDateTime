@@ -204,7 +204,7 @@ Version 2.0 is a complete rewrite of the library to support Kotlin Multiplatform
 
 Will the older date types (like `ZonedHijrahDateTime` or `OffsetHijrahDateTime`) be implemented again in this version?
 
-It is **not guaranteed**. This library follows the philosophy of [kotlinx-datetime](https://github.com/Kotlin/kotlinx-datetime) and tries to adopt its way of working with dates and times. 
+It is **not guaranteed**. This library follows [kotlinx-datetime](https://github.com/Kotlin/kotlinx-datetime) and tries to adopt its way of working with dates and times. 
 
 However, if a feature previously existed in version 1.0 but is currently missing in version 2.0, it **might** be implemented in the future if:
 1. It can be implemented safely and consistently across all supported platforms.
