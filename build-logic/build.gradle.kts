@@ -23,21 +23,6 @@ dependencies {
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
 
-
-gradlePlugin {
-    plugins {
-        register("HijrahDateTime-library") {
-            id = libs.plugins.hijrahDatetime.library.get().pluginId
-            implementationClass = "LibraryConfigConventionPlugin"
-        }
-
-        register("HijrahDateTime-publish") {
-            id = libs.plugins.hijrahDatetime.publish.get().pluginId
-            implementationClass = "PublishConfigConventionPlugin"
-        }
-    }
-}
-
 fun DependencyHandlerScope.plugin(dependencyNotation: Provider<PluginDependency>) {
     val pluginId = dependencyNotation.get().pluginId
     val version = dependencyNotation.get().version

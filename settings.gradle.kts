@@ -5,13 +5,6 @@ include(":library")
 
 rootProject.name = "hijrahdatetime"
 
-includeBuild("build-logic")
-//include(":core")
-//include(":serialization")
-//include(":serialization:kotlinx")
-//include(":serialization:jackson")
-//include(":jakarta-validation")
-
 pluginManagement {
     repositories {
         mavenCentral()
