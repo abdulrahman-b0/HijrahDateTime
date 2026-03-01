@@ -70,10 +70,7 @@ infix fun HijrahDate.minusYears(value: Int) = minus(value, DateTimeUnit.YEAR)
 fun HijrahDate.atTime(time: LocalTime): HijrahDateTime =
     HijrahDateTime.of(this, time)
 
-fun HijrahDate.atStartOfDay(timeZone: TimeZone): HijrahDateTime {
-    val instant = toLocalDate().atStartOfDayIn(timeZone)
-    return instant.toHijrahDateTime(timeZone)
-}
+fun HijrahDate.atStartOfDay(timeZone: TimeZone): Instant = toLocalDate().atStartOfDayIn(timeZone)
 
 fun HijrahDate.with(value: Int, unit: DateTimeUnit.DateBased): HijrahDate {
     return HijrahDate(

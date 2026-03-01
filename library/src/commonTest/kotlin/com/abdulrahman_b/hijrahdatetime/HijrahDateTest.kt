@@ -263,7 +263,8 @@ class HijrahDateTest {
         dateTime.date shouldBe date
         dateTime.time shouldBe time
 
-        val startOfDay = date.atStartOfDay(FixedOffsetTimeZone(UtcOffset(3)))
+        val zone = FixedOffsetTimeZone(UtcOffset(3))
+        val startOfDay = date.atStartOfDay(zone).toHijrahDateTime(zone)
         startOfDay.hour shouldBe 0
         startOfDay.minute shouldBe 0
     }

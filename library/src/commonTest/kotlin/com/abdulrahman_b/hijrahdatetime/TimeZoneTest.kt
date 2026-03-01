@@ -66,13 +66,14 @@ class TimeZoneTest {
         
         val riyadhTz = FixedOffsetTimeZone(UtcOffset(3))
         val startOfDayRiyadh = date.atStartOfDay(riyadhTz)
+        val datetime = startOfDayRiyadh.toHijrahDateTime(riyadhTz)
         
-        startOfDayRiyadh.date shouldBe date
-        startOfDayRiyadh.hour shouldBe 0
-        startOfDayRiyadh.minute shouldBe 0
+        datetime.date shouldBe date
+        datetime.hour shouldBe 0
+        datetime.minute shouldBe 0
         
         // Verify it corresponds to the correct Instant
-        val instant = startOfDayRiyadh.toInstant(riyadhTz)
+        val instant = startOfDayRiyadh
         // 2024-03-11T00:00:00+03:00 is 2024-03-10T21:00:00Z
         instant.epochSeconds shouldBe 1710104400L
     }
