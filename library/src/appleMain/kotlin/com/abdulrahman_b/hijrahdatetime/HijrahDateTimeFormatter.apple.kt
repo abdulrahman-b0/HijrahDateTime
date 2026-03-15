@@ -11,7 +11,7 @@ actual class HijrahDateTimeFormat(val nsFormatter: NSDateFormatter) {
         ): HijrahDateTimeFormat {
             val formatter = NSDateFormatter().apply {
                 this.dateFormat = pattern
-                this.locale = locale.nsLocale
+                this.locale = locale
             }
             return HijrahDateTimeFormat(formatter)
         }
@@ -21,7 +21,7 @@ actual class HijrahDateTimeFormat(val nsFormatter: NSDateFormatter) {
 actual class HijrahDateTimeFormatBuilder {
     private val pattern = StringBuilder()
 
-    actual var locale: FormatLocale = FormatLocale.English
+    actual var locale: FormatLocale = FormatLocales.English
     actual var decimalStyle: DecimalStyle = DecimalStyle.Standard
 
     actual fun format(format: HijrahDateTimeFormat) {
@@ -63,7 +63,7 @@ actual class HijrahDateTimeFormatBuilder {
     actual fun build(): HijrahDateTimeFormat {
         val formatter = NSDateFormatter().apply {
             this.dateFormat = pattern.toString()
-            this.locale = this@HijrahDateTimeFormatBuilder.locale.nsLocale
+            this.locale = this@HijrahDateTimeFormatBuilder.locale
             // NSDateFormatter uses the locale's numbering system by default.
             // If you need to force a specific DecimalStyle, you'd configure the formatter.numberFormatter here.
         }

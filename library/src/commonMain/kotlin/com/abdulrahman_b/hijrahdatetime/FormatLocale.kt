@@ -1,18 +1,12 @@
 package com.abdulrahman_b.hijrahdatetime
 
-expect class FormatLocale(
-    languageCode: String,
-    countryCode: String? = null
-) {
+expect class FormatLocale
 
-    val countryCode: String?
+expect object FormatLocales {
 
-    val languageCode: String
+    val Arabic: FormatLocale
+    val English: FormatLocale
 
-    companion object {
-
-        val English: FormatLocale
-        fun getDefault(): FormatLocale
-    }
+    fun getDefault(): FormatLocale
 
 }

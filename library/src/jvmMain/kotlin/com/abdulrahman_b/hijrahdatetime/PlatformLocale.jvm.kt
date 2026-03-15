@@ -1,22 +1,11 @@
 package com.abdulrahman_b.hijrahdatetime
 
-import java.util.*
+import java.util.Locale
 
-actual class FormatLocale(val locale: Locale) {
+actual typealias FormatLocale = Locale
 
-    actual val languageCode: String = locale.language
-    actual val countryCode: String? = locale.country.takeIf { it.isNotEmpty() }
-
-    actual constructor(languageCode: String, countryCode: String?) : this(
-        Locale.Builder().setLanguage(languageCode).setRegion(countryCode).build()
-    )
-
-
-    actual companion object {
-        actual val English: FormatLocale = FormatLocale(Locale.ENGLISH)
-        actual fun getDefault() = FormatLocale(Locale.getDefault())
-    }
-
-
-
+actual object FormatLocales {
+    actual val English: FormatLocale = Locale.ENGLISH
+    actual val Arabic: FormatLocale = Locale.Builder().setLanguage("ar").build()
+    actual fun getDefault(): Locale = Locale.getDefault()
 }

@@ -1,8 +1,17 @@
 package com.abdulrahman_b.hijrahdatetime
 
-import kotlinx.datetime.*
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.toJavaDayOfWeek
+import kotlinx.datetime.toJavaLocalTime
 import java.time.chrono.HijrahChronology
-import java.time.format.*
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.format.DateTimeParseException
+import java.time.format.ResolverStyle
+import java.time.format.SignStyle
+import java.time.format.TextStyle
 import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalField
@@ -17,7 +26,7 @@ fun NameStyle.toJavaTextStyle(): TextStyle = when (this) {
 }
 
 fun DecimalStyle.toJavaDecimalStyle(): java.time.format.DecimalStyle = when (this) {
-    is DecimalStyle.OfLocale -> java.time.format.DecimalStyle.of(locale.locale)
+    is DecimalStyle.OfLocale -> java.time.format.DecimalStyle.of(locale)
     DecimalStyle.Standard -> java.time.format.DecimalStyle.STANDARD
 }
 
@@ -59,7 +68,7 @@ actual fun LocalTime.format(format: HijrahDateTimeFormat): String = format.javaF
 actual fun DayOfWeek.getDisplayName(
     nameStyle: NameStyle,
     locale: FormatLocale
-): String = toJavaDayOfWeek().getDisplayName(nameStyle.toJavaTextStyle(), locale.locale)
+): String = toJavaDayOfWeek().getDisplayName(nameStyle.toJavaTextStyle(), locale)
 
 actual fun Instant.Companion.parseHijriOrNull(value: String): Instant? {
     return try {

@@ -1,7 +1,27 @@
 package com.abdulrahman_b.hijrahdatetime
 
-import kotlinx.datetime.*
-import platform.Foundation.*
+import kotlinx.datetime.DateTimePeriod
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.isoDayNumber
+import kotlinx.datetime.toKotlinInstant
+import platform.Foundation.NSCalendar
+import platform.Foundation.NSCalendarIdentifierIslamicUmmAlQura
+import platform.Foundation.NSCalendarUnit
+import platform.Foundation.NSCalendarUnitDay
+import platform.Foundation.NSCalendarUnitHour
+import platform.Foundation.NSCalendarUnitMinute
+import platform.Foundation.NSCalendarUnitMonth
+import platform.Foundation.NSCalendarUnitNanosecond
+import platform.Foundation.NSCalendarUnitSecond
+import platform.Foundation.NSCalendarUnitWeekOfYear
+import platform.Foundation.NSCalendarUnitYear
+import platform.Foundation.NSDate
+import platform.Foundation.NSDateComponents
+import platform.Foundation.NSDateFormatter
+import platform.Foundation.NSLocale
+import platform.Foundation.localeWithLocaleIdentifier
 import kotlin.time.Instant
 
 actual fun LocalTime.format(format: HijrahDateTimeFormat): String {
@@ -71,7 +91,7 @@ actual fun DayOfWeek.getDisplayName(
     locale: FormatLocale
 ): String {
     val formatter = NSDateFormatter().apply {
-        this.locale = locale.nsLocale
+        this.locale = locale
     }
 
     val names = when (nameStyle) {

@@ -8,7 +8,7 @@ expect class HijrahDateTimeFormat {
     companion object {
         fun ofPattern(
             pattern: String,
-            locale: FormatLocale = FormatLocale.English
+            locale: FormatLocale = FormatLocales.English
         ): HijrahDateTimeFormat
 
     }

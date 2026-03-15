@@ -6,7 +6,7 @@ import kotlin.time.Instant
 
 expect fun LocalTime.format(format: HijrahDateTimeFormat): String
 
-expect fun DayOfWeek.getDisplayName(nameStyle: NameStyle, locale: FormatLocale = FormatLocale.getDefault()): String
+expect fun DayOfWeek.getDisplayName(nameStyle: NameStyle, locale: FormatLocale = FormatLocales.getDefault()): String
 
 expect fun Instant.Companion.parseHijriOrNull(value: String): Instant?
 

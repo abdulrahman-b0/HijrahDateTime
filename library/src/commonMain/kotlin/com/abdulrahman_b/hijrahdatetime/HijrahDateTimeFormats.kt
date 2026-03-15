@@ -2,9 +2,9 @@ package com.abdulrahman_b.hijrahdatetime
 
 object HijrahDateTimeFormats {
 
-    val DATE_ISO = buildDateFormat(FormatLocale.English, DecimalStyle.Standard)
-    val TIME_ISO = buildTimeFormat(FormatLocale.English, DecimalStyle.Standard)
-    val DATETIME_ISO = buildDateTimeFormatter(FormatLocale.English, DecimalStyle.Standard)
+    val DATE_ISO = buildDateFormat(FormatLocales.English, DecimalStyle.Standard)
+    val TIME_ISO = buildTimeFormat(FormatLocales.English, DecimalStyle.Standard)
+    val DATETIME_ISO = buildDateTimeFormatter(FormatLocales.English, DecimalStyle.Standard)
     val OFFSET_DATE_TIME_ISO = buildDateTimeFormat {
         format(DATETIME_ISO)
         zoneOffset()

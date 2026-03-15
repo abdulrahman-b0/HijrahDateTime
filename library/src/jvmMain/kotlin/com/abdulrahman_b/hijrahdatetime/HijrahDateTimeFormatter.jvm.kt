@@ -13,7 +13,7 @@ actual class HijrahDateTimeFormat(val javaFormatter: DateTimeFormatter) {
         actual fun ofPattern(
             pattern: String,
             locale: FormatLocale
-        ): HijrahDateTimeFormat = HijrahDateTimeFormat(DateTimeFormatter.ofPattern(pattern, locale.locale))
+        ): HijrahDateTimeFormat = HijrahDateTimeFormat(DateTimeFormatter.ofPattern(pattern, locale))
     }
 }
 
@@ -21,7 +21,7 @@ actual class HijrahDateTimeFormatBuilder {
 
     private val builder = DateTimeFormatterBuilder()
 
-    actual var locale: FormatLocale = FormatLocale.English
+    actual var locale: FormatLocale = FormatLocales.English
 
     actual var decimalStyle: DecimalStyle = DecimalStyle.Standard
 
@@ -64,7 +64,7 @@ actual class HijrahDateTimeFormatBuilder {
     actual fun build(): HijrahDateTimeFormat {
         return HijrahDateTimeFormat(
             builder
-                .toFormatter(locale.locale)
+                .toFormatter(locale)
                 .withDecimalStyle(decimalStyle.toJavaDecimalStyle())
         )
     }

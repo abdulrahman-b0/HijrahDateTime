@@ -1,6 +1,10 @@
 package com.abdulrahman_b.hijrahdatetime
 
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class HijrahDateTimeFormatTest {
 
@@ -13,7 +17,7 @@ class HijrahDateTimeFormatTest {
         
         val format = HijrahDateTimeFormatBuilder().apply {
             byUnicodePattern("yyyy-MM-dd")
-            locale = FormatLocale.English
+            locale = FormatLocales.English
         }.build()
 
         val dt = HijrahDate(1445, 9, 1)
@@ -29,7 +33,7 @@ class HijrahDateTimeFormatTest {
     @Test
     fun `test builder components`() {
         val format = HijrahDateTimeFormatBuilder().apply {
-            locale = FormatLocale.English
+            locale = FormatLocales.English
             year()
             char('-')
             monthNumber()
@@ -48,7 +52,7 @@ class HijrahDateTimeFormatTest {
     @Test
     fun `test month names`() {
         val format = HijrahDateTimeFormatBuilder().apply {
-            locale = FormatLocale.English
+            locale = FormatLocales.English
             monthName(NameStyle.FULL)
             char(' ')
             year()
@@ -58,7 +62,7 @@ class HijrahDateTimeFormatTest {
         assertEquals("Rajab 1447", dt.format(format))
         
         val shortFormat = HijrahDateTimeFormatBuilder().apply {
-            locale = FormatLocale.English
+            locale = FormatLocales.English
             monthName(NameStyle.ABBREVIATED)
             char(' ')
             year()
