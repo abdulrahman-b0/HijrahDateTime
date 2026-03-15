@@ -173,37 +173,6 @@ for (day in end downTo start) {
 
 ---
 
-## Breaking Changes from 1.x
-
-Version 2.0 is a complete rewrite of the library to support Kotlin Multiplatform. This introduced several breaking changes:
-
-- **Technology Shift**: Migrated from `java.time` to a pure Kotlin implementation with `kotlinx-datetime` integration.
-- **Package Name**: Changed from `com.abdulrahman_b.hijrahdatetime` to `com.abdulrahman-b.hijrahdatetime` (using a hyphen in the artifact ID, but keeping underscores in package names for Kotlin compatibility where necessary).
-- **Class Changes**:
-    - `HijrahDate` is now an `expect`/`actual` class.
-    - `SimpleHijrahDate`, `EarlyHijrahDate`, and `OffsetHijrahDate` have been removed in favor of a unified `HijrahDate`.
-    - `ZonedHijrahDateTime` and `OffsetHijrahDateTime` are currently not available in 2.0. Use `HijrahDateTime` and convert to/from `Instant` using `TimeZone`.
-- **API Changes**:
-    - Methods like `plusDays`, `minusMonths` etc. are now extension functions.
-    - Formatting now uses `HijrahDateTimeFormat` instead of `java.time.format.DateTimeFormatter`.
-    - Serialization now uses `kotlinx-serialization` instead of Java Serialization or Jackson.
-
----
-
-## Future Implementation & Philosophy
-
-Will the older date types (like `ZonedHijrahDateTime` or `OffsetHijrahDateTime`) be implemented again in this version?
-
-It is **not guaranteed**. This library follows [kotlinx-datetime](https://github.com/Kotlin/kotlinx-datetime) and tries to adopt its way of working with dates and times. 
-
-However, if a feature previously existed in version 1.0 but is currently missing in version 2.0, it **might** be implemented in the future if:
-1. It can be implemented safely and consistently across all supported platforms.
-2. it aligns with the core goals of the library.
-
-Please note that there are no guarantees or promises regarding the re-implementation of specific legacy types.
-
----
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
