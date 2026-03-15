@@ -7,7 +7,19 @@ import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.DateTimeArithmeticException
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.serialization.Serializable
-import platform.Foundation.*
+import platform.Foundation.NSCalendar
+import platform.Foundation.NSCalendarIdentifierIslamicUmmAlQura
+import platform.Foundation.NSCalendarUnitDay
+import platform.Foundation.NSCalendarUnitEra
+import platform.Foundation.NSCalendarUnitMonth
+import platform.Foundation.NSCalendarUnitYear
+import platform.Foundation.NSDate
+import platform.Foundation.NSDateComponents
+import platform.Foundation.NSTimeZone
+import platform.Foundation.compare
+import platform.Foundation.dateWithTimeIntervalSince1970
+import platform.Foundation.timeZoneWithAbbreviation
+import platform.Foundation.timeZoneWithName
 
 @Serializable(with = HijrahDateComponentsSerializer::class)
 actual class HijrahDate private constructor(
@@ -86,7 +98,7 @@ actual class HijrahDate private constructor(
         val epochDate = NSDate.dateWithTimeIntervalSince1970(0.0)
 
         // 2. Use the calendar to calculate the components (days) between epoch and current date
-        val utcCalendar = NSCalendar.currentCalendar.apply {
+        val utcCalendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura).apply {
             timeZone = NSTimeZone.timeZoneWithAbbreviation("UTC")!!
         }
         val components = utcCalendar.components(
@@ -172,12 +184,17 @@ actual class HijrahDate private constructor(
 
         actual fun fromEpochDays(epochDay: Long): HijrahDate {
             val nsCalendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
-            // One day has 86400 seconds.
-            // NSDate expects TimeInterval (Double) in seconds since 1970-01-01 00:00:00 UTC
-            val secondsSince1970 = epochDay * SECONDS_PER_DAY
-            val nsDate = NSDate.dateWithTimeIntervalSince1970(secondsSince1970)
+            // 1. Force the calendar to be timezone-neutral (UTC) to avoid the date shifting one day before for countries with negative UTC offsets
+            nsCalendar.timeZone = NSTimeZone.timeZoneWithName("UTC")!!
 
-            return HijrahDate(nsCalendar, nsDate)
+            // 2. Create the date at midnight UTC
+            val seconds = epochDay * 86400
+            val nsDate = NSDate.dateWithTimeIntervalSince1970(seconds.toDouble())
+
+            // 3. "Normalize" the date to ensure we are at the start of the day
+            // This removes any subtle timezone rounding errors
+            val normalizedDate = nsCalendar.dateBySettingHour(0, 0, 0, nsDate, 0UL)!!
+            return HijrahDate(nsCalendar, normalizedDate)
         }
 
         private const val MIN_YEAR = 1300
