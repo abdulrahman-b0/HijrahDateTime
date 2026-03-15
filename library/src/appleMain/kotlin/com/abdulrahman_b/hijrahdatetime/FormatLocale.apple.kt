@@ -5,6 +5,7 @@ import platform.Foundation.currentLocale
 
 actual typealias FormatLocale = NSLocale
 
+@Suppress("unused")
 actual object FormatLocales {
     actual fun getDefault() = NSLocale.currentLocale
     actual val Arabic: FormatLocale = NSLocale("ar_SA")

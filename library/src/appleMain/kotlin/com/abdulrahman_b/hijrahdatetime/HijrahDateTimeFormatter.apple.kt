@@ -18,6 +18,7 @@ actual class HijrahDateTimeFormat(val nsFormatter: NSDateFormatter) {
     }
 }
 
+@Suppress("unused")
 actual class HijrahDateTimeFormatBuilder {
     private val pattern = StringBuilder()
 

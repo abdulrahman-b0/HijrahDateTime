@@ -17,6 +17,7 @@ actual class HijrahDateTimeFormat(val javaFormatter: DateTimeFormatter) {
     }
 }
 
+@Suppress("unused")
 actual class HijrahDateTimeFormatBuilder {
 
     private val builder = DateTimeFormatterBuilder()

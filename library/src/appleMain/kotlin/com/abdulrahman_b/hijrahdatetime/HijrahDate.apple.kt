@@ -21,6 +21,7 @@ import platform.Foundation.dateWithTimeIntervalSince1970
 import platform.Foundation.timeZoneWithAbbreviation
 import platform.Foundation.timeZoneWithName
 
+@Suppress("unused")
 @Serializable(with = HijrahDateComponentsSerializer::class)
 actual class HijrahDate private constructor(
     override val nsCalendar: NSCalendar,
