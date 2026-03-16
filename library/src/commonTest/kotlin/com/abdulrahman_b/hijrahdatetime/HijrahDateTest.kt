@@ -8,8 +8,16 @@ import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.ranges.shouldBeIn
 import io.kotest.matchers.ranges.shouldNotBeIn
 import io.kotest.matchers.shouldBe
-import kotlinx.datetime.*
+import kotlinx.datetime.DateTimeArithmeticException
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.FixedOffsetTimeZone
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.Month
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.UtcOffset
 import kotlin.test.Test
+import kotlin.time.Clock
 import kotlin.time.Instant
 
 class HijrahDateTest {
@@ -25,6 +33,16 @@ class HijrahDateTest {
         shouldThrow<IllegalArgumentException> {
             HijrahDate(1445, 9, 31)
         }
+    }
+    
+    @Test
+    fun `getting current Hijrah date`() {
+        val currentDate = shouldNotThrowAny {
+            Clock.System.now().toHijrahDate()
+        }
+        currentDate.year shouldBe 1447
+        currentDate.month.number shouldBe 9
+        currentDate.day shouldBe 27
     }
 
     @Test
