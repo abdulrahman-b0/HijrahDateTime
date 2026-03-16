@@ -1,7 +1,12 @@
 package com.abdulrahman_b.hijrahdatetime
 
 import io.kotest.assertions.throwables.shouldThrow
-import kotlinx.datetime.*
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.FixedOffsetTimeZone
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.Month
+import kotlinx.datetime.TimeZone
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -91,15 +96,27 @@ class HijrahDateTimeTest {
     }
     
     @Test
-    fun `test LocalDateTime conversion`() {
-        val ldt = LocalDateTime(2024, 3, 11, 10, 30)
+    fun `test LocalDateTime conversion to HijrahDateTime with time of day`() {
+        val ldt = LocalDateTime(2026, 3, 16, 10, 30)
         val dt = ldt.toHijrahDateTime()
-        assertEquals(1445, dt.year)
+        assertEquals(1447, dt.year)
         assertEquals(9, dt.month.number)
-        assertEquals(1, dt.day)
+        assertEquals(27, dt.day)
         assertEquals(10, dt.hour)
         assertEquals(30, dt.minute)
     }
+
+    @Test
+    fun `test LocalDateTime conversion to HijrahDateTime with 0 time of day`() {
+        val ldt = LocalDateTime(2026, 3, 16, 0, 0)
+        val dt = ldt.toHijrahDateTime()
+        assertEquals(1447, dt.year)
+        assertEquals(9, dt.month.number)
+        assertEquals(27, dt.day)
+        assertEquals(0, dt.hour)
+        assertEquals(0, dt.minute)
+    }
+
 
     @Test
     fun `test parsing`() {
