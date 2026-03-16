@@ -1,6 +1,7 @@
 package com.abdulrahman_b.hijrahdatetime
 
 import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.equals.shouldBeEqual
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.FixedOffsetTimeZone
 import kotlinx.datetime.LocalDateTime
@@ -53,6 +54,20 @@ class HijrahDateTimeTest {
         assertTrue(dt1 < dt2)
         assertTrue(dt2 < dt3)
         assertEquals(0, dt1.compareTo(HijrahDateTime(1445, 9, 1, 10, 0, 0, 0)))
+    }
+
+    @Test
+    fun `test pure date quality`() {
+        val dt1 = HijrahDateTime(1445, 9, 1, 10, 0, 0, 0)
+        val d1 = HijrahDate(1445, 9, 1)
+
+        println(dt1.date.toEpochDays())
+        println(d1.toEpochDays())
+        dt1.date shouldBeEqual d1
+
+        val dt2 = HijrahDateTime(1445, 9, 2, 0, 0, 0, 0)
+        val d2 = HijrahDate(1445, 9, 2)
+        dt2.date shouldBeEqual d2
     }
 
     @Test
