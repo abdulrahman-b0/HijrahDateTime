@@ -3,6 +3,7 @@ package com.abdulrahman_b.hijrahdatetime
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormats
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.equals.shouldBeEqual
+import io.kotest.matchers.ints.shouldBeInRange
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.FixedOffsetTimeZone
 import kotlinx.datetime.LocalDateTime
@@ -13,6 +14,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 class HijrahDateTimeTest {
@@ -71,6 +73,7 @@ class HijrahDateTimeTest {
         dt2.date shouldBeEqual d2
     }
 
+    @OptIn(ExperimentalTime::class)
     @Test
     fun `test to instant`() {
         // 2024-03-11T00:00:00Z is 1445-09-01
@@ -90,14 +93,32 @@ class HijrahDateTimeTest {
         assertEquals(30, localDt.minute)
     }
 
+    @OptIn(ExperimentalTime::class)
     @Test
     fun `test instant conversion`() {
         val instant = Instant.fromEpochSeconds(1710115200)
+
+        //Time zone is UTC
         val dt = instant.toHijrahDateTime(TimeZone.UTC)
         assertEquals(1445, dt.year)
         assertEquals(9, dt.month.number)
         assertEquals(1, dt.day)
         assertEquals(0, dt.hour)
+
+        //Test with a positive offset time zone
+        val saDt = instant.toHijrahDateTime(TimeZone.of("Asia/Riyadh"))
+        assertEquals(1445, saDt.year)
+        assertEquals(9, saDt.month.number)
+        assertEquals(1, dt.day)
+        assertEquals(3, saDt.hour)
+
+        //Test with a negative offset time zone (UTC-5 / UTC-4)
+        val nyDt = instant.toHijrahDateTime(TimeZone.of("America/New_York"))
+        assertEquals(1445, nyDt.year)
+        assertEquals(8, nyDt.month.number)
+        assertEquals(29, nyDt.day)
+        nyDt.hour shouldBeInRange  19..20
+
     }
 
     @Test
@@ -153,6 +174,7 @@ class HijrahDateTimeTest {
         assertNull(HijrahDateTime.parseOrNull("invalid", format))
     }
 
+    @OptIn(ExperimentalTime::class)
     @Test
     fun `test instant round trip with fixed offset`() {
         val tz = TimeZone.of("UTC+03:00") as FixedOffsetTimeZone
