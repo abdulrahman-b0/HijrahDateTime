@@ -14,7 +14,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -77,19 +76,20 @@ class HijrahDateTimeTest {
     @OptIn(ExperimentalTime::class)
     @Test
     fun `test date property is equal to the individual values`() {
-        var dt = Clock.System.now().toHijrahDateTime(TimeZone.UTC)
+        val instant = HijrahDate(1445, 10, 6).atStartOfDay(TimeZone.UTC)
+        var dt = instant.toHijrahDateTime(TimeZone.UTC)
         var d = dt.date
         assertEquals(dt.year, d.year)
         assertEquals(dt.month.number, d.month.number)
         assertEquals(dt.day, d.day)
 
-        dt = Clock.System.now().toHijrahDateTime(TimeZone.of("Asia/Riyadh"))
+        dt = instant.toHijrahDateTime(TimeZone.of("Asia/Riyadh"))
         d = dt.date
         assertEquals(dt.year, d.year)
         assertEquals(dt.month.number, d.month.number)
         assertEquals(dt.day, d.day)
 
-        dt = Clock.System.now().toHijrahDateTime(TimeZone.of("America/New_York"))
+        dt = instant.toHijrahDateTime(TimeZone.of("America/New_York"))
         d = dt.date
         assertEquals(dt.year, d.year)
         assertEquals(dt.month.number, d.month.number)
