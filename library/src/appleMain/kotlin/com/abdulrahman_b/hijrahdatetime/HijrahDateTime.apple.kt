@@ -27,7 +27,6 @@ import platform.Foundation.NSDate
 import platform.Foundation.NSDateComponents
 import platform.Foundation.NSTimeZone
 import platform.Foundation.compare
-import platform.Foundation.isEqualToDate
 import platform.Foundation.timeZoneWithAbbreviation
 import kotlin.time.Instant
 
@@ -144,12 +143,12 @@ actual class HijrahDateTime(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is HijrahDateTime) return false
-        return this.nsDate.isEqualToDate(other.nsDate)
+        return date == other.date && time == other.time
     }
 
     override fun hashCode(): Int = this.nsDate.hashCode()
 
-    override fun toString(): String = "HijrahDateTime($nsDate, $time)"
+    override fun toString(): String = "HijrahDateTime(date=$date, time=$time)"
 
 
     actual companion object {
