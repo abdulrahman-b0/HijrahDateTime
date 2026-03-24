@@ -77,11 +77,23 @@ class HijrahDateTimeTest {
     @OptIn(ExperimentalTime::class)
     @Test
     fun `test date property is equal to the individual values`() {
-        val dt = Clock.System.now().toHijrahDateTime(TimeZone.UTC)
-        val date = dt.date
-        assertEquals(dt.year, date.year)
-        assertEquals(dt.month.number, date.month.number)
-        assertEquals(dt.day, date.day)
+        var dt = Clock.System.now().toHijrahDateTime(TimeZone.UTC)
+        var d = dt.date
+        assertEquals(dt.year, d.year)
+        assertEquals(dt.month.number, d.month.number)
+        assertEquals(dt.day, d.day)
+
+        dt = Clock.System.now().toHijrahDateTime(TimeZone.of("Asia/Riyadh"))
+        d = dt.date
+        assertEquals(dt.year, d.year)
+        assertEquals(dt.month.number, d.month.number)
+        assertEquals(dt.day, d.day)
+
+        dt = Clock.System.now().toHijrahDateTime(TimeZone.of("America/New_York"))
+        d = dt.date
+        assertEquals(dt.year, d.year)
+        assertEquals(dt.month.number, d.month.number)
+        assertEquals(dt.day, d.day)
     }
 
     @OptIn(ExperimentalTime::class)
