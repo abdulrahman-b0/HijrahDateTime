@@ -1,19 +1,60 @@
 package com.abdulrahman_b.hijrahdatetime
 
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateTimeComponentsSerializer
-import kotlinx.datetime.*
+import kotlinx.datetime.DateTimeArithmeticException
+import kotlinx.datetime.FixedOffsetTimeZone
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.Month
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toKotlinInstant
+import kotlinx.datetime.toNSDate
+import kotlinx.datetime.toNSTimeZone
 import kotlinx.serialization.Serializable
-import platform.Foundation.*
+import platform.Foundation.NSCalendar
+import platform.Foundation.NSCalendarIdentifierGregorian
+import platform.Foundation.NSCalendarIdentifierIslamicUmmAlQura
+import platform.Foundation.NSCalendarUnitDay
+import platform.Foundation.NSCalendarUnitDayOfYear
+import platform.Foundation.NSCalendarUnitHour
+import platform.Foundation.NSCalendarUnitMinute
+import platform.Foundation.NSCalendarUnitMonth
+import platform.Foundation.NSCalendarUnitNanosecond
+import platform.Foundation.NSCalendarUnitSecond
+import platform.Foundation.NSCalendarUnitYear
+import platform.Foundation.NSDate
+import platform.Foundation.NSDateComponents
+import platform.Foundation.NSTimeZone
+import platform.Foundation.compare
+import platform.Foundation.isEqualToDate
+import platform.Foundation.timeZoneWithAbbreviation
 import kotlin.time.Instant
 
 @Serializable(with = HijrahDateTimeComponentsSerializer::class)
 actual class HijrahDateTime(
-    override val nsCalendar: NSCalendar,
-    override val nsDate: NSDate
-) : Comparable<HijrahDateTime>, ComponentAccessors.DateTimeBased {
+    private val nsCalendar: NSCalendar,
+    private val nsDate: NSDate
+) : Comparable<HijrahDateTime> {
 
-    actual val date: HijrahDate = HijrahDate(nsCalendar, nsDate)
-    actual val time: LocalTime = LocalTime(
+    actual val year = nsCalendar.component(NSCalendarUnitYear, nsDate).toInt()
+    actual val month = HijrahMonth.of(nsCalendar.component(NSCalendarUnitMonth, nsDate).toInt())
+    actual val day = nsCalendar.component(NSCalendarUnitDay, nsDate).toInt()
+    actual val dayOfWeek = getDayOfWeak(nsCalendar, nsDate)
+    actual val dayOfYear = nsCalendar.component(NSCalendarUnitDayOfYear, nsDate).toInt()
+
+    actual val hour = nsCalendar.component(NSCalendarUnitHour, nsDate).toInt()
+    actual val minute = nsCalendar.component(NSCalendarUnitMinute, nsDate).toInt()
+    actual val second = nsCalendar.component(NSCalendarUnitSecond, nsDate).toInt()
+    actual val nanosecond = nsCalendar.component(NSCalendarUnitNanosecond, nsDate).toInt()
+
+    actual val date: HijrahDate = HijrahDate(
+        year = nsCalendar.component(NSCalendarUnitYear, nsDate).toInt(),
+        month = nsCalendar.component(NSCalendarUnitMonth, nsDate).toInt(),
+        dayOfMonth = nsCalendar.component(NSCalendarUnitDay, nsDate).toInt()
+    )
+
+    actual val time: LocalTime get() = LocalTime(
         hour = nsCalendar.component(NSCalendarUnitHour, nsDate).toInt(),
         minute = nsCalendar.component(NSCalendarUnitMinute, nsDate).toInt(),
         second = nsCalendar.component(NSCalendarUnitSecond, nsDate).toInt(),

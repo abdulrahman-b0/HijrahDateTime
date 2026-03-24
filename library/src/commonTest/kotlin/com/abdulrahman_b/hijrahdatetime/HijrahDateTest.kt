@@ -8,9 +8,14 @@ import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.ranges.shouldBeIn
 import io.kotest.matchers.ranges.shouldNotBeIn
 import io.kotest.matchers.shouldBe
-import kotlinx.datetime.*
+import kotlinx.datetime.DateTimeArithmeticException
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.FixedOffsetTimeZone
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.Month
+import kotlinx.datetime.UtcOffset
 import kotlin.test.Test
-import kotlin.time.Instant
 
 class HijrahDateTest {
 
@@ -118,16 +123,6 @@ class HijrahDateTest {
         localDate.year shouldBe 2024
         localDate.month shouldBe Month.MARCH
         localDate.day shouldBe 11
-    }
-
-    @Test
-    fun `test instant conversion`() {
-        // 2024-03-11T00:00:00Z is 1445-09-01
-        val instant = Instant.fromEpochSeconds(1710115200)
-        val date = instant.toHijrahDate(TimeZone.UTC)
-        date.year shouldBe 1445
-        date.month.number shouldBe 9
-        date.day shouldBe 1
     }
 
     @Test

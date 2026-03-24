@@ -3,7 +3,14 @@
 package com.abdulrahman_b.hijrahdatetime
 
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateComponentsSerializer
-import kotlinx.datetime.*
+import kotlinx.datetime.DatePeriod
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.isoDayNumber
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
 
@@ -49,9 +56,6 @@ expect class HijrahDate(year: Int, month: Int, dayOfMonth: Int) : Comparable<Hij
     }
 
 }
-
-fun Instant.toHijrahDate(timeZone: TimeZone = TimeZone.currentSystemDefault()): HijrahDate =
-    toLocalDateTime(timeZone).toHijrahDateTime().date
 
 
 fun LocalDate.toHijrahDate(): HijrahDate = HijrahDate.fromEpochDays(toEpochDays())

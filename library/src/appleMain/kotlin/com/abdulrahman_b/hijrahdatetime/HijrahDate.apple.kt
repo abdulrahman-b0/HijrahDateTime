@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
 import platform.Foundation.NSCalendar
 import platform.Foundation.NSCalendarIdentifierIslamicUmmAlQura
 import platform.Foundation.NSCalendarUnitDay
+import platform.Foundation.NSCalendarUnitDayOfYear
 import platform.Foundation.NSCalendarUnitEra
 import platform.Foundation.NSCalendarUnitMonth
 import platform.Foundation.NSCalendarUnitYear
@@ -24,25 +25,48 @@ import platform.Foundation.timeZoneWithName
 @Suppress("unused")
 @Serializable(with = HijrahDateComponentsSerializer::class)
 actual class HijrahDate private constructor(
-    override val nsCalendar: NSCalendar,
-    override val nsDate: NSDate,
-    skipValidation: Boolean //Internal flag to avoid infinite recursion in init block check.
-): Comparable<HijrahDate>, ComponentAccessors.DateBased {
+    private val nsCalendar: NSCalendar,
+    private val nsDate: NSDate,
+    skipValidation: Boolean = false //Internal flag to avoid infinite recursion in init block check.
+): Comparable<HijrahDate> {
+
+    actual val year = nsCalendar.component(NSCalendarUnitYear, nsDate).toInt()
+    actual val month = HijrahMonth.of(nsCalendar.component(NSCalendarUnitMonth, nsDate).toInt())
+    actual val day = nsCalendar.component(NSCalendarUnitDay, nsDate).toInt()
+    actual val dayOfWeek = getDayOfWeak(nsCalendar, nsDate)
+    actual val dayOfYear = nsCalendar.component(NSCalendarUnitDayOfYear, nsDate).toInt()
 
     init {
         @Suppress("ConvertTwoComparisonsToRangeCheck") //It shouldn't, it causes recursive calls because the range class is constructing HijrahDate internally.
         if (!skipValidation && (this < MIN || this > MAX)) {
             throw IllegalArgumentException(
-                "HijrahDate is out of range. Valid range is from ${MIN.format(HijrahDateTimeFormats.DATE_ISO)} to ${MAX.format(HijrahDateTimeFormats.DATE_ISO)}"
+                "HijrahDate is out of range. Valid range is from ${MIN.format(HijrahDateTimeFormats.DATE_ISO)} to ${
+                    MAX.format(
+                        HijrahDateTimeFormats.DATE_ISO
+                    )
+                }"
             )
         }
     }
-    actual constructor(year: Int, month: Int, dayOfMonth: Int): this(createDate(year, month, dayOfMonth), skipValidation = false)
 
-    private constructor(year: Int, month: Int, dayOfMonth: Int, skipValidation: Boolean): this(createDate(year, month, dayOfMonth), skipValidation = skipValidation)
-    private constructor(calendarDatePair: Pair<NSCalendar, NSDate>, skipValidation: Boolean): this(calendarDatePair.first, calendarDatePair.second, skipValidation)
+    actual constructor(year: Int, month: Int, dayOfMonth: Int) : this(
+        createDate(
+            year,
+            month,
+            dayOfMonth
+        ), skipValidation = false
+    )
 
-    constructor(calendar: NSCalendar, date: NSDate): this(calendar, date, skipValidation = false)
+    private constructor(year: Int, month: Int, dayOfMonth: Int, skipValidation: Boolean) : this(
+        createDate(year, month, dayOfMonth),
+        skipValidation = skipValidation
+    )
+
+    private constructor(calendarDatePair: Pair<NSCalendar, NSDate>, skipValidation: Boolean) : this(
+        calendarDatePair.first,
+        calendarDatePair.second,
+        skipValidation
+    )
 
     actual override fun compareTo(other: HijrahDate): Int =
         nsDate.compare(other.nsDate).toInt()
@@ -50,8 +74,8 @@ actual class HijrahDate private constructor(
     actual operator fun plus(period: DatePeriod): HijrahDate {
         return try {
             HijrahDate(
-                calendar = nsCalendar,
-                date = nsCalendar.dateByAddingComponents(period.toNSDateComponents(), nsDate, 0UL)
+                nsCalendar = nsCalendar,
+                nsDate = nsCalendar.dateByAddingComponents(period.toNSDateComponents(), nsDate, 0UL)
                     ?: throw DateTimeArithmeticException("Invalid date after addition: $period")
             )
         } catch (e: IllegalArgumentException) {
@@ -62,8 +86,12 @@ actual class HijrahDate private constructor(
     actual operator fun minus(period: DatePeriod): HijrahDate {
         return try {
             HijrahDate(
-                calendar = nsCalendar,
-                date = nsCalendar.dateByAddingComponents(period.toNSDateComponents(-1), nsDate, 0UL)
+                nsCalendar = nsCalendar,
+                nsDate = nsCalendar.dateByAddingComponents(
+                    period.toNSDateComponents(-1),
+                    nsDate,
+                    0UL
+                )
                     ?: throw DateTimeArithmeticException("Invalid date after subtraction: $period")
             )
         } catch (e: IllegalArgumentException) {
@@ -73,8 +101,11 @@ actual class HijrahDate private constructor(
 
 
     actual fun plus(value: Int, unit: DateTimeUnit.DateBased): HijrahDate {
-        val newDate = nsCalendar.dateByAddingComponents(unit.toNSDateComponents(value.toLong()), nsDate, options = 0UL) ?:
-            throw DateTimeArithmeticException("Invalid date after addition: $value $unit")
+        val newDate = nsCalendar.dateByAddingComponents(
+            unit.toNSDateComponents(value.toLong()),
+            nsDate,
+            options = 0UL
+        ) ?: throw DateTimeArithmeticException("Invalid date after addition: $value $unit")
         return try {
             HijrahDate(nsCalendar, newDate)
         } catch (e: IllegalArgumentException) {
@@ -83,9 +114,10 @@ actual class HijrahDate private constructor(
     }
 
     actual fun minus(value: Int, unit: DateTimeUnit.DateBased): HijrahDate {
-        val newDate = nsCalendar.dateByAddingComponents(unit.toNSDateComponents(-value.toLong()),
-            nsDate, options = 0UL) ?:
-                throw DateTimeArithmeticException("Invalid date after subtraction: $value $unit")
+        val newDate = nsCalendar.dateByAddingComponents(
+            unit.toNSDateComponents(-value.toLong()),
+            nsDate, options = 0UL
+        ) ?: throw DateTimeArithmeticException("Invalid date after subtraction: $value $unit")
         return try {
             HijrahDate(nsCalendar, newDate)
         } catch (e: IllegalArgumentException) {
@@ -122,7 +154,9 @@ actual class HijrahDate private constructor(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is HijrahDate) return false
-        return this.toEpochDays() == other.toEpochDays()
+        return year == other.year &&
+                month.number == other.month.number &&
+                day == other.day
     }
 
     override fun hashCode(): Int = this.toEpochDays().hashCode()
@@ -139,7 +173,10 @@ actual class HijrahDate private constructor(
         }
         nsCalendar.rangeOfUnit(smaller = nsUnit, inUnit = inUnit, forDate = nsDate).let { range ->
             range.useContents {
-                return ValueRange(minimum = location.toLong(), maximum = (location + length - 1u).toLong())
+                return ValueRange(
+                    minimum = location.toLong(),
+                    maximum = (location + length - 1u).toLong()
+                )
             }
         }
     }
@@ -149,8 +186,8 @@ actual class HijrahDate private constructor(
             string: String,
             format: HijrahDateTimeFormat,
         ): HijrahDate {
-            return parseOrNull(string, format) ?:
-                throw IllegalArgumentException("Could not parse `HijrahDate` from '$string' using the date format of '${format.nsFormatter.dateFormat}'")
+            return parseOrNull(string, format)
+                ?: throw IllegalArgumentException("Could not parse `HijrahDate` from '$string' using the date format of '${format.nsFormatter.dateFormat}'")
         }
 
         actual fun parseOrNull(
@@ -159,7 +196,7 @@ actual class HijrahDate private constructor(
         ): HijrahDate? {
             format.nsFormatter.calendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
             return format.nsFormatter.dateFromString(string)?.let { nSDate ->
-                HijrahDate(calendar = format.nsFormatter.calendar, date = nSDate)
+                HijrahDate(nsCalendar = format.nsFormatter.calendar, nsDate = nSDate)
             }
         }
 
@@ -189,8 +226,8 @@ actual class HijrahDate private constructor(
             nsCalendar.timeZone = NSTimeZone.timeZoneWithName("UTC")!!
 
             // 2. Create the date at midnight UTC
-            val seconds = epochDay * 86400
-            val nsDate = NSDate.dateWithTimeIntervalSince1970(seconds.toDouble())
+            val seconds = epochDay * SECONDS_PER_DAY
+            val nsDate = NSDate.dateWithTimeIntervalSince1970(seconds)
 
             // 3. "Normalize" the date to ensure we are at the start of the day
             // This removes any subtle timezone rounding errors
