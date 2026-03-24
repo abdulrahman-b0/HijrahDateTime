@@ -118,7 +118,7 @@ class HijrahDateTimeTest {
 
     @OptIn(ExperimentalTime::class)
     @Test
-    fun `test instant conversion`() {
+    fun `test instant conversion with fixed epoch seconds`() {
         val instant = Instant.fromEpochSeconds(1710115200)
 
         //Time zone is UTC
@@ -142,6 +142,35 @@ class HijrahDateTimeTest {
         assertEquals(29, nyDt.day)
         nyDt.hour shouldBeInRange  19..20
 
+    }
+
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun `test instant conversion with variable epoch seconds`() {
+        val instant = HijrahDate(1445, 10, 6).atStartOfDay(TimeZone.UTC)
+        var dt = instant.toHijrahDateTime(TimeZone.UTC)
+        assertEquals(dt.year, 1445)
+        assertEquals(dt.date.year, 1445)
+        assertEquals(dt.month.number, 10)
+        assertEquals(dt.date.month.number, 10)
+        assertEquals(dt.date.day, 6)
+        assertEquals(dt.day, 6)
+
+        dt = instant.toHijrahDateTime(TimeZone.of("Asia/Riyadh"))
+        assertEquals(dt.year, 1445)
+        assertEquals(dt.date.year, 1445)
+        assertEquals(dt.month.number, 10)
+        assertEquals(dt.date.month.number, 10)
+        assertEquals(dt.date.day, 6)
+        assertEquals(dt.day, 6)
+
+        dt = instant.toHijrahDateTime(TimeZone.of("America/New_York"))
+        assertEquals(dt.year, 1445)
+        assertEquals(dt.date.year, 1445)
+        assertEquals(dt.month.number, 10)
+        assertEquals(dt.date.month.number, 10)
+        assertEquals(dt.date.day, 5)
+        assertEquals(dt.day, 5)
     }
 
     @Test
