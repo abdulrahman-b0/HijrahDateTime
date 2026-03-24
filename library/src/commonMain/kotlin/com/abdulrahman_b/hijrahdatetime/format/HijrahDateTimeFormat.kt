@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package com.abdulrahman_b.hijrahdatetime.format
 
 import com.abdulrahman_b.hijrahdatetime.FormatLocale
