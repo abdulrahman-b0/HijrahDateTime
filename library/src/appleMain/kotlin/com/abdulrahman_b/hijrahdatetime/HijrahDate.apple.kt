@@ -26,7 +26,7 @@ import platform.Foundation.timeZoneWithName
 
 @Suppress("unused")
 @Serializable(with = HijrahDateComponentsSerializer::class)
-actual class HijrahDate private constructor(
+actual class HijrahDate internal constructor(
     internal val nsCalendar: NSCalendar,
     internal val nsDate: NSDate,
     skipValidation: Boolean = false //Internal flag to avoid infinite recursion in init block check.
