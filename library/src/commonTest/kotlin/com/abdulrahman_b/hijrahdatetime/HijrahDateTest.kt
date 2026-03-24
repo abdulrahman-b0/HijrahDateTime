@@ -14,8 +14,10 @@ import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.FixedOffsetTimeZone
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.Month
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.UtcOffset
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 
 class HijrahDateTest {
 
@@ -104,7 +106,7 @@ class HijrahDateTest {
     }
 
     @Test
-    fun `test to epoch days`() {
+    fun `test to epoch days with Fixed date`() {
         // 1446-01-01 AH is 2024-07-07 ISO. 
         // Epoch days for 2024-07-07 is 19911
         val date = HijrahDate(1446, 1, 1)
@@ -114,6 +116,23 @@ class HijrahDateTest {
         dateFromEpoch.year shouldBe 1446
         dateFromEpoch.month.number shouldBe 1
         dateFromEpoch.day shouldBe 1
+    }
+
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun `test to epoch days with instant-driven date`() {
+        val instant = HijrahDate(1446, 1, 1).atStartOfDay(TimeZone.UTC)
+
+        var date = instant.toHijrahDateTime(TimeZone.UTC).date
+        date.toEpochDays() shouldBe 19911
+
+        //Positive offset
+        date = instant.toHijrahDateTime(TimeZone.of("Asia/Riyadh")).date
+        date.toEpochDays() shouldBe 19911
+
+        //Negative offset
+        date = instant.toHijrahDateTime(TimeZone.of("America/New_York")).date //The actual date here is 1445-12-30 or 1446-12-29 since New York is 4-5 hours behind UTC
+        date.toEpochDays() shouldBe 19910
     }
 
     @Test
@@ -249,6 +268,7 @@ class HijrahDateTest {
         monthRange.maximum shouldBe 12
     }
 
+    @OptIn(ExperimentalTime::class)
     @Test
     fun `test atTime and atStartOfDay`() {
         val date = HijrahDate(1445, 9, 1)
