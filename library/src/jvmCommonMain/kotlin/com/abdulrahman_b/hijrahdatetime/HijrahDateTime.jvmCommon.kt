@@ -2,8 +2,16 @@
 
 package com.abdulrahman_b.hijrahdatetime
 
+import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormat
+import com.abdulrahman_b.hijrahdatetime.format.javaFormatter
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateTimeComponentsSerializer
-import kotlinx.datetime.*
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.FixedOffsetTimeZone
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toJavaZoneOffset
+import kotlinx.datetime.toKotlinLocalDateTime
+import kotlinx.datetime.toKotlinLocalTime
 import kotlinx.serialization.Serializable
 import java.time.DateTimeException
 import java.time.LocalTime
@@ -11,6 +19,7 @@ import java.time.chrono.ChronoLocalDateTime
 import java.time.chrono.HijrahChronology
 import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoField
+import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlin.time.toKotlinInstant
 import java.time.chrono.HijrahDate as JavaHijrahDate
@@ -54,6 +63,7 @@ actual class HijrahDateTime(
     actual fun format(format: HijrahDateTimeFormat): String =
         format.javaFormatter.withChronology(HijrahChronology.INSTANCE).format(javaDatetime)
 
+    @OptIn(ExperimentalTime::class)
     actual fun toInstant(timeZone: FixedOffsetTimeZone): Instant {
         return javaDatetime.toInstant(timeZone.toJavaZoneOffset()).toKotlinInstant()
     }

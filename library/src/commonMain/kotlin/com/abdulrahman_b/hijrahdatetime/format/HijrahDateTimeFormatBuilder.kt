@@ -1,20 +1,10 @@
 @file:Suppress("unused")
-package com.abdulrahman_b.hijrahdatetime
 
+package com.abdulrahman_b.hijrahdatetime.format
+
+import com.abdulrahman_b.hijrahdatetime.DecimalStyle
+import com.abdulrahman_b.hijrahdatetime.FormatLocale
 import kotlinx.datetime.format.Padding
-
-expect class HijrahDateTimeFormat {
-
-
-    companion object {
-        fun ofPattern(
-            pattern: String,
-            locale: FormatLocale = FormatLocales.English
-        ): HijrahDateTimeFormat
-
-    }
-
-}
 
 expect class HijrahDateTimeFormatBuilder() {
 
@@ -38,14 +28,12 @@ expect class HijrahDateTimeFormatBuilder() {
     fun chars(chars: String)
     fun byUnicodePattern(pattern: String)
     fun zoneOffset()
-    fun build(): HijrahDateTimeFormat
 
 }
+
+expect fun HijrahDateTimeFormatBuilder.build(): HijrahDateTimeFormat
 
 fun buildDateTimeFormat(block: HijrahDateTimeFormatBuilder.() -> Unit): HijrahDateTimeFormat {
     return HijrahDateTimeFormatBuilder().apply(block).build()
 }
 
-enum class NameStyle {
-    FULL, ABBREVIATED
-}

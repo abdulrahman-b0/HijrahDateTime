@@ -1,26 +1,19 @@
-package com.abdulrahman_b.hijrahdatetime
+package com.abdulrahman_b.hijrahdatetime.format
 
+import com.abdulrahman_b.hijrahdatetime.DecimalStyle
+import com.abdulrahman_b.hijrahdatetime.FormatLocale
+import com.abdulrahman_b.hijrahdatetime.FormatLocales
+import com.abdulrahman_b.hijrahdatetime.toJavaTextStyle
 import kotlinx.datetime.format.Padding
-import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.time.format.SignStyle
 import java.time.temporal.ChronoField
 
-actual class HijrahDateTimeFormat(val javaFormatter: DateTimeFormatter) {
-
-    actual companion object {
-
-        actual fun ofPattern(
-            pattern: String,
-            locale: FormatLocale
-        ): HijrahDateTimeFormat = HijrahDateTimeFormat(DateTimeFormatter.ofPattern(pattern, locale))
-    }
-}
 
 @Suppress("unused")
 actual class HijrahDateTimeFormatBuilder {
 
-    private val builder = DateTimeFormatterBuilder()
+    internal val builder = DateTimeFormatterBuilder()
 
     actual var locale: FormatLocale = FormatLocales.English
 
@@ -62,13 +55,6 @@ actual class HijrahDateTimeFormatBuilder {
         builder.appendPattern(pattern)
     }
 
-    actual fun build(): HijrahDateTimeFormat {
-        return HijrahDateTimeFormat(
-            builder
-                .toFormatter(locale)
-                .withDecimalStyle(decimalStyle.toJavaDecimalStyle())
-        )
-    }
 
     actual fun zoneOffset() {
         builder.appendOffsetId()

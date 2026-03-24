@@ -2,6 +2,7 @@
 
 package com.abdulrahman_b.hijrahdatetime
 
+import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormat
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateComponentsSerializer
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.DateTimeUnit
@@ -12,6 +13,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.isoDayNumber
 import kotlinx.serialization.Serializable
+import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 @Serializable(with = HijrahDateComponentsSerializer::class)
@@ -74,6 +76,7 @@ infix fun HijrahDate.minusYears(value: Int) = minus(value, DateTimeUnit.YEAR)
 fun HijrahDate.atTime(time: LocalTime): HijrahDateTime =
     HijrahDateTime.of(this, time)
 
+@OptIn(ExperimentalTime::class)
 fun HijrahDate.atStartOfDay(timeZone: TimeZone): Instant = toLocalDate().atStartOfDayIn(timeZone)
 
 fun HijrahDate.with(value: Int, unit: DateTimeUnit.DateBased): HijrahDate {
@@ -121,7 +124,8 @@ fun HijrahDate.withLastDayOfMonth(): HijrahDate {
 
 operator fun HijrahDate.rangeTo(other: HijrahDate): HijrahDateRange = HijrahDateRange(this, other)
 
-operator fun HijrahDate.rangeUntil(other: HijrahDate): HijrahDateRange = HijrahDateRange(this, other.minusDays(1))
+operator fun HijrahDate.rangeUntil(other: HijrahDate): HijrahDateRange =
+    HijrahDateRange(this, other.minusDays(1))
 
 infix fun HijrahDate.downTo(other: HijrahDate): HijrahDateProgression {
     require(this <= other) { "$this should be less than or equal to $other" }

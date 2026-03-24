@@ -1,5 +1,7 @@
 package com.abdulrahman_b.hijrahdatetime
 
+import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormat
+import com.abdulrahman_b.hijrahdatetime.format.javaFormatter
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateComponentsSerializer
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.DateTimeArithmeticException
@@ -16,7 +18,7 @@ import java.time.temporal.TemporalAdjusters
 import java.time.chrono.HijrahDate as JavaHijrahDate
 
 @Serializable(with = HijrahDateComponentsSerializer::class)
-actual class HijrahDate internal constructor(private val javaDate: JavaHijrahDate) : Comparable<HijrahDate> {
+actual class HijrahDate internal constructor(internal val javaDate: JavaHijrahDate) : Comparable<HijrahDate> {
 
     actual val year get() = javaDate.get(ChronoField.YEAR)
     actual val month get() = HijrahMonth.of(javaDate.get(ChronoField.MONTH_OF_YEAR))
@@ -80,9 +82,9 @@ actual class HijrahDate internal constructor(private val javaDate: JavaHijrahDat
 
     fun toJavaHijrahDate(): JavaHijrahDate = javaDate
 
-    actual fun format(format: HijrahDateTimeFormat): String =
-        format.javaFormatter.withChronology(javaDate.chronology).format(javaDate)
-
+    actual fun format(format: HijrahDateTimeFormat): String {
+        return format.javaFormatter.format(javaDate)
+    }
 
     actual fun range(unit: DateTimeUnit.DateBased): ValueRange {
         val field = unit.asJavaTemporalField()

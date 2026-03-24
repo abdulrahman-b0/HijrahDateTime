@@ -1,26 +1,14 @@
-package com.abdulrahman_b.hijrahdatetime
+package com.abdulrahman_b.hijrahdatetime.format
 
+import com.abdulrahman_b.hijrahdatetime.DecimalStyle
+import com.abdulrahman_b.hijrahdatetime.FormatLocale
+import com.abdulrahman_b.hijrahdatetime.FormatLocales
 import kotlinx.datetime.format.Padding
 import platform.Foundation.NSDateFormatter
 
-actual class HijrahDateTimeFormat(val nsFormatter: NSDateFormatter) {
-    actual companion object {
-        actual fun ofPattern(
-            pattern: String,
-            locale: FormatLocale
-        ): HijrahDateTimeFormat {
-            val formatter = NSDateFormatter().apply {
-                this.dateFormat = pattern
-                this.locale = locale
-            }
-            return HijrahDateTimeFormat(formatter)
-        }
-    }
-}
-
 @Suppress("unused")
 actual class HijrahDateTimeFormatBuilder {
-    private val pattern = StringBuilder()
+    internal val pattern = StringBuilder()
 
     actual var locale: FormatLocale = FormatLocales.English
     actual var decimalStyle: DecimalStyle = DecimalStyle.Standard
@@ -61,15 +49,6 @@ actual class HijrahDateTimeFormatBuilder {
         this.pattern.append(pattern)
     }
 
-    actual fun build(): HijrahDateTimeFormat {
-        val formatter = NSDateFormatter().apply {
-            this.dateFormat = pattern.toString()
-            this.locale = this@HijrahDateTimeFormatBuilder.locale
-            // NSDateFormatter uses the locale's numbering system by default.
-            // If you need to force a specific DecimalStyle, you'd configure the formatter.numberFormatter here.
-        }
-        return HijrahDateTimeFormat(formatter)
-    }
 
     actual fun zoneOffset() {
         this.pattern.append("ZZZZZ")
@@ -101,4 +80,15 @@ actual class HijrahDateTimeFormatBuilder {
     actual fun amPm() {
         pattern.append("a")
     }
+}
+
+actual fun HijrahDateTimeFormatBuilder.build(): HijrahDateTimeFormat {
+    val builderLocale = this.locale
+    val formatter = NSDateFormatter().apply {
+        this.dateFormat = pattern.toString()
+        this.locale = builderLocale
+        // NSDateFormatter uses the locale's numbering system by default.
+        // If you need to force a specific DecimalStyle, you'd configure the formatter.numberFormatter here.
+    }
+    return HijrahDateTimeFormat(formatter)
 }

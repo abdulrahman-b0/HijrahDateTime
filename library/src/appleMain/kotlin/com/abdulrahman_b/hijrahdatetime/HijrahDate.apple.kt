@@ -1,5 +1,7 @@
 package com.abdulrahman_b.hijrahdatetime
 
+import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormat
+import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormats
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateComponentsSerializer
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
@@ -25,8 +27,8 @@ import platform.Foundation.timeZoneWithName
 @Suppress("unused")
 @Serializable(with = HijrahDateComponentsSerializer::class)
 actual class HijrahDate private constructor(
-    private val nsCalendar: NSCalendar,
-    private val nsDate: NSDate,
+    internal val nsCalendar: NSCalendar,
+    internal val nsDate: NSDate,
     skipValidation: Boolean = false //Internal flag to avoid infinite recursion in init block check.
 ): Comparable<HijrahDate> {
 

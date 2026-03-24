@@ -1,8 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.util.*
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.vanniktechMavenPublish)
 }
@@ -13,6 +14,21 @@ kotlin {
         freeCompilerArgs.add("-XcontextParameters")
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
+
+    android {
+        namespace = "com.abdulrahman_b.hijrahdatetime"
+        compileSdk = 36
+        minSdk = 26
+
+        aarMetadata {
+            minCompileSdk = 26
+        }
+
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
+
     jvm {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
@@ -31,17 +47,30 @@ kotlin {
     }
 
     sourceSets {
+
+        applyDefaultHierarchyTemplate()
+
         commonMain.dependencies {
             implementation(libs.kotlin.datetime)
             implementation(libs.kotlin.serialization.json)
         }
-
-        jvmMain
-
         commonTest.dependencies {
             implementation(libs.kotlin.test)
             implementation(libs.kotest.assertions.core)
         }
+
+
+        val jvmCommonMain by creating {
+            dependsOn(commonMain.get())
+            dependencies {
+                implementation(libs.kotlin.datetime.jvm)
+            }
+        }
+
+        jvmMain.get().dependsOn(jvmCommonMain)
+        androidMain.get().dependsOn(jvmCommonMain)
+
+
     }
 }
 

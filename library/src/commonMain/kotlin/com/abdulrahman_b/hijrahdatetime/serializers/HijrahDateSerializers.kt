@@ -1,7 +1,7 @@
 package com.abdulrahman_b.hijrahdatetime.serializers
 
 import com.abdulrahman_b.hijrahdatetime.HijrahDate
-import com.abdulrahman_b.hijrahdatetime.HijrahDateTimeFormat
+import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormat
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateComponentsSerializer.descriptor
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind

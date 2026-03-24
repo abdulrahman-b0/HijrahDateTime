@@ -8,7 +8,7 @@ HijrahDateTime is a Kotlin Multiplatform library for working with the Hijrah cal
 
 Starting from version 2.0, this library has been rewritten as a Kotlin Multiplatform project, moving away from the previous `java.time`-only implementation to support a wider range of targets.
 
-> **Experimental / Alpha Notice (2.0.0-alpha02)**
+> **Experimental / Alpha Notice (2.0.0-alpha03)**
 >
 > This release is experimental and provided "as-is". It is published to Maven Central for early access and feedback.
 > The API surface and behavior may change without notice, and edge cases are expected.
@@ -31,6 +31,7 @@ Starting from version 2.0, this library has been rewritten as a Kotlin Multiplat
 ## Supported Platforms
 
 - **JVM** (JDK 11+)
+- **Android** (API 26+, JDK 11+)
 - **iOS** (Arm64, Simulator Arm64)
 - **macOS** (Arm64)
 
@@ -48,7 +49,7 @@ Add the dependency to your `commonMain` source set:
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.abdulrahman-b.hijrahdatetime:hijrahdatetime:2.0.0-alpha02")
+            implementation("com.abdulrahman-b.hijrahdatetime:hijrahdatetime:2.0.0-alpha03")
         }
     }
 }

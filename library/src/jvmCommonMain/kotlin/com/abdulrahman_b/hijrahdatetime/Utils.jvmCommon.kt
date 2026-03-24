@@ -1,6 +1,9 @@
 @file:Suppress("unused")
 package com.abdulrahman_b.hijrahdatetime
 
+import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormat
+import com.abdulrahman_b.hijrahdatetime.format.NameStyle
+import com.abdulrahman_b.hijrahdatetime.format.javaFormatter
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalTime
@@ -17,6 +20,7 @@ import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalField
 import java.time.temporal.TemporalUnit
+import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlin.time.toKotlinInstant
 
@@ -71,6 +75,7 @@ actual fun DayOfWeek.getDisplayName(
     locale: FormatLocale
 ): String = toJavaDayOfWeek().getDisplayName(nameStyle.toJavaTextStyle(), locale)
 
+@OptIn(ExperimentalTime::class)
 actual fun Instant.Companion.parseHijriOrNull(value: String): Instant? {
     return try {
         parseHijri(value)

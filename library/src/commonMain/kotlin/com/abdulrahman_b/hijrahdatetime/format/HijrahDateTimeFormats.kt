@@ -1,5 +1,10 @@
 @file:Suppress("unused")
-package com.abdulrahman_b.hijrahdatetime
+
+package com.abdulrahman_b.hijrahdatetime.format
+
+import com.abdulrahman_b.hijrahdatetime.DecimalStyle
+import com.abdulrahman_b.hijrahdatetime.FormatLocale
+import com.abdulrahman_b.hijrahdatetime.FormatLocales
 
 object HijrahDateTimeFormats {
 
