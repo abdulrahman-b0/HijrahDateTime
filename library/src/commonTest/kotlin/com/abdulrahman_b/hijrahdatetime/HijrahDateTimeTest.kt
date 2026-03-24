@@ -14,6 +14,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -60,17 +61,27 @@ class HijrahDateTimeTest {
     }
 
     @Test
-    fun `test pure date quality`() {
-        val dt1 = HijrahDateTime(1445, 9, 1, 10, 0, 0, 0)
-        val d1 = HijrahDate(1445, 9, 1)
+    fun `test pure date quality with local timezone`() {
+        var dt = HijrahDateTime(1445, 9, 1, 10, 0, 0, 0)
+        var d = HijrahDate(1445, 9, 1)
 
-        println(dt1.date.toEpochDays())
-        println(d1.toEpochDays())
-        dt1.date shouldBeEqual d1
+        println(dt.date.toEpochDays())
+        println(d.toEpochDays())
+        dt.date shouldBeEqual d
 
-        val dt2 = HijrahDateTime(1445, 9, 2, 0, 0, 0, 0)
-        val d2 = HijrahDate(1445, 9, 2)
-        dt2.date shouldBeEqual d2
+        dt = HijrahDateTime(1445, 9, 2, 0, 0, 0, 0)
+        d = HijrahDate(1445, 9, 2)
+        dt.date shouldBeEqual d
+    }
+
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun `test date property is equal to the individual values`() {
+        val dt = Clock.System.now().toHijrahDateTime(TimeZone.UTC)
+        val date = dt.date
+        assertEquals(dt.year, date.year)
+        assertEquals(dt.month.number, date.month.number)
+        assertEquals(dt.day, date.day)
     }
 
     @OptIn(ExperimentalTime::class)
