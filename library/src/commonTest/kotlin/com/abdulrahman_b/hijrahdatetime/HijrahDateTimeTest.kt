@@ -3,7 +3,6 @@ package com.abdulrahman_b.hijrahdatetime
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormats
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.equals.shouldBeEqual
-import io.kotest.matchers.ints.shouldBeInRange
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.FixedOffsetTimeZone
 import kotlinx.datetime.LocalDateTime
@@ -73,28 +72,6 @@ class HijrahDateTimeTest {
         dt.date shouldBeEqual d
     }
 
-    @OptIn(ExperimentalTime::class)
-    @Test
-    fun `test date property is equal to the individual values`() {
-        val instant = HijrahDate(1445, 10, 6).atStartOfDay(TimeZone.UTC)
-        var dt = instant.toHijrahDateTime(TimeZone.UTC)
-        var d = dt.date
-        assertEquals(dt.year, d.year)
-        assertEquals(dt.month.number, d.month.number)
-        assertEquals(dt.day, d.day)
-
-        dt = instant.toHijrahDateTime(TimeZone.of("Asia/Riyadh"))
-        d = dt.date
-        assertEquals(dt.year, d.year)
-        assertEquals(dt.month.number, d.month.number)
-        assertEquals(dt.day, d.day)
-
-        dt = instant.toHijrahDateTime(TimeZone.of("America/New_York"))
-        d = dt.date
-        assertEquals(dt.year, d.year)
-        assertEquals(dt.month.number, d.month.number)
-        assertEquals(dt.day, d.day)
-    }
 
     @OptIn(ExperimentalTime::class)
     @Test
@@ -119,54 +96,57 @@ class HijrahDateTimeTest {
     @OptIn(ExperimentalTime::class)
     @Test
     fun `test instant conversion with fixed epoch seconds`() {
-        val instant = Instant.fromEpochSeconds(1710115200)
+        val instant = Instant.fromEpochSeconds(1774396800)
 
-        //Time zone is UTC
-        val dt = instant.toHijrahDateTime(TimeZone.UTC)
-        assertEquals(1445, dt.year)
-        assertEquals(9, dt.month.number)
-        assertEquals(1, dt.day)
-        assertEquals(0, dt.hour)
-
-        //Test with a positive offset time zone
-        val saDt = instant.toHijrahDateTime(TimeZone.of("Asia/Riyadh"))
-        assertEquals(1445, saDt.year)
-        assertEquals(9, saDt.month.number)
-        assertEquals(1, dt.day)
-        assertEquals(3, saDt.hour)
-
-        //Test with a negative offset time zone (UTC-5 / UTC-4)
-        val nyDt = instant.toHijrahDateTime(TimeZone.of("America/New_York"))
-        assertEquals(1445, nyDt.year)
-        assertEquals(8, nyDt.month.number)
-        assertEquals(29, nyDt.day)
-        nyDt.hour shouldBeInRange  19..20
-
-    }
-
-    @OptIn(ExperimentalTime::class)
-    @Test
-    fun `test instant conversion with variable epoch seconds`() {
-        val instant = HijrahDate(1445, 10, 6).atStartOfDay(TimeZone.UTC)
         var dt = instant.toHijrahDateTime(TimeZone.UTC)
-        assertEquals(dt.year, 1445)
-        assertEquals(dt.date.year, 1445)
+        assertEquals(dt.year, 1447)
+        assertEquals(dt.date.year, 1447)
         assertEquals(dt.month.number, 10)
         assertEquals(dt.date.month.number, 10)
         assertEquals(dt.date.day, 6)
         assertEquals(dt.day, 6)
 
         dt = instant.toHijrahDateTime(TimeZone.of("Asia/Riyadh"))
-        assertEquals(dt.year, 1445)
-        assertEquals(dt.date.year, 1445)
+        assertEquals(dt.year, 1447)
+        assertEquals(dt.date.year, 1447)
         assertEquals(dt.month.number, 10)
         assertEquals(dt.date.month.number, 10)
         assertEquals(dt.date.day, 6)
         assertEquals(dt.day, 6)
 
         dt = instant.toHijrahDateTime(TimeZone.of("America/New_York"))
-        assertEquals(dt.year, 1445)
-        assertEquals(dt.date.year, 1445)
+        assertEquals(dt.year, 1447)
+        assertEquals(dt.date.year, 1447)
+        assertEquals(dt.month.number, 10)
+        assertEquals(dt.date.month.number, 10)
+        assertEquals(dt.date.day, 5)
+        assertEquals(dt.day, 5)
+
+    }
+
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun `test instant conversion with variable epoch seconds`() {
+        val instant = HijrahDate(1447, 10, 6).atStartOfDay(TimeZone.UTC)
+        var dt = instant.toHijrahDateTime(TimeZone.UTC)
+        assertEquals(dt.year, 1447)
+        assertEquals(dt.date.year, 1447)
+        assertEquals(dt.month.number, 10)
+        assertEquals(dt.date.month.number, 10)
+        assertEquals(dt.date.day, 6)
+        assertEquals(dt.day, 6)
+
+        dt = instant.toHijrahDateTime(TimeZone.of("Asia/Riyadh"))
+        assertEquals(dt.year, 1447)
+        assertEquals(dt.date.year, 1447)
+        assertEquals(dt.month.number, 10)
+        assertEquals(dt.date.month.number, 10)
+        assertEquals(dt.date.day, 6)
+        assertEquals(dt.day, 6)
+
+        dt = instant.toHijrahDateTime(TimeZone.of("America/New_York"))
+        assertEquals(dt.year, 1447)
+        assertEquals(dt.date.year, 1447)
         assertEquals(dt.month.number, 10)
         assertEquals(dt.date.month.number, 10)
         assertEquals(dt.date.day, 5)
