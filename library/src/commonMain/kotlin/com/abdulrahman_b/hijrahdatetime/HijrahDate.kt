@@ -13,7 +13,6 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.isoDayNumber
 import kotlinx.serialization.Serializable
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 @Serializable(with = HijrahDateComponentsSerializer::class)
@@ -76,7 +75,6 @@ infix fun HijrahDate.minusYears(value: Int) = minus(value, DateTimeUnit.YEAR)
 fun HijrahDate.atTime(time: LocalTime): HijrahDateTime =
     HijrahDateTime.of(this, time)
 
-@OptIn(ExperimentalTime::class)
 fun HijrahDate.atStartOfDay(timeZone: TimeZone): Instant = toLocalDate().atStartOfDayIn(timeZone)
 
 fun HijrahDate.with(value: Int, unit: DateTimeUnit.DateBased): HijrahDate {

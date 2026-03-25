@@ -29,7 +29,6 @@ import platform.Foundation.NSDateComponents
 import platform.Foundation.NSTimeZone
 import platform.Foundation.compare
 import platform.Foundation.timeZoneWithAbbreviation
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 @Serializable(with = HijrahDateTimeComponentsSerializer::class)
@@ -88,7 +87,6 @@ actual class HijrahDateTime(
     actual override operator fun compareTo(other: HijrahDateTime): Int =
         nsDate.compare(other.nsDate).toInt()
 
-    @OptIn(ExperimentalTime::class)
     actual fun toInstant(timeZone: FixedOffsetTimeZone): Instant {
         val tz = timeZone.toNSTimeZone()
         val calendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura).apply {
@@ -205,7 +203,6 @@ actual class HijrahDateTime(
 
 }
 
-@OptIn(ExperimentalTime::class)
 actual fun LocalDateTime.toHijrahDateTime(): HijrahDateTime {
     val nsDate = this.toInstant(TimeZone.currentSystemDefault()).toNSDate()
     val nsCalendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)

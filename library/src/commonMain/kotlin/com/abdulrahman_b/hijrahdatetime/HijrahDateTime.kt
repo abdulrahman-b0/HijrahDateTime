@@ -9,7 +9,6 @@ import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 @Suppress("unused")
@@ -41,7 +40,6 @@ expect class HijrahDateTime(
 
     fun format(format: HijrahDateTimeFormat): String
 
-    @OptIn(ExperimentalTime::class)
     fun toInstant(timeZone: FixedOffsetTimeZone): Instant
 
     fun toLocalDateTime(): LocalDateTime
@@ -53,7 +51,6 @@ expect class HijrahDateTime(
     }
 }
 
-@OptIn(ExperimentalTime::class)
 fun Instant.toHijrahDateTime(timeZone: TimeZone): HijrahDateTime {
     return toLocalDateTime(timeZone).toHijrahDateTime()
 }
