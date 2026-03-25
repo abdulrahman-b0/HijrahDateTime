@@ -1,8 +1,6 @@
 @file:Suppress("unused")
 package com.abdulrahman_b.hijrahdatetime.format
 
-import com.abdulrahman_b.hijrahdatetime.FormatLocale
-import com.abdulrahman_b.hijrahdatetime.FormatLocales
 import java.time.format.DateTimeFormatter
 
 actual class HijrahDateTimeFormat(val javaFormatter: DateTimeFormatter) {

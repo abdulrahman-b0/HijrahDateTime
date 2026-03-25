@@ -1,5 +1,6 @@
 package com.abdulrahman_b.hijrahdatetime
 
+import com.abdulrahman_b.hijrahdatetime.format.FormatLocales
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormat
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormatBuilder
 import com.abdulrahman_b.hijrahdatetime.format.NameStyle

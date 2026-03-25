@@ -1,6 +1,8 @@
 @file:Suppress("unused")
 package com.abdulrahman_b.hijrahdatetime
 
+import com.abdulrahman_b.hijrahdatetime.format.DecimalStyle
+import com.abdulrahman_b.hijrahdatetime.format.FormatLocale
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormat
 import com.abdulrahman_b.hijrahdatetime.format.NameStyle
 import com.abdulrahman_b.hijrahdatetime.format.javaFormatter

@@ -1,7 +1,5 @@
 package com.abdulrahman_b.hijrahdatetime.format
 
-import com.abdulrahman_b.hijrahdatetime.FormatLocale
-import com.abdulrahman_b.hijrahdatetime.FormatLocales
 import platform.Foundation.NSDateFormatter
 
 actual class HijrahDateTimeFormat(val nsFormatter: NSDateFormatter) {

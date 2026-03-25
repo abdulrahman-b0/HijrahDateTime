@@ -1,5 +1,6 @@
 @file:Suppress("unused")
-package com.abdulrahman_b.hijrahdatetime
+
+package com.abdulrahman_b.hijrahdatetime.format
 
 expect class FormatLocale
 

@@ -1,7 +1,6 @@
 package com.abdulrahman_b.hijrahdatetime.format
 
 import android.text.format.DateFormat
-import com.abdulrahman_b.hijrahdatetime.FormatLocale
 import java.time.format.DateTimeFormatter
 
 actual class HijrahDateTimeFormat(val javaFormatter: DateTimeFormatter) {

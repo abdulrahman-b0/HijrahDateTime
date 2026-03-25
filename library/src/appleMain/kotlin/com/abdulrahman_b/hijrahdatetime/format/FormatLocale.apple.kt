@@ -1,4 +1,4 @@
-package com.abdulrahman_b.hijrahdatetime
+package com.abdulrahman_b.hijrahdatetime.format
 
 import platform.Foundation.NSLocale
 import platform.Foundation.currentLocale
