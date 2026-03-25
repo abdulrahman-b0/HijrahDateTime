@@ -22,7 +22,7 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 kotlin-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-vanniktechMavenPublish = { id = "com.vanniktech.maven.publish",  version = "0.35.0"}
+vanniktechMavenPublish = { id = "com.vanniktech.maven.publish",  version = "0.36.0"}
 
 
 [bundles]
