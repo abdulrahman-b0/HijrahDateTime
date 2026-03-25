@@ -5,6 +5,7 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.comparables.shouldBeLessThan
 import io.kotest.matchers.equals.shouldBeEqual
+import io.kotest.matchers.ints.shouldBeInRange
 import io.kotest.matchers.ranges.shouldBeIn
 import io.kotest.matchers.ranges.shouldNotBeIn
 import io.kotest.matchers.shouldBe
@@ -123,16 +124,27 @@ class HijrahDateTest {
     fun `test to epoch days with instant-driven date`() {
         val instant = HijrahDate(1446, 1, 1).atStartOfDay(TimeZone.UTC)
 
-        var date = instant.toHijrahDateTime(TimeZone.UTC).date
-        date.toEpochDays() shouldBe 19911
+        var epochDays = instant.toHijrahDateTime(TimeZone.UTC).date.toEpochDays()
+        var dateFromEpoch = HijrahDate.fromEpochDays(epochDays)
+        epochDays shouldBe 19911
+        dateFromEpoch.year shouldBe 1446
+        dateFromEpoch.month.number shouldBe 1
+        dateFromEpoch.day shouldBe 1
 
         //Positive offset
-        date = instant.toHijrahDateTime(TimeZone.of("Asia/Riyadh")).date
-        date.toEpochDays() shouldBe 19911
+        epochDays = instant.toHijrahDateTime(TimeZone.of("Asia/Riyadh")).date.toEpochDays()
+        dateFromEpoch = HijrahDate.fromEpochDays(epochDays)
+        epochDays shouldBe 19911
+        dateFromEpoch.year shouldBe 1446
+        dateFromEpoch.month.number shouldBe 1
 
         //Negative offset
-        date = instant.toHijrahDateTime(TimeZone.of("America/New_York")).date //The actual date here is 1445-12-30 or 1446-12-29 since New York is 4-5 hours behind UTC
-        date.toEpochDays() shouldBe 19910
+        epochDays = instant.toHijrahDateTime(TimeZone.of("America/New_York")).date.toEpochDays() //The actual date here is 1445-12-30 or 1446-12-29 since New York is 4-5 hours behind UTC
+        dateFromEpoch = HijrahDate.fromEpochDays(epochDays)
+        epochDays shouldBe 19910
+        dateFromEpoch.year shouldBe 1445
+        dateFromEpoch.month.number shouldBe 12
+        dateFromEpoch.day shouldBeInRange 29..30
     }
 
     @Test
