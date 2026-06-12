@@ -11,20 +11,11 @@ import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.toJavaDayOfWeek
 import kotlinx.datetime.toJavaLocalTime
-import java.time.chrono.HijrahChronology
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeFormatterBuilder
-import java.time.format.DateTimeParseException
-import java.time.format.ResolverStyle
-import java.time.format.SignStyle
 import java.time.format.TextStyle
 import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalField
 import java.time.temporal.TemporalUnit
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
-import kotlin.time.toKotlinInstant
 
 
 fun NameStyle.toJavaTextStyle(): TextStyle = when (this) {
@@ -77,35 +68,3 @@ actual fun DayOfWeek.getDisplayName(
     locale: FormatLocale
 ): String = toJavaDayOfWeek().getDisplayName(nameStyle.toJavaTextStyle(), locale)
 
-@OptIn(ExperimentalTime::class)
-actual fun Instant.Companion.parseHijriOrNull(value: String): Instant? {
-    return try {
-        parseHijri(value)
-    } catch (e: DateTimeParseException) {
-        return null
-    }
-}
-
-
-private val HijrahOffsetDateTimeFormatter by lazy {
-    DateTimeFormatterBuilder()
-        .parseCaseInsensitive()
-        .appendValue(ChronoField.YEAR, 1, 4, SignStyle.NOT_NEGATIVE)
-        .appendLiteral('-')
-        .appendValue(ChronoField.MONTH_OF_YEAR, 2)
-        .appendLiteral('-')
-        .appendValue(ChronoField.DAY_OF_MONTH, 2)
-        .appendLiteral('T')
-        .append(DateTimeFormatter.ISO_LOCAL_TIME)
-        .parseLenient()
-        .appendOffsetId()
-        .parseStrict()
-        .toFormatter()
-        .withResolverStyle(ResolverStyle.STRICT)
-        .withChronology(HijrahChronology.INSTANCE)
-}
-
-actual fun Instant.Companion.parseHijri(value: String): Instant {
-    val zonedDateTime = HijrahChronology.INSTANCE.zonedDateTime(HijrahOffsetDateTimeFormatter.parse(value))
-    return zonedDateTime.toInstant().toKotlinInstant()
-}

@@ -17,7 +17,6 @@ import platform.Foundation.NSCalendar
 import platform.Foundation.NSCalendarIdentifierGregorian
 import platform.Foundation.NSCalendarIdentifierIslamicUmmAlQura
 import platform.Foundation.NSCalendarUnitDay
-import platform.Foundation.NSCalendarUnitDayOfYear
 import platform.Foundation.NSCalendarUnitHour
 import platform.Foundation.NSCalendarUnitMinute
 import platform.Foundation.NSCalendarUnitMonth
@@ -37,20 +36,20 @@ actual class HijrahDateTime(
     private val nsDate: NSDate
 ) : Comparable<HijrahDateTime> {
 
-    actual val year = nsCalendar.component(NSCalendarUnitYear, nsDate).toInt()
-    actual val month = HijrahMonth.of(nsCalendar.component(NSCalendarUnitMonth, nsDate).toInt())
-    actual val day = nsCalendar.component(NSCalendarUnitDay, nsDate).toInt()
-    actual val dayOfWeek = getDayOfWeak(nsCalendar, nsDate)
-    actual val dayOfYear = nsCalendar.component(NSCalendarUnitDayOfYear, nsDate).toInt()
+    actual val date: HijrahDate = HijrahDate(nsCalendar, nsDate)
+
+    actual val year get() = date.year
+    actual val month get() = date.month
+    actual val day get() = date.day
+    actual val dayOfWeek get() = date.dayOfWeek
+    actual val dayOfYear get() = date.dayOfYear
 
     actual val hour = nsCalendar.component(NSCalendarUnitHour, nsDate).toInt()
     actual val minute = nsCalendar.component(NSCalendarUnitMinute, nsDate).toInt()
     actual val second = nsCalendar.component(NSCalendarUnitSecond, nsDate).toInt()
     actual val nanosecond = nsCalendar.component(NSCalendarUnitNanosecond, nsDate).toInt()
 
-    actual val date: HijrahDate by lazy {
-        HijrahDate(nsCalendar, nsDate)
-    }
+
 
     actual val time: LocalTime get() = LocalTime(
         hour = nsCalendar.component(NSCalendarUnitHour, nsDate).toInt(),

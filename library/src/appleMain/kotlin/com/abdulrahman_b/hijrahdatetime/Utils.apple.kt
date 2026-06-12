@@ -8,9 +8,7 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.isoDayNumber
-import kotlinx.datetime.toKotlinInstant
 import platform.Foundation.NSCalendar
-import platform.Foundation.NSCalendarIdentifierIslamicUmmAlQura
 import platform.Foundation.NSCalendarUnit
 import platform.Foundation.NSCalendarUnitDay
 import platform.Foundation.NSCalendarUnitHour
@@ -24,9 +22,6 @@ import platform.Foundation.NSCalendarUnitYear
 import platform.Foundation.NSDate
 import platform.Foundation.NSDateComponents
 import platform.Foundation.NSDateFormatter
-import platform.Foundation.NSLocale
-import platform.Foundation.localeWithLocaleIdentifier
-import kotlin.time.Instant
 
 actual fun LocalTime.format(format: HijrahDateTimeFormat): String {
 
@@ -76,19 +71,6 @@ internal fun DateTimeUnit.toNSDateComponents(value: Long): NSDateComponents {
     return components
 }
 
-actual fun Instant.Companion.parseHijriOrNull(value: String): Instant? {
-    // Creating a dedicated ISO formatter for Hijri parsing
-    val formatter = NSDateFormatter().apply {
-        dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ" // The absolute standard for ISO with offset
-        calendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
-        locale = NSLocale.localeWithLocaleIdentifier("en_US_POSIX") // Essential for fixed-format parsing
-    }
-    return formatter.dateFromString(value)?.toKotlinInstant()
-}
-
-actual fun Instant.Companion.parseHijri(value: String): Instant {
-    return requireNotNull(parseHijriOrNull(value)) { "Invalid Hijri date: $value" }
-}
 
 actual fun DayOfWeek.getDisplayName(
     nameStyle: NameStyle,
