@@ -18,11 +18,13 @@ import java.time.temporal.TemporalField
 import java.time.temporal.TemporalUnit
 
 
+/** Converts this [NameStyle] to a Java [TextStyle]. */
 fun NameStyle.toJavaTextStyle(): TextStyle = when (this) {
     NameStyle.FULL -> TextStyle.FULL
     NameStyle.ABBREVIATED -> TextStyle.SHORT
 }
 
+/** Converts this [DecimalStyle] to a Java [java.time.format.DecimalStyle]. */
 fun DecimalStyle.toJavaDecimalStyle(): java.time.format.DecimalStyle = when (this) {
     is DecimalStyle.OfLocale -> java.time.format.DecimalStyle.of(locale)
     DecimalStyle.Standard -> java.time.format.DecimalStyle.STANDARD

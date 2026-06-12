@@ -202,6 +202,7 @@ actual class HijrahDateTime(
 
 }
 
+/** Converts this [LocalDateTime] to a [HijrahDateTime]. */
 actual fun LocalDateTime.toHijrahDateTime(): HijrahDateTime {
     val nsDate = this.toInstant(TimeZone.currentSystemDefault()).toNSDate()
     val nsCalendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)

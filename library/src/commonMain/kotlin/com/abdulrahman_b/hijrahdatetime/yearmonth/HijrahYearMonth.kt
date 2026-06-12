@@ -10,8 +10,6 @@ import com.abdulrahman_b.hijrahdatetime.withLastDayOfMonth
 import com.abdulrahman_b.hijrahdatetime.yearMonth
 import kotlinx.datetime.DateTimeArithmeticException
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.YearMonth
 
 /**
  * The year-month part of [HijrahDate], without a day-of-month.
@@ -59,25 +57,33 @@ class HijrahYearMonth(val year: Int, val month: HijrahMonth) : Comparable<Hijrah
      */
     val numberOfDays: Int = lastDay.day
 
+    /** The proleptic month number, which is the number of months since Hijrah year 0. */
     val prolepticMonth: Int get() = year * 12 + (month.number - 1)
 
 
+    /**
+     * Returns a [HijrahYearMonth] that results from adding the [value] number of the specified [unit] to this year-month.
+     */
     fun plus(value: Int, unit: DateTimeUnit.MonthBased): HijrahYearMonth = date.plus(value, unit).yearMonth
 
     /**
-     * Returns a [YearMonth] that results from subtracting the [value] number of the specified [unit] from this year-month.
+     * Returns a [HijrahYearMonth] that results from subtracting the [value] number of the specified [unit] from this year-month.
      *
      * If the [value] is positive, the returned year-month is earlier than this year-month.
      * If the [value] is negative, the returned year-month is later than this year-month.
      *
-     * @throws DateTimeArithmeticException if the result exceeds the boundaries of [YearMonth].
+     * @throws DateTimeArithmeticException if the result exceeds the boundaries of supported range.
      */
     fun minus(value: Int, unit: DateTimeUnit.MonthBased): HijrahYearMonth =
         if (value != Int.MIN_VALUE) plus(-value, unit) else plus(Int.MAX_VALUE, unit).plus(1, unit)
 
+    /** Returns a [HijrahYearMonth] that results from adding the [value] number of months to this year-month. */
     fun plusMonth(value: Int) = plus(value, DateTimeUnit.MONTH)
+    /** Returns a [HijrahYearMonth] that results from subtracting the [value] number of months from this year-month. */
     fun minusMonth(value: Int) = minus(value, DateTimeUnit.MONTH)
+    /** Returns a [HijrahYearMonth] that results from adding the [value] number of years to this year-month. */
     fun plusYear(value: Int) = plus(value, DateTimeUnit.YEAR)
+    /** Returns a [HijrahYearMonth] that results from subtracting the [value] number of years from this year-month. */
     fun minusYear(value: Int) = minus(value, DateTimeUnit.YEAR)
 
     private fun until(other: HijrahYearMonth, unit: DateTimeUnit): Long {
@@ -93,20 +99,24 @@ class HijrahYearMonth(val year: Int, val month: HijrahMonth) : Comparable<Hijrah
         }
     }
 
+    /** Returns the number of months until the specified [other] year-month. */
     fun untilMonth(other: HijrahYearMonth) = until(other, DateTimeUnit.MONTH)
+    /** Returns the number of years until the specified [other] year-month. */
     fun untilYear(other: HijrahYearMonth) = until(other, DateTimeUnit.YEAR)
 
+    /** Returns a progression from this year-month down to the specified [other] year-month. */
     infix fun downTo(other: HijrahYearMonth) = HijrahYearMonthProgression(this, other, -1)
 
+    /** Formats this year-month using the specified [format]. */
     fun format(format: HijrahDateTimeFormat): String = date.format(format)
 
     override fun compareTo(other: HijrahYearMonth): Int = date.compareTo(other.date)
 
 
     /**
-     * Combines this year-month with the specified day-of-month into a [LocalDate] value.
+     * Combines this year-month with the specified day-of-month into a [HijrahDate] value.
      *
-     * @throw IllegalArgumentException if the [day] is out of range for this year-month.
+     * @throws IllegalArgumentException if the [day] is out of range for this year-month.
      */
     fun onDay(day: Int): HijrahDate {
         return runCatching {
@@ -146,8 +156,15 @@ class HijrahYearMonth(val year: Int, val month: HijrahMonth) : Comparable<Hijrah
     }
 }
 
+/**
+ * Parses a [HijrahYearMonth] from a string (e.g., "1445-01").
+ * @throws IllegalArgumentException if the string cannot be parsed.
+ */
 expect fun HijrahYearMonth.Companion.parse(text: String): HijrahYearMonth
 
+/**
+ * Parses a [HijrahYearMonth] from a string (e.g., "1445-01"), or returns null if parsing fails.
+ */
 expect fun HijrahYearMonth.Companion.parseOrNull(text: String): HijrahYearMonth?
 
 

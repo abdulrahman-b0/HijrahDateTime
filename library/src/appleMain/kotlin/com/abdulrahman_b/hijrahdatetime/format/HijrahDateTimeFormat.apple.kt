@@ -2,6 +2,11 @@ package com.abdulrahman_b.hijrahdatetime.format
 
 import platform.Foundation.NSDateFormatter
 
+/**
+ * A format used for parsing and formatting Hijri date-time values on Apple platforms.
+ *
+ * @property nsFormatter the underlying [NSDateFormatter].
+ */
 actual class HijrahDateTimeFormat(val nsFormatter: NSDateFormatter) {
     actual companion object {
         actual fun ofPattern(

@@ -1,6 +1,11 @@
 package com.abdulrahman_b.hijrahdatetime.yearmonth
 
-import platform.Foundation.*
+import platform.Foundation.NSCalendar
+import platform.Foundation.NSCalendarIdentifierIslamicUmmAlQura
+import platform.Foundation.NSCalendarUnitMonth
+import platform.Foundation.NSCalendarUnitYear
+import platform.Foundation.NSDateComponents
+import platform.Foundation.NSDateFormatter
 
 
 actual fun HijrahYearMonth.Companion.parse(text: String): HijrahYearMonth {
@@ -17,6 +22,7 @@ actual fun HijrahYearMonth.Companion.parse(text: String): HijrahYearMonth {
 actual fun HijrahYearMonth.Companion.parseOrNull(text: String): HijrahYearMonth? = try { parse(text) } catch(e: Exception) { null }
 
 
+/** Converts this [HijrahYearMonth] to [NSDateComponents]. */
 fun HijrahYearMonth.toNSDateComponents(): NSDateComponents {
     return NSDateComponents().apply {
         this.calendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)

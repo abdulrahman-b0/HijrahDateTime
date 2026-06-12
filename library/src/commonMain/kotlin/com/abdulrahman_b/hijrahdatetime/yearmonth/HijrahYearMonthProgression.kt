@@ -1,12 +1,13 @@
 package com.abdulrahman_b.hijrahdatetime.yearmonth
 
-import kotlinx.datetime.YearMonth
-
 private class YearMonthProgressionIterator(private val iterator: IntIterator) : Iterator<HijrahYearMonth> {
     override fun hasNext(): Boolean = iterator.hasNext()
     override fun next(): HijrahYearMonth = HijrahYearMonth.fromProlepticMonth(iterator.next())
 }
 
+/**
+ * A progression of [HijrahYearMonth] values.
+ */
 open class HijrahYearMonthProgression internal constructor(internal val progression: IntProgression) : Collection<HijrahYearMonth> {
 
     override val size: Int = progression.count()
@@ -28,12 +29,12 @@ open class HijrahYearMonthProgression internal constructor(internal val progress
     ) : this(IntProgression.fromClosedRange(start.prolepticMonth, endInclusive.prolepticMonth, step))
 
     /**
-     * Returns the first [YearMonth] of the progression
+     * Returns the first [HijrahYearMonth] of the progression
      */
     val first: HijrahYearMonth = HijrahYearMonth.fromProlepticMonth(progression.first)
 
     /**
-     * Returns the last [YearMonth] of the progression
+     * Returns the last [HijrahYearMonth] of the progression
      */
     val last: HijrahYearMonth = HijrahYearMonth.fromProlepticMonth(progression.last)
 

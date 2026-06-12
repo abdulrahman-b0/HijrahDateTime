@@ -1,5 +1,11 @@
 package com.abdulrahman_b.hijrahdatetime.yearmonth
 
+/**
+ * A range of [HijrahYearMonth] values.
+ *
+ * @property start the start of the range.
+ * @property endInclusive the inclusive end of the range.
+ */
 class HijrahYearMonthRange(
     override val start: HijrahYearMonth,
     override val endInclusive: HijrahYearMonth

@@ -1,5 +1,11 @@
 package com.abdulrahman_b.hijrahdatetime
 
+/**
+ * A range of [HijrahDate]s.
+ *
+ * @param start the start date of the range.
+ * @param endInclusive the inclusive end date of the range.
+ */
 class HijrahDateRange(start: HijrahDate, endInclusive: HijrahDate) : HijrahDateProgression(start, endInclusive, 1L),
     ClosedRange<HijrahDate> {
 
@@ -15,6 +21,9 @@ class HijrahDateRange(start: HijrahDate, endInclusive: HijrahDate) : HijrahDateP
 
 }
 
+/**
+ * A progression of [HijrahDate]s.
+ */
 open class HijrahDateProgression internal constructor(internal val longProgression: LongProgression) :
     Collection<HijrahDate> {
 

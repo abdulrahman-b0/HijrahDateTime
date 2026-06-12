@@ -11,6 +11,11 @@ import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
 
+/**
+ * Represents a date and time in the Hijrah (Islamic) calendar system.
+ *
+ * This class is [Serializable] and uses [HijrahDateTimeComponentsSerializer] for serialization.
+ */
 @Suppress("unused")
 @Serializable(with = HijrahDateTimeComponentsSerializer::class)
 expect class HijrahDateTime(
@@ -23,40 +28,64 @@ expect class HijrahDateTime(
     nanosecond: Int,
 ) : Comparable<HijrahDateTime> {
 
+    /** The [HijrahDate] part of this date-time. */
     val date: HijrahDate
+    /** The [LocalTime] part of this date-time. */
     val time: LocalTime
 
+    /** The Hijrah year. */
     val year: Int
+    /** The Hijrah month. */
     val month: HijrahMonth
+    /** The day of month. */
     val day: Int
+    /** The day of week. */
     val dayOfWeek: DayOfWeek
+    /** The day of year. */
     val dayOfYear: Int
+    /** The hour of day, from 0 to 23. */
     val hour: Int
+    /** The minute of hour, from 0 to 59. */
     val minute: Int
+    /** The second of minute, from 0 to 59. */
     val second: Int
+    /** The nanosecond of second, from 0 to 999,999,999. */
     val nanosecond: Int
 
     override fun compareTo(other: HijrahDateTime): Int
 
+    /** Formats this date-time using the specified [format]. */
     fun format(format: HijrahDateTimeFormat): String
 
+    /** Converts this date-time to an [Instant] in the specified [timeZone]. */
     fun toInstant(timeZone: FixedOffsetTimeZone): Instant
 
+    /** Converts this date-time to a [LocalDateTime]. */
     fun toLocalDateTime(): LocalDateTime
 
     companion object {
+        /**
+         * Parses a [HijrahDateTime] from a string using the specified [format].
+         * @throws IllegalArgumentException if the string cannot be parsed.
+         */
         fun parse(string: String, format: HijrahDateTimeFormat): HijrahDateTime
 
+        /**
+         * Parses a [HijrahDateTime] from a string using the specified [format], or returns null if parsing fails.
+         */
         fun parseOrNull(string: String, format: HijrahDateTimeFormat): HijrahDateTime?
     }
 }
 
+/** Converts this [Instant] to a [HijrahDateTime] in the specified [timeZone]. */
 fun Instant.toHijrahDateTime(timeZone: TimeZone): HijrahDateTime {
     return toLocalDateTime(timeZone).toHijrahDateTime()
 }
 
+/** Converts this [LocalDateTime] to a [HijrahDateTime]. */
 expect fun LocalDateTime.toHijrahDateTime(): HijrahDateTime
 
+/** Creates a [HijrahDateTime] from the specified [date] and [time]. */
 fun HijrahDateTime.Companion.of(date: HijrahDate, time: LocalTime) =
     HijrahDateTime(date.year, date.month.number, date.day, time.hour, time.minute, time.second, time.nanosecond)
 

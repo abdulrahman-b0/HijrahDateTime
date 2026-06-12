@@ -3,7 +3,6 @@ package com.abdulrahman_b.hijrahdatetime.serializers
 import com.abdulrahman_b.hijrahdatetime.HijrahDateTime
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormatBuilder
 import com.abdulrahman_b.hijrahdatetime.format.build
-import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateTimeComponentsSerializer.descriptor
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -15,12 +14,8 @@ import kotlinx.serialization.encoding.decodeStructure
 import kotlinx.serialization.encoding.encodeStructure
 
 /**
- * A custom general purpose serializer for [com.abdulrahman_b.hijrahdatetime.HijrahDateTime], enabling serialization and deserialization
- * of [com.abdulrahman_b.hijrahdatetime.HijrahDateTime] objects through a surrogate representation using Kotlin serialization.
-
- *
- * @property descriptor Represents the structure of serialized data as derived from the surrogate's descriptor.
- * @return A newly reconstructed [com.abdulrahman_b.hijrahdatetime.HijrahDateTime] object based on the decoded surrogate data.
+ * A custom general purpose serializer for [HijrahDateTime], enabling serialization and deserialization
+ * of [HijrahDateTime] objects through a surrogate representation of its components.
  */
 object HijrahDateTimeComponentsSerializer: KSerializer<HijrahDateTime> {
 
@@ -83,6 +78,9 @@ object HijrahDateTimeComponentsSerializer: KSerializer<HijrahDateTime> {
 }
 
 
+/**
+ * A serializer for [HijrahDateTime] that uses the ISO-like date-time format (yyyy-MM-ddTHH:mm:ss).
+ */
 class HijrahDateTimeIsoSerializer: KSerializer<HijrahDateTime> {
     override val descriptor = PrimitiveSerialDescriptor("HijrahDateTime", PrimitiveKind.STRING)
 

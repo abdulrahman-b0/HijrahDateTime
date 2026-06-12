@@ -80,6 +80,7 @@ actual class HijrahDate internal constructor(internal val javaDate: JavaHijrahDa
 
     actual fun toEpochDays(): Long = javaDate.toEpochDay()
 
+    /** Returns the underlying Java [java.time.chrono.HijrahDate]. */
     fun toJavaHijrahDate(): JavaHijrahDate = javaDate
 
     actual fun format(format: HijrahDateTimeFormat): String {
@@ -141,4 +142,5 @@ actual class HijrahDate internal constructor(internal val javaDate: JavaHijrahDa
     override fun toString(): String = javaDate.toString()
 }
 
+/** Converts this Java [java.time.chrono.HijrahDate] to a Kotlin [HijrahDate]. */
 fun JavaHijrahDate.toKotlinHijrahDate(): HijrahDate = HijrahDate(this)

@@ -7,7 +7,11 @@ import com.abdulrahman_b.hijrahdatetime.format.NameStyle
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalTime
 
+/** Formats this [LocalTime] using the specified [format]. */
 expect fun LocalTime.format(format: HijrahDateTimeFormat): String
 
+/**
+ * Returns the display name of this [DayOfWeek] in the specified [nameStyle] and [locale].
+ */
 expect fun DayOfWeek.getDisplayName(nameStyle: NameStyle, locale: FormatLocale = FormatLocales.getDefault()): String
 

@@ -1,6 +1,9 @@
 @file:Suppress("unused")
 package com.abdulrahman_b.hijrahdatetime.format
 
+/**
+ * A format used for parsing and formatting Hijri date-time values.
+ */
 expect class HijrahDateTimeFormat {
 
 
