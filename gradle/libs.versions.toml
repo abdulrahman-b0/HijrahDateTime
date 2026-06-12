@@ -1,11 +1,11 @@
 [versions]
-kotlin = "2.3.20"
-kotlin-datetime = "0.7.1"
-kotlin-serialization = "1.10.0"
-kover = "0.9.7"
-kotlinTest = "2.3.10"
-kotest = "6.1.8"
-agp = "9.1.0"
+kotlin = "2.4.0"
+kotlin-datetime = "0.8.0"
+kotlin-serialization = "1.11.0"
+kover = "0.9.8"
+kotlinTest = "2.4.0"
+kotest = "6.1.11"
+agp = "9.2.1"
 
 [libraries]
 

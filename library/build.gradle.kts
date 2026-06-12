@@ -18,7 +18,7 @@ kotlin {
 
     android {
         namespace = "com.abdulrahman_b.hijrahdatetime"
-        compileSdk = 36
+        compileSdk = 37
         minSdk = 26
 
         aarMetadata {
