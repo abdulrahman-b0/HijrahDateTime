@@ -1,6 +1,6 @@
 ![HijrahDateTime Banner](logo_banner.png)
 
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.3.10-purple.svg?logo=kotlin)](https://kotlinlang.org/)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.4.0-purple.svg?logo=kotlin)](https://kotlinlang.org/)
 [![Platform](https://img.shields.io/badge/Platform-JVM%20%7C%20iOS%20%7C%20macOS-blue)](https://kotlinlang.org/docs/multiplatform.html)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
