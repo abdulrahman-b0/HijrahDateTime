@@ -212,8 +212,3 @@ val generateUmmAlQuraData by tasks.registering {
         logger.lifecycle("Successfully generated packed calendar data for years $minYear-$maxYear!")
     }
 }
-
-// Automatically trigger code generation whenever the Kotlin code compiles
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    dependsOn(generateUmmAlQuraData)
-}
