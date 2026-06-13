@@ -1,6 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":library")
+include(":core")
 
 
 rootProject.name = "hijrahdatetime"
