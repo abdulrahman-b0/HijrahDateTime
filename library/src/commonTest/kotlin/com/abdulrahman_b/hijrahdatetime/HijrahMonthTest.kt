@@ -7,7 +7,7 @@ import kotlin.test.assertFailsWith
 class HijrahMonthTest {
 
     @Test
-    fun testOf() {
+    fun `test of`() {
         assertEquals(HijrahMonth.MUHARRAM, HijrahMonth.of(1))
         assertEquals(HijrahMonth.SAFAR, HijrahMonth.of(2))
         assertEquals(HijrahMonth.RABI_AL_AWWAL, HijrahMonth.of(3))
@@ -26,13 +26,13 @@ class HijrahMonthTest {
     }
 
     @Test
-    fun testNumber() {
+    fun `test number`() {
         assertEquals(1, HijrahMonth.MUHARRAM.number)
         assertEquals(12, HijrahMonth.THUL_HIJJAH.number)
     }
 
     @Test
-    fun testYearMonthExtension() {
+    fun `test yearMonth extension`() {
         val date = HijrahDate(1445, 9, 1)
         val ym = date.yearMonth
         assertEquals(1445, ym.year)

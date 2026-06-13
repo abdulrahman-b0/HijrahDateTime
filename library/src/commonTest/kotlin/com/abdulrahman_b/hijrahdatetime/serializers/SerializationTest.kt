@@ -32,7 +32,7 @@ class SerializationTest {
     )
 
     @Test
-    fun testHijrahDateComponentsSerialization() {
+    fun `test HijrahDate components serialization`() {
         val date = HijrahDate(1445, 9, 1)
         val container = DateContainer(date)
         val json = Json.encodeToString(DateContainer.serializer(), container)
@@ -45,7 +45,7 @@ class SerializationTest {
     }
 
     @Test
-    fun testHijrahDateIsoSerialization() {
+    fun `test HijrahDate ISO serialization`() {
         val date = HijrahDate(1445, 9, 1)
         val container = IsoDateContainer(date)
         val json = Json.encodeToString(IsoDateContainer.serializer(), container)
@@ -57,7 +57,7 @@ class SerializationTest {
     }
 
     @Test
-    fun testHijrahDateTimeComponentsSerialization() {
+    fun `test HijrahDateTime components serialization`() {
         val dateTime = HijrahDateTime(1445, 9, 1, 10, 30, 45, 123456789)
         val container = DateTimeContainer(dateTime)
         val json = Json.encodeToString(DateTimeContainer.serializer(), container)
@@ -80,7 +80,7 @@ class SerializationTest {
     }
 
     @Test
-    fun testHijrahDateTimeIsoSerialization() {
+    fun `test HijrahDateTime ISO serialization`() {
         val dateTime = HijrahDateTime(1445, 9, 1, 10, 30, 45, 0)
         val container = IsoDateTimeContainer(dateTime)
         val json = Json.encodeToString(IsoDateTimeContainer.serializer(), container)

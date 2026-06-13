@@ -2,19 +2,9 @@ package com.abdulrahman_b.hijrahdatetime
 
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormat
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateTimeComponentsSerializer
-import kotlinx.datetime.DateTimeArithmeticException
-import kotlinx.datetime.FixedOffsetTimeZone
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
-import kotlinx.datetime.Month
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toKotlinInstant
-import kotlinx.datetime.toNSDate
-import kotlinx.datetime.toNSTimeZone
 import kotlinx.serialization.Serializable
 import platform.Foundation.NSCalendar
-import platform.Foundation.NSCalendarIdentifierGregorian
 import platform.Foundation.NSCalendarIdentifierIslamicUmmAlQura
 import platform.Foundation.NSCalendarUnitDay
 import platform.Foundation.NSCalendarUnitHour
@@ -25,10 +15,7 @@ import platform.Foundation.NSCalendarUnitSecond
 import platform.Foundation.NSCalendarUnitYear
 import platform.Foundation.NSDate
 import platform.Foundation.NSDateComponents
-import platform.Foundation.NSTimeZone
 import platform.Foundation.compare
-import platform.Foundation.timeZoneWithAbbreviation
-import kotlin.time.Instant
 
 @Serializable(with = HijrahDateTimeComponentsSerializer::class)
 actual class HijrahDateTime(
@@ -61,12 +48,12 @@ actual class HijrahDateTime(
     actual constructor(
         year: Int,
         month: Int,
-        dayOfMonth: Int,
+        day: Int,
         hour: Int,
         minute: Int,
         second: Int,
         nanosecond: Int,
-    ) : this(createDate(year, month, dayOfMonth, hour, minute, second, nanosecond))
+    ) : this(createDate(year, month, day, hour, minute, second, nanosecond))
     
     private constructor(calendarDatePair: Pair<NSCalendar, NSDate>) : this(calendarDatePair.first, calendarDatePair.second)
 
@@ -86,56 +73,11 @@ actual class HijrahDateTime(
     actual override operator fun compareTo(other: HijrahDateTime): Int =
         nsDate.compare(other.nsDate).toInt()
 
-    actual fun toInstant(timeZone: FixedOffsetTimeZone): Instant {
-        val tz = timeZone.toNSTimeZone()
-        val calendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura).apply {
-            this.timeZone = tz
-        }
-
-        val components = NSDateComponents().apply {
-            this.year = this@HijrahDateTime.year.toLong()
-            this.month = this@HijrahDateTime.month.number.toLong()
-            this.day = this@HijrahDateTime.day.toLong()
-            this.hour = this@HijrahDateTime.hour.toLong()
-            this.minute = this@HijrahDateTime.minute.toLong()
-            this.second = this@HijrahDateTime.second.toLong()
-            this.nanosecond = this@HijrahDateTime.nanosecond.toLong()
-            this.timeZone = tz
-        }
-
-        val date = calendar.dateFromComponents(components)
-            ?: throw DateTimeArithmeticException("Could not convert HijrahDateTime to Instant: $this")
-
-        return date.toKotlinInstant()
-    }
-
-
     actual fun format(format: HijrahDateTimeFormat): String {
         // Ensure the formatter uses this date's specific calendar instance
         // if it wasn't already set during build()
         format.nsFormatter.calendar = this.nsCalendar
         return format.nsFormatter.stringFromDate(nsDate)
-    }
-
-    actual fun toLocalDateTime(): LocalDateTime {
-        val isoCalendar = NSCalendar(NSCalendarIdentifierGregorian).apply {
-            timeZone = NSTimeZone.timeZoneWithAbbreviation("UTC")!!
-        }
-        val date = nsDate
-        val components = isoCalendar.components(
-            NSCalendarUnitYear or NSCalendarUnitMonth or NSCalendarUnitDay or
-                    NSCalendarUnitHour or NSCalendarUnitMinute or NSCalendarUnitSecond or NSCalendarUnitNanosecond,
-            fromDate = date
-        )
-        return LocalDateTime(
-            year = components.year.toInt(),
-            month = Month(components.month.toInt()),
-            day = components.day.toInt(),
-            hour = components.hour.toInt(),
-            minute = components.minute.toInt(),
-            second = components.second.toInt(),
-            nanosecond = components.nanosecond.toInt()
-        )
     }
 
     override fun equals(other: Any?): Boolean {
@@ -200,12 +142,4 @@ actual class HijrahDateTime(
         }
     }
 
-}
-
-/** Converts this [LocalDateTime] to a [HijrahDateTime]. */
-actual fun LocalDateTime.toHijrahDateTime(): HijrahDateTime {
-    val nsDate = this.toInstant(TimeZone.currentSystemDefault()).toNSDate()
-    val nsCalendar = NSCalendar(NSCalendarIdentifierIslamicUmmAlQura)
-    nsCalendar.timeZone = TimeZone.currentSystemDefault().toNSTimeZone()
-    return HijrahDateTime(nsCalendar, nsDate)
 }

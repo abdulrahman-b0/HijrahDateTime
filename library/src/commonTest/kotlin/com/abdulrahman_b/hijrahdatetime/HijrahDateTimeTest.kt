@@ -3,6 +3,7 @@ package com.abdulrahman_b.hijrahdatetime
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormats
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.equals.shouldBeEqual
+import io.kotest.matchers.shouldBe
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.FixedOffsetTimeZone
 import kotlinx.datetime.LocalDateTime
@@ -214,5 +215,73 @@ class HijrahDateTimeTest {
         val dt = instant.toHijrahDateTime(tz)
         val roundTrip = dt.toInstant(tz)
         assertEquals(instant.epochSeconds, roundTrip.epochSeconds)
+    }
+
+    @Test
+    fun `test toInstant before 1970`() {
+        // Arrange
+        val dtBefore = HijrahDateTime(1358, 2, 11, 0, 0, 0, 0)
+        
+        // Act
+        val instantBefore = dtBefore.toInstant(TimeZone.UTC)
+        
+        // Assert
+        instantBefore.epochSeconds shouldBe -970531200L
+    }
+
+    @Test
+    fun `test toInstant start of Umm Al-Qura`() {
+        // Arrange
+        val dtStart = HijrahDateTime(1300, 1, 1, 0, 0, 0, 0)
+        
+        // Act
+        val instantStart = dtStart.toInstant(TimeZone.UTC)
+        
+        // Assert
+        instantStart.epochSeconds shouldBe -2749766400L // 1882-11-12
+    }
+
+    @Test
+    fun `test toInstant end of Umm Al-Qura`() {
+        // Arrange
+        val dtEnd = HijrahDateTime(1600, 12, 30, 23, 59, 59, 0)
+        
+        // Act
+        val instantEnd = dtEnd.toInstant(TimeZone.UTC)
+        
+        // Assert
+        instantEnd.epochSeconds shouldBe 6466089599L
+    }
+
+    @Test
+    fun `test toLocalDateTime start of Umm Al-Qura`() {
+        // Arrange
+        val dtStart = HijrahDateTime(1300, 1, 1, 10, 30, 0, 0)
+        
+        // Act
+        val ldtStart = dtStart.toLocalDateTime()
+        
+        // Assert
+        ldtStart.year shouldBe 1882
+        ldtStart.month shouldBe Month.NOVEMBER
+        ldtStart.day shouldBe 12
+        ldtStart.hour shouldBe 10
+        ldtStart.minute shouldBe 30
+    }
+
+    @Test
+    fun `test toLocalDateTime end of Umm Al-Qura`() {
+        // Arrange
+        val dtEnd = HijrahDateTime(1600, 12, 30, 23, 59, 59, 0)
+        
+        // Act
+        val ldtEnd = dtEnd.toLocalDateTime()
+        
+        // Assert
+        ldtEnd.year shouldBe 2174
+        ldtEnd.month shouldBe Month.NOVEMBER
+        ldtEnd.day shouldBe 25
+        ldtEnd.hour shouldBe 23
+        ldtEnd.minute shouldBe 59
     }
 }

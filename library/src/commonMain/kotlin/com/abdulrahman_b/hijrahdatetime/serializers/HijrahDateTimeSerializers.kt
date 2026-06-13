@@ -66,7 +66,7 @@ object HijrahDateTimeComponentsSerializer: KSerializer<HijrahDateTime> {
             HijrahDateTime(
                 year = year,
                 month = month,
-                dayOfMonth = dayOfMonth,
+                day = dayOfMonth,
                 hour = hour,
                 minute = minute,
                 second = second,

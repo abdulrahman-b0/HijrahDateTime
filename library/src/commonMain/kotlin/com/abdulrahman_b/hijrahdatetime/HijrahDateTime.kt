@@ -1,13 +1,15 @@
 package com.abdulrahman_b.hijrahdatetime
 
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormat
+import com.abdulrahman_b.hijrahdatetime.internal.SECONDS_OF_DAY
+import com.abdulrahman_b.hijrahdatetime.internal.SECONDS_OF_HOUR
+import com.abdulrahman_b.hijrahdatetime.internal.SECONDS_OF_MINUTE
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateTimeComponentsSerializer
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.FixedOffsetTimeZone
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
 import kotlin.time.Instant
 
@@ -21,7 +23,7 @@ import kotlin.time.Instant
 expect class HijrahDateTime(
     year: Int,
     month: Int,
-    dayOfMonth: Int,
+    day: Int,
     hour: Int,
     minute: Int,
     second: Int,
@@ -57,12 +59,6 @@ expect class HijrahDateTime(
     /** Formats this date-time using the specified [format]. */
     fun format(format: HijrahDateTimeFormat): String
 
-    /** Converts this date-time to an [Instant] in the specified [timeZone]. */
-    fun toInstant(timeZone: FixedOffsetTimeZone): Instant
-
-    /** Converts this date-time to a [LocalDateTime]. */
-    fun toLocalDateTime(): LocalDateTime
-
     companion object {
         /**
          * Parses a [HijrahDateTime] from a string using the specified [format].
@@ -77,16 +73,34 @@ expect class HijrahDateTime(
     }
 }
 
-/** Converts this [Instant] to a [HijrahDateTime] in the specified [timeZone]. */
-fun Instant.toHijrahDateTime(timeZone: TimeZone): HijrahDateTime {
-    return toLocalDateTime(timeZone).toHijrahDateTime()
-}
 
 /** Converts this [LocalDateTime] to a [HijrahDateTime]. */
-expect fun LocalDateTime.toHijrahDateTime(): HijrahDateTime
+fun LocalDateTime.toHijrahDateTime(): HijrahDateTime {
+    val epochDay = this.date.toEpochDays()
+    val hijrahDate = HijrahDate.fromEpochDays(epochDay)
+    return hijrahDate.atTime(this.time)
+}
+
+/** Converts this [HijrahDateTime] to a [LocalDateTime]. */
+fun HijrahDateTime.toLocalDateTime(): LocalDateTime {
+    val hijrahDate = HijrahDate(year, month.number, day)
+    val epochDay = hijrahDate.toEpochDays()
+    return LocalDateTime(LocalDate.fromEpochDays(epochDay), time)
+}
 
 /** Creates a [HijrahDateTime] from the specified [date] and [time]. */
 fun HijrahDateTime.Companion.of(date: HijrahDate, time: LocalTime) =
     HijrahDateTime(date.year, date.month.number, date.day, time.hour, time.minute, time.second, time.nanosecond)
 
+/** Converts this date-time to an [Instant] in the specified [timeZone]. */
+fun HijrahDateTime.toInstant(timeZone: FixedOffsetTimeZone): Instant {
+    val localEpochSeconds = (date.toEpochDays() * SECONDS_OF_DAY) +
+            (hour * SECONDS_OF_HOUR) +
+            (minute * SECONDS_OF_MINUTE) +
+            second
 
+    val utcEpochSeconds = localEpochSeconds - timeZone.offset.totalSeconds
+
+    // Instant handles negative values flawlessly here!
+    return Instant.fromEpochSeconds(utcEpochSeconds, nanosecond)
+}

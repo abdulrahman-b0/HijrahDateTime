@@ -20,7 +20,7 @@ class HijrahDateJvmTest {
     }
 
     @Test
-    fun `test HijrahDate properties match java_time`() {
+    fun `test HijrahDate properties match java time`() {
         // Extensive coverage for years 1300 to 1600
         for (year in 1300..1600) {
             createJavaDate(year, 1, 1)
@@ -54,7 +54,7 @@ class HijrahDateJvmTest {
     }
 
     @Test
-    fun `test arithmetic plusDays and minusDays match java_time`() {
+    fun `test arithmetic plus days and minus days match java time`() {
         val testDates = listOf(
             HijrahDate(1445, 1, 1),
             HijrahDate(1445, 12, 29),
@@ -89,7 +89,7 @@ class HijrahDateJvmTest {
     }
 
     @Test
-    fun `test withAdjusters match java_time`() {
+    fun `test with adjusters match java time`() {
         val testDates = listOf(
             HijrahDate(1445, 1, 1),
             HijrahDate(1445, 2, 30), // Safar 1445 has 30 days
@@ -158,7 +158,7 @@ class HijrahDateJvmTest {
     }
 
     @Test
-    fun `test arithmetic plusMonths match java_time`() {
+    fun `test arithmetic plus months match java time`() {
         val testDates = listOf(
             HijrahDate(1445, 1, 1),
             HijrahDate(1445, 2, 30), // Safar 1445 has 30 days
@@ -185,7 +185,7 @@ class HijrahDateJvmTest {
     }
 
     @Test
-    fun `test units arithmetic match java_time`() {
+    fun `test units arithmetic match java time`() {
         val testDates = listOf(
             HijrahDate(1445, 1, 1),
             HijrahDate(1446, 6, 15)

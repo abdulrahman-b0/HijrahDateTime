@@ -136,37 +136,59 @@ class HijrahDateTest {
         dateFromEpoch.day shouldBe 1
     }
 
-    @OptIn(ExperimentalTime::class)
     @Test
-    fun `test to epoch days with instant-driven date`() {
-        val instant = HijrahDate(1446, 1, 1).atStartOfDay(TimeZone.UTC)
-
-        var epochDays = instant.toHijrahDateTime(TimeZone.UTC).date.toEpochDays()
-        var dateFromEpoch = HijrahDate.fromEpochDays(epochDays)
+    fun `test to epoch days with UTC`() {
+        // Arrange
+        val date = HijrahDate(1446, 1, 1)
+        val instant = date.atStartOfDay(TimeZone.UTC)
+        
+        // Act
+        val epochDays = instant.toHijrahDateTime(TimeZone.UTC).date.toEpochDays()
+        
+        // Assert
         epochDays shouldBe 19911
+        val dateFromEpoch = HijrahDate.fromEpochDays(epochDays)
         dateFromEpoch.year shouldBe 1446
         dateFromEpoch.month.number shouldBe 1
         dateFromEpoch.day shouldBe 1
+    }
 
-        //Positive offset
-        epochDays = instant.toHijrahDateTime(TimeZone.of("Asia/Riyadh")).date.toEpochDays()
-        dateFromEpoch = HijrahDate.fromEpochDays(epochDays)
+    @Test
+    fun `test to epoch days with Riyadh offset`() {
+        // Arrange
+        val date = HijrahDate(1446, 1, 1)
+        val instant = date.atStartOfDay(TimeZone.UTC)
+        
+        // Act
+        val epochDays = instant.toHijrahDateTime(TimeZone.of("Asia/Riyadh")).date.toEpochDays()
+        
+        // Assert
         epochDays shouldBe 19911
+        val dateFromEpoch = HijrahDate.fromEpochDays(epochDays)
         dateFromEpoch.year shouldBe 1446
         dateFromEpoch.month.number shouldBe 1
+    }
 
-        //Negative offset
-        epochDays =
-            instant.toHijrahDateTime(TimeZone.of("America/New_York")).date.toEpochDays() //The actual date here is 1445-12-30 or 1446-12-29 since New York is 4-5 hours behind UTC
-        dateFromEpoch = HijrahDate.fromEpochDays(epochDays)
+    @Test
+    fun `test to epoch days with New York offset`() {
+        // Arrange
+        val date = HijrahDate(1446, 1, 1)
+        val instant = date.atStartOfDay(TimeZone.UTC)
+        
+        // Act
+        // The actual date here is 1445-12-30 or 1445-12-29 since New York is 4-5 hours behind UTC
+        val epochDays = instant.toHijrahDateTime(TimeZone.of("America/New_York")).date.toEpochDays()
+        
+        // Assert
         epochDays shouldBe 19910
+        val dateFromEpoch = HijrahDate.fromEpochDays(epochDays)
         dateFromEpoch.year shouldBe 1445
         dateFromEpoch.month.number shouldBe 12
         dateFromEpoch.day shouldBeInRange 29..30
     }
 
     @Test
-    fun `test to LocalDate`() {
+    fun `test to local date`() {
         val date = HijrahDate(1445, 9, 1) // 2024-03-11
         val localDate = date.toLocalDate()
         localDate.year shouldBe 2024
@@ -175,7 +197,7 @@ class HijrahDateTest {
     }
 
     @Test
-    fun `test withNextDayOfWeek`() {
+    fun `test with next day of week`() {
         // 1445-09-01 is Monday
         val monday = HijrahDate(1445, 9, 1)
         monday.dayOfWeek shouldBe DayOfWeek.MONDAY
@@ -192,7 +214,7 @@ class HijrahDateTest {
     }
 
     @Test
-    fun `test withPreviousDayOfWeek`() {
+    fun `test with previous day of week`() {
         // 1445-09-01 is Monday
         val monday = HijrahDate(1445, 9, 1)
 
@@ -211,7 +233,7 @@ class HijrahDateTest {
     }
 
     @Test
-    fun `test withSameOrNextDayOfWeek`() {
+    fun `test with same or next day of week`() {
         val monday = HijrahDate(1445, 9, 1)
 
         // Same or next Monday should be Today
@@ -224,7 +246,7 @@ class HijrahDateTest {
     }
 
     @Test
-    fun `test withSameOrPreviousDayOfWeek`() {
+    fun `test with same or previous day of week`() {
         val monday = HijrahDate(1445, 9, 1)
 
         // Same or previous Monday should be Today
@@ -238,7 +260,7 @@ class HijrahDateTest {
     }
 
     @Test
-    fun `test withLastDayOfMonth`() {
+    fun `test with last day of month`() {
         val date = HijrahDate(1445, 9, 1)
         val lastDay = shouldNotThrowAny { date.withLastDayOfMonth() }
 
@@ -253,10 +275,29 @@ class HijrahDateTest {
     }
 
     @Test
-    fun `test with components`() {
+    fun `test with year component`() {
+        // Arrange
         val date = HijrahDate(1445, 9, 1)
+        
+        // Act & Assert
         date.withYear(1446).year shouldBe 1446
+    }
+
+    @Test
+    fun `test with month component`() {
+        // Arrange
+        val date = HijrahDate(1445, 9, 1)
+        
+        // Act & Assert
         date.withMonth(10).month.number shouldBe 10
+    }
+
+    @Test
+    fun `test with day component`() {
+        // Arrange
+        val date = HijrahDate(1445, 9, 1)
+        
+        // Act & Assert
         date.withDayOfMonth(15).day shouldBe 15
     }
 
@@ -354,29 +395,35 @@ class HijrahDateTest {
     }
 
     @Test
-    fun `test MIN and MAX`() {
-        val minDate = shouldNotThrowAny {
-            val minDate = HijrahDate.MIN
-            println("HijrahDate.MIN: $minDate")
-            minDate
-        }
-        val maxDate = shouldNotThrowAny {
-            val maxDate = HijrahDate.MAX
-            println("HijrahDate.MAX: $maxDate")
-            maxDate
-        }
+    fun `test MIN and MAX boundaries`() {
+        // Act
+        val minDate = HijrahDate.MIN
+        val maxDate = HijrahDate.MAX
+        
+        // Assert
         minDate.year shouldBe 1300
         maxDate.year shouldBe 1600
+    }
 
+    @Test
+    fun `test arithmetic below MIN`() {
+        // Arrange
+        val minDate = HijrahDate.MIN
+        
+        // Act & Assert
         shouldThrow<DateTimeArithmeticException> {
-            val invalid = minDate.minusDays(1)
-            println("Invalid: $invalid")
+            minDate.minusDays(1)
         }
+    }
 
+    @Test
+    fun `test arithmetic above MAX`() {
+        // Arrange
+        val maxDate = HijrahDate.MAX
+        
+        // Act & Assert
         shouldThrow<DateTimeArithmeticException> {
-            val invalid = maxDate.plusDays(1)
-            println("Invalid: $invalid")
+            maxDate.plusDays(1)
         }
-
     }
 }

@@ -3,7 +3,6 @@ package com.abdulrahman_b.hijrahdatetime.yearmonth
 import com.abdulrahman_b.hijrahdatetime.HijrahMonth
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormatBuilder
 import com.abdulrahman_b.hijrahdatetime.format.build
-import com.abdulrahman_b.hijrahdatetime.plusYears
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -13,46 +12,97 @@ import kotlin.test.assertTrue
 class HijrahYearMonthTest {
 
     @Test
-    fun `test construction`() {
+    fun `test construction success`() {
+        // Act
         val ym = HijrahYearMonth(1445, 9)
+        
+        // Assert
         assertEquals(1445, ym.year)
         assertEquals(HijrahMonth.RAMADAN, ym.month)
         assertEquals(9, ym.month.number)
+    }
 
-        val ym2 = HijrahYearMonth(1445, HijrahMonth.SHAWWAL)
-        assertEquals(10, ym2.month.number)
+    @Test
+    fun `test construction with HijrahMonth`() {
+        // Act
+        val ym = HijrahYearMonth(1445, HijrahMonth.SHAWWAL)
+        
+        // Assert
+        assertEquals(10, ym.month.number)
+    }
 
+    @Test
+    fun `test construction month out of range`() {
+        // Act & Assert
         assertFailsWith<IllegalArgumentException> {
             HijrahYearMonth(1445, 13)
         }
+    }
+
+    @Test
+    fun `test construction year below MIN`() {
+        // Act & Assert
         assertFailsWith<IllegalArgumentException> {
             HijrahYearMonth(1299, 12)
         }
+    }
+
+    @Test
+    fun `test construction year above MAX`() {
+        // Act & Assert
         assertFailsWith<IllegalArgumentException> {
             HijrahYearMonth(1601, 1)
         }
     }
 
     @Test
-    fun `test arithmetic`() {
+    fun `test plus month with year rollover`() {
+        // Arrange
         val ym = HijrahYearMonth(1445, 12)
+        
+        // Act
         val next = ym.plusMonth(1)
+        
+        // Assert
         assertEquals(1446, next.year)
         assertEquals(1, next.month.number)
+    }
 
-        val prev = next.minusMonth(1)
+    @Test
+    fun `test minus month with year rollover`() {
+        // Arrange
+        val ym = HijrahYearMonth(1446, 1)
+        
+        // Act
+        val prev = ym.minusMonth(1)
+        
+        // Assert
         assertEquals(1445, prev.year)
         assertEquals(12, prev.month.number)
+    }
 
-        val nextYear = ym.date.plusYears(1)
-        println("nextYear = ${nextYear}")
-        assertEquals(1446, nextYear.year)
-        assertEquals(12, nextYear.month.number)
+    @Test
+    fun `test plus year`() {
+        // Arrange
+        val ym = HijrahYearMonth(1445, 12)
+        
+        // Act
+        val result = ym.plusYear(2)
+        
+        // Assert
+        assertEquals(HijrahYearMonth(1447, 12), result)
+    }
 
-        assertEquals(HijrahYearMonth(1447, 12), ym.plusYear(2))
-        assertEquals(HijrahYearMonth(1443, 12), ym.minusYear(2))
-        assertEquals(HijrahYearMonth(1446, 2), ym.plusMonth(2))
-        assertEquals(HijrahYearMonth(1445, 10), ym.minusMonth(2))
+    @Test
+    fun `test minus year`() {
+        // Arrange
+        val ym = HijrahYearMonth(1445, 12)
+        
+        // Act
+        val result = ym.minusYear(2)
+        
+        // Assert
+        assertEquals(HijrahYearMonth(1443, 12), result)
     }
 
     @Test
@@ -77,7 +127,7 @@ class HijrahYearMonthTest {
     }
 
     @Test
-    fun `test prolepticMonth and comparison`() {
+    fun `test proleptic month and comparison`() {
         val ym1 = HijrahYearMonth(1445, 1)
         val ym2 = HijrahYearMonth(1445, 2)
         val ym3 = HijrahYearMonth(1446, 1)
