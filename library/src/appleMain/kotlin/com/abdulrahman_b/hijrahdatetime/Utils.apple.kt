@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package com.abdulrahman_b.hijrahdatetime
 
 import com.abdulrahman_b.hijrahdatetime.format.FormatLocale
@@ -8,7 +9,6 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.isoDayNumber
-import platform.Foundation.NSCalendar
 import platform.Foundation.NSCalendarUnit
 import platform.Foundation.NSCalendarUnitDay
 import platform.Foundation.NSCalendarUnitHour
@@ -17,7 +17,6 @@ import platform.Foundation.NSCalendarUnitMonth
 import platform.Foundation.NSCalendarUnitNanosecond
 import platform.Foundation.NSCalendarUnitSecond
 import platform.Foundation.NSCalendarUnitWeekOfYear
-import platform.Foundation.NSCalendarUnitWeekday
 import platform.Foundation.NSCalendarUnitYear
 import platform.Foundation.NSDate
 import platform.Foundation.NSDateComponents
@@ -103,18 +102,3 @@ internal fun DateTimePeriod.toNSDateComponents(multiplier: Int = 1): NSDateCompo
     this.nanosecond = nanoseconds.toLong() * multiplier
 }
 
-internal fun getDayOfWeak(calendar: NSCalendar, date: NSDate): DayOfWeek {
-
-    val sundayIndexed = calendar.component(NSCalendarUnitWeekday, date).toInt()
-    // Apple: 1=Sun, 2=Mon... 7=Sat.
-    // kotlinx.datetime.DayOfWeek: Mon=1, Tue=2... Sun=7
-    return when(sundayIndexed) {
-        1 -> DayOfWeek.SUNDAY
-        2 -> DayOfWeek.MONDAY
-        3 -> DayOfWeek.TUESDAY
-        4 -> DayOfWeek.WEDNESDAY
-        5 -> DayOfWeek.THURSDAY
-        6 -> DayOfWeek.FRIDAY
-        else -> DayOfWeek.SATURDAY
-    }
-}

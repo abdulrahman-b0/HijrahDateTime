@@ -3,9 +3,17 @@ package com.abdulrahman_b.hijrahdatetime.yearmonth
 import com.abdulrahman_b.hijrahdatetime.HijrahDate
 import com.abdulrahman_b.hijrahdatetime.HijrahDateRange
 import com.abdulrahman_b.hijrahdatetime.HijrahMonth
+import com.abdulrahman_b.hijrahdatetime.MAX
+import com.abdulrahman_b.hijrahdatetime.MIN
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormat
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormatBuilder
 import com.abdulrahman_b.hijrahdatetime.format.build
+import com.abdulrahman_b.hijrahdatetime.minus
+import com.abdulrahman_b.hijrahdatetime.minusMonths
+import com.abdulrahman_b.hijrahdatetime.minusYears
+import com.abdulrahman_b.hijrahdatetime.plus
+import com.abdulrahman_b.hijrahdatetime.plusMonths
+import com.abdulrahman_b.hijrahdatetime.plusYears
 import com.abdulrahman_b.hijrahdatetime.withLastDayOfMonth
 import com.abdulrahman_b.hijrahdatetime.yearMonth
 import kotlinx.datetime.DateTimeArithmeticException
@@ -23,10 +31,6 @@ import kotlinx.datetime.DateTimeUnit
  * The arithmetic on [HijrahYearMonth] values is defined independently of the time zone (so `1447-09` plus one month
  * is `1447-10` everywhere).
  *
- * Operations with [DateTimeUnit.MonthBased] are provided for [HijrahYearMonth]:
- * - [HijrahYearMonth.plus] and [HijrahYearMonth.minus] allow expressing concepts like "two months later".
- * - [HijrahYearMonth.until] and its shortcuts [HijrahYearMonth.m] and [HijrahYearMonth.yearsUntil]
- *   can be used to find the number of months or years between two dates.
  *  */
 class HijrahYearMonth(val year: Int, val month: HijrahMonth) : Comparable<HijrahYearMonth> {
 
@@ -34,7 +38,7 @@ class HijrahYearMonth(val year: Int, val month: HijrahMonth) : Comparable<Hijrah
         year, HijrahMonth.entries.getOrElse(month - 1) { throw IllegalArgumentException("Invalid HijrahYearMonth: $year-$month") }
     )
 
-    private val date = HijrahDate(year, month.number, 1)
+    internal val date = HijrahDate(year, month.number, 1)
 
     /**
      * Returns the first day of the year-month.
@@ -74,17 +78,16 @@ class HijrahYearMonth(val year: Int, val month: HijrahMonth) : Comparable<Hijrah
      *
      * @throws DateTimeArithmeticException if the result exceeds the boundaries of supported range.
      */
-    fun minus(value: Int, unit: DateTimeUnit.MonthBased): HijrahYearMonth =
-        if (value != Int.MIN_VALUE) plus(-value, unit) else plus(Int.MAX_VALUE, unit).plus(1, unit)
+    fun minus(value: Int, unit: DateTimeUnit.MonthBased): HijrahYearMonth = date.minus(value, unit).yearMonth
 
     /** Returns a [HijrahYearMonth] that results from adding the [value] number of months to this year-month. */
-    fun plusMonth(value: Int) = plus(value, DateTimeUnit.MONTH)
+    fun plusMonth(value: Int) = date.plusMonths(value).yearMonth
     /** Returns a [HijrahYearMonth] that results from subtracting the [value] number of months from this year-month. */
-    fun minusMonth(value: Int) = minus(value, DateTimeUnit.MONTH)
+    fun minusMonth(value: Int) = date.minusMonths(value).yearMonth
     /** Returns a [HijrahYearMonth] that results from adding the [value] number of years to this year-month. */
-    fun plusYear(value: Int) = plus(value, DateTimeUnit.YEAR)
+    fun plusYear(value: Int) = date.plusYears(value).yearMonth
     /** Returns a [HijrahYearMonth] that results from subtracting the [value] number of years from this year-month. */
-    fun minusYear(value: Int) = minus(value, DateTimeUnit.YEAR)
+    fun minusYear(value: Int) = date.minusYears(value).yearMonth
 
     private fun until(other: HijrahYearMonth, unit: DateTimeUnit): Long {
         return when (unit) {
@@ -151,8 +154,6 @@ class HijrahYearMonth(val year: Int, val month: HijrahMonth) : Comparable<Hijrah
             return HijrahYearMonth(year, month)
         }
 
-        val MAX by lazy { HijrahDate.MAX.yearMonth }
-        val MIN by lazy { HijrahDate.MIN.yearMonth }
     }
 }
 

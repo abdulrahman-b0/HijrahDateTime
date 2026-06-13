@@ -3,6 +3,7 @@ package com.abdulrahman_b.hijrahdatetime.yearmonth
 import com.abdulrahman_b.hijrahdatetime.HijrahMonth
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormatBuilder
 import com.abdulrahman_b.hijrahdatetime.format.build
+import com.abdulrahman_b.hijrahdatetime.plusYears
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -43,7 +44,8 @@ class HijrahYearMonthTest {
         assertEquals(1445, prev.year)
         assertEquals(12, prev.month.number)
 
-        val nextYear = ym.plusYear(1)
+        val nextYear = ym.date.plusYears(1)
+        println("nextYear = ${nextYear}")
         assertEquals(1446, nextYear.year)
         assertEquals(12, nextYear.month.number)
 

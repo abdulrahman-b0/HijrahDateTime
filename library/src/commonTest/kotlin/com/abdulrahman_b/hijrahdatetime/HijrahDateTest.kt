@@ -71,6 +71,23 @@ class HijrahDateTest {
     }
 
     @Test
+    fun `test arithmetic years`() {
+        val date = HijrahDate(1446, 1, 29)
+        val nextMonth = shouldNotThrowAny { date plusMonths 1 }
+        nextMonth.month.number shouldBe 2
+        nextMonth.day shouldBe 29
+
+        val nextYear = shouldNotThrowAny { date plusYears 1 }
+        nextYear.year shouldBe 1447
+        nextYear.month.number shouldBe 1
+        nextYear.day shouldBe 29
+
+        val minusMonth = shouldNotThrowAny { nextMonth minusMonths 1 }
+        minusMonth.month.number shouldBe 1
+        minusMonth.day shouldBe 29
+    }
+
+    @Test
     fun `test invalid creation`() {
         shouldThrow<IllegalArgumentException> {
             HijrahDate(1445, 9, 31) // Ramadan 1445 had 30 days
@@ -139,7 +156,8 @@ class HijrahDateTest {
         dateFromEpoch.month.number shouldBe 1
 
         //Negative offset
-        epochDays = instant.toHijrahDateTime(TimeZone.of("America/New_York")).date.toEpochDays() //The actual date here is 1445-12-30 or 1446-12-29 since New York is 4-5 hours behind UTC
+        epochDays =
+            instant.toHijrahDateTime(TimeZone.of("America/New_York")).date.toEpochDays() //The actual date here is 1445-12-30 or 1446-12-29 since New York is 4-5 hours behind UTC
         dateFromEpoch = HijrahDate.fromEpochDays(epochDays)
         epochDays shouldBe 19910
         dateFromEpoch.year shouldBe 1445
@@ -271,13 +289,34 @@ class HijrahDateTest {
     @Test
     fun `test value range`() {
         val date = HijrahDate(1445, 9, 1)
-        val dayRange = shouldNotThrowAny { date.range(DateTimeUnit.DAY) }
+        val dayRange = shouldNotThrowAny {
+            date.range(DateTimeUnit.DAY)
+                .let { ValueRange(it.start.toLong(), it.endInclusive.toLong()) }
+        }
         dayRange.minimum shouldBe 1
         dayRange.maximum shouldBe 30
 
-        val monthRange = shouldNotThrowAny { date.range(DateTimeUnit.MONTH) }
+        val monthRange = shouldNotThrowAny {
+            date.range(DateTimeUnit.MONTH)
+                .let { ValueRange(it.start.toLong(), it.endInclusive.toLong()) }
+        }
         monthRange.minimum shouldBe 1
         monthRange.maximum shouldBe 12
+
+        val weekRange = shouldNotThrowAny {
+            date.range(DateTimeUnit.WEEK)
+                .let { ValueRange(it.start.toLong(), it.endInclusive.toLong()) }
+        }
+        weekRange.minimum shouldBe 1
+        weekRange.maximum shouldBe 5
+
+        val yearRange = shouldNotThrowAny {
+            date.range(DateTimeUnit.YEAR)
+                .let { ValueRange(it.start.toLong(), it.endInclusive.toLong()) }
+        }
+        yearRange.minimum shouldBe 1300
+        yearRange.maximum shouldBe 1600
+
     }
 
     @OptIn(ExperimentalTime::class)
