@@ -1,6 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-rootProject.name = "hijrahdatetime"
 
 pluginManagement {
     repositories {
@@ -18,13 +17,13 @@ dependencyResolutionManagement {
         gradlePluginPortal()
     }
 
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
+
 }
 
-includeBuild("build-logic")
-include(":core")
-include(":compose-pickers")
-include(":sample-shared")
-include(":sample-android-app")
-
-
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+rootProject.name = "build-logic"
