@@ -5,6 +5,8 @@ import com.abdulrahman_b.hijrahdatetime.format.javaFormatter
 import com.abdulrahman_b.hijrahdatetime.internal.compareDates
 import com.abdulrahman_b.hijrahdatetime.internal.getDayOfWeek
 import com.abdulrahman_b.hijrahdatetime.internal.getDayOfYear
+import com.abdulrahman_b.hijrahdatetime.internal.getMaxHijrahDate
+import com.abdulrahman_b.hijrahdatetime.internal.getMinHijrahDate
 import com.abdulrahman_b.hijrahdatetime.internal.validateYearAndDay
 import com.abdulrahman_b.hijrahdatetime.serializers.HijrahDateComponentsSerializer
 import kotlinx.serialization.Serializable
@@ -52,6 +54,8 @@ actual class HijrahDate private constructor(
         actual fun parseOrNull(string: String, format: HijrahDateTimeFormat): HijrahDate? =
             runCatching { parse(string, format) }.getOrNull()
 
+        actual val MIN: HijrahDate get() = getMinHijrahDate()
+        actual val MAX: HijrahDate get() = getMaxHijrahDate()
     }
 
 

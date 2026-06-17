@@ -47,3 +47,10 @@ internal fun compareDates(date1: HijrahDate, date2: HijrahDate): Int {
     }
     return date1.day.compareTo(date2.day)
 }
+
+internal fun getMinHijrahDate(): HijrahDate = HijrahDate(UmmAlQuraData.BASE_HIJRI_YEAR, 1, 1)
+internal fun getMaxHijrahDate(): HijrahDate = HijrahDate(
+    year = UmmAlQuraData.MAX_HIJRI_YEAR,
+    month = MONTHS_OF_YEAR,
+    day = getLengthOfMonth(UmmAlQuraData.MAX_HIJRI_YEAR, MONTHS_OF_YEAR)
+)

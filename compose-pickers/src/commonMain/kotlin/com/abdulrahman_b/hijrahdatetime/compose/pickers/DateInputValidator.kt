@@ -23,8 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import com.abdulrahman_b.hijrahdatetime.HijrahDate
-import com.abdulrahman_b.hijrahdatetime.MAX
-import com.abdulrahman_b.hijrahdatetime.MIN
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.DateInputFormat
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.InputIdentifier
 import com.abdulrahman_b.hijrahdatetime.format.DecimalStyle

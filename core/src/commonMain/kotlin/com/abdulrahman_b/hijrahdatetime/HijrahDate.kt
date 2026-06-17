@@ -76,6 +76,10 @@ expect class HijrahDate(year: Int, month: Int, day: Int) : Comparable<HijrahDate
          */
         fun parseOrNull(string: String, format: HijrahDateTimeFormat): HijrahDate?
 
+        val MIN: HijrahDate
+
+        val MAX: HijrahDate
+
     }
 
 }
@@ -243,17 +247,6 @@ operator fun HijrahDate.rangeUntil(other: HijrahDate): HijrahDateRange =
 infix fun HijrahDate.downTo(other: HijrahDate): HijrahDateProgression {
     return HijrahDateProgression(this, other, step = -1)
 }
-
-/** The minimum supported [HijrahDate]. */
-val HijrahDate.Companion.MIN get() = HijrahDate(UmmAlQuraData.BASE_HIJRI_YEAR, 1, 1)
-
-/** The maximum supported [HijrahDate]. */
-val HijrahDate.Companion.MAX
-    get() = HijrahDate(
-        year = UmmAlQuraData.MAX_HIJRI_YEAR,
-        month = MONTHS_OF_YEAR,
-        day = getLengthOfMonth(UmmAlQuraData.MAX_HIJRI_YEAR, MONTHS_OF_YEAR)
-    )
 
 fun HijrahDate.toEpochDays(): Long {
     val daysFromYears =
