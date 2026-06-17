@@ -9,7 +9,7 @@ HijrahDateTime is a Kotlin Multiplatform library for working with the Hijrah cal
 
 Starting from version 2.0, this library has been rewritten as a Kotlin Multiplatform project, providing first-class support for JVM, Android, iOS, and macOS.
 
-> **Experimental / Alpha Notice (2.0.0-alpha06)**
+> **Experimental / Alpha Notice (2.0.0-alpha07)**
 >
 > This release is experimental and provided "as-is". The API surface and behavior may change without notice.
 > If you plan to use it in production, please share your feedback and suggestions.
@@ -53,10 +53,10 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Core library
-            implementation("com.abdulrahman-b.hijrahdatetime:hijrahdatetime:2.0.0-alpha06")
+            implementation("com.abdulrahman-b.hijrahdatetime:hijrahdatetime:2.0.0-alpha07")
             
             // Compose Pickers (for UI)
-            implementation("com.abdulrahman-b.hijrahdatetime:compose-pickers:2.0.0-alpha06")
+            implementation("com.abdulrahman-b.hijrahdatetime:compose-pickers:2.0.0-alpha07")
         }
     }
 }
