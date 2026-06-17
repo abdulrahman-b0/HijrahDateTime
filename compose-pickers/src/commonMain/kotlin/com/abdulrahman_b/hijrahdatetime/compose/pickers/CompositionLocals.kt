@@ -47,7 +47,7 @@ internal val LocalPickerDecimalStyle = compositionLocalOf<DecimalStyle> {
  * accessing this variable will throw an error.
  */
 @OptIn(ExperimentalMaterial3Api::class)
-internal val LocalPickerFormatter = staticCompositionLocalOf<HijriDatePickerFormatter> {
+internal val LocalPickerFormatter = staticCompositionLocalOf<HijrahDatePickerFormatter> {
     error("No LocalPickerFormatter provided")
 }
 

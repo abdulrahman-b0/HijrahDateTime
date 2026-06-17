@@ -65,9 +65,9 @@ import org.jetbrains.compose.resources.getString
 @Stable
 internal class DateInputValidator(
     private val yearRange: IntRange,
-    private val selectableDates: HijriSelectableDates,
+    private val selectableDates: HijrahSelectableDates,
     private val dateInputFormat: DateInputFormat,
-    private val dateFormatter: HijriDatePickerFormatter,
+    private val dateFormatter: HijrahDatePickerFormatter,
     private val errorDatePattern: StringResource,
     private val errorDateOutOfYearRange: StringResource,
     private val errorInvalidNotAllowed: StringResource,
@@ -148,7 +148,7 @@ internal class DateInputValidator(
  *
  * @param dateInputFormat an instance of [DateInputFormat] that provides the date patterns and delimiters for validation
  * @param yearRange an [IntRange] specifying the valid range of years for the date input
- * @param selectableDates an implementation of [HijriSelectableDates] to determine the selectability of specific dates and years
+ * @param selectableDates an implementation of [HijrahSelectableDates] to determine the selectability of specific dates and years
  * @param errorInvalidRangeInput a string for displaying an error message when a range input start date is after the end date,
  *   or the end date is before the start date
  * @return a [DateInputValidator] instance configured with the specified parameters
@@ -157,7 +157,7 @@ internal class DateInputValidator(
 internal fun rememberDateInputValidator(
     dateInputFormat: DateInputFormat,
     yearRange: IntRange,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     errorInvalidRangeInput: StringResource?
 ): DateInputValidator {
 

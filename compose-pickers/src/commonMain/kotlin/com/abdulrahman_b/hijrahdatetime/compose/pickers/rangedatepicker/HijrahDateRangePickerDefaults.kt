@@ -50,10 +50,10 @@ import com.abdulrahman_b.hijrahdatetime.resources.date_range_picker_title
 import org.jetbrains.compose.resources.stringResource
 
 
-/** Contains default values used by the [HijriDateRangePicker]. */
+/** Contains default values used by the [HijrahDateRangePicker]. */
 @ExperimentalMaterial3Api
 @Stable
-object HijriDateRangePickerDefaults {
+object HijrahDateRangePickerDefaults {
 
     /**
      * A default date range picker title composable.

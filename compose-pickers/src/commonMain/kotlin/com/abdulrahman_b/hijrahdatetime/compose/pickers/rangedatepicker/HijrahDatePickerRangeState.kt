@@ -29,8 +29,8 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.abdulrahman_b.hijrahdatetime.HijrahDate
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijriSelectableDates
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.HijriDatePickerDefaults
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijrahSelectableDates
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.HijrahDatePickerDefaults
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.valueOf
 import com.abdulrahman_b.hijrahdatetime.fromEpochDays
 import com.abdulrahman_b.hijrahdatetime.toEpochDays
@@ -43,11 +43,11 @@ import kotlin.time.Clock
 
 /**
  * A state object that can be hoisted to observe the date picker state. See
- * [rememberHijriDateRangePickerState].
+ * [rememberHijrahDateRangePickerState].
  */
 @ExperimentalMaterial3Api
 @Stable
-interface HijriDateRangePickerState {
+interface HijrahDateRangePickerState {
 
     /**
      * A timestamp that represents the selected date _start_ of the day in _UTC_ milliseconds from
@@ -77,11 +77,11 @@ interface HijriDateRangePickerState {
     val yearRange: IntRange
 
     /**
-     * A [HijriSelectableDates] that is consulted to check if a date is allowed.
+     * A [HijrahSelectableDates] that is consulted to check if a date is allowed.
      *
      * In case a date is not allowed to be selected, it will appear disabled in the UI.
      */
-    val selectableDates: HijriSelectableDates
+    val selectableDates: HijrahSelectableDates
 
 
     @Suppress("unused")
@@ -104,14 +104,14 @@ data class SelectedDateRange(val startDate: HijrahDate, val endDate: HijrahDate)
 
 
 @OptIn(ExperimentalMaterial3Api::class)
-internal class HijriDateRangePickerStateImpl(
+internal class HijrahDateRangePickerStateImpl(
     initialSelectedStartDate: HijrahDate?,
     initialSelectedEndDate: HijrahDate?,
     initialDisplayedMonth: HijrahYearMonth,
     initialDisplayMode: DisplayMode,
     override val yearRange: IntRange,
-    override val selectableDates: HijriSelectableDates,
-) : HijriDateRangePickerState {
+    override val selectableDates: HijrahSelectableDates,
+) : HijrahDateRangePickerState {
 
     override var selectedStartDate by mutableStateOf(initialSelectedStartDate)
 
@@ -125,8 +125,8 @@ internal class HijriDateRangePickerStateImpl(
     companion object {
 
         fun Saver(
-            selectableDates: HijriSelectableDates,
-        ): Saver<HijriDateRangePickerState, *> = listSaver(
+            selectableDates: HijrahSelectableDates,
+        ): Saver<HijrahDateRangePickerState, *> = listSaver(
             save = {
                 listOf(
                     it.selectedStartDate?.toEpochDays(),
@@ -138,7 +138,7 @@ internal class HijriDateRangePickerStateImpl(
                 )
             },
             restore = { value ->
-                HijriDateRangePickerStateImpl(
+                HijrahDateRangePickerStateImpl(
                     initialSelectedStartDate = (value[0] as? Long)?.let(HijrahDate::fromEpochDays),
                     initialSelectedEndDate = (value[1] as? Long)?.let(HijrahDate::fromEpochDays),
                     initialDisplayedMonth = HijrahDate.fromEpochDays(value[2] as Long).yearMonth,
@@ -162,22 +162,22 @@ internal class HijriDateRangePickerStateImpl(
  * @param initialDisplayMode The initial display mode of the date picker (Picker or Input).
  * @param yearRange The range of years that the date picker will be limited to.
  * @param selectableDates A SelectableDates object that determines which dates are selectable.
- * @return A [HijriDateRangePickerState] object that holds the state of the date range picker.
+ * @return A [HijrahDateRangePickerState] object that holds the state of the date range picker.
  */
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun rememberHijriDateRangePickerState(
+fun rememberHijrahDateRangePickerState(
     initialSelectedStartDate: HijrahDate? = null,
     initialSelectedEndDate: HijrahDate? = null,
     initialDisplayedMonth: HijrahYearMonth = remember { Clock.System.now().toHijrahDateTime(TimeZone.currentSystemDefault()).date.yearMonth },
     initialDisplayMode: DisplayMode = DisplayMode.Picker,
-    yearRange: IntRange = HijriDatePickerDefaults.YearRange,
-    selectableDates: HijriSelectableDates = HijriDatePickerDefaults.AllDates,
-): HijriDateRangePickerState {
+    yearRange: IntRange = HijrahDatePickerDefaults.YearRange,
+    selectableDates: HijrahSelectableDates = HijrahDatePickerDefaults.AllDates,
+): HijrahDateRangePickerState {
     return rememberSaveable(
-        saver = HijriDateRangePickerStateImpl.Saver(selectableDates)
+        saver = HijrahDateRangePickerStateImpl.Saver(selectableDates)
     ) {
-        HijriDateRangePickerStateImpl(
+        HijrahDateRangePickerStateImpl(
             initialSelectedStartDate,
             initialSelectedEndDate,
             initialDisplayedMonth,

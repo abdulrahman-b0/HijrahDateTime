@@ -21,12 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.abdulrahman.hijrahdatetime.sample.theme.HijriDatePickerTheme
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.HijriDatePicker
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.HijrahDatePicker
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.HijriMultiDatePicker
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.rememberHijriDatePickerState
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.rememberHijriMultiDatePickerState
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.rangedatepicker.HijriDateRangePicker
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.rangedatepicker.rememberHijriDateRangePickerState
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.rememberHijrahDatePickerState
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.rememberHijrahMultiDatePickerState
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.rangedatepicker.HijrahDateRangePicker
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.rangedatepicker.rememberHijrahDateRangePickerState
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormat
 import com.abdulrahman_b.hijrahdatetime.toEpochDays
 import hijrahdatetime.sample_shared.generated.resources.Res
@@ -68,7 +68,7 @@ private fun DatePickerFormSample(
     ) {
 
         //--------------------------- Hijri Date Picker (single) ---------------------------
-        val datePickerState = rememberHijriDatePickerState(
+        val datePickerState = rememberHijrahDatePickerState(
             yearRange = 1400..1500,
         )
         var selectDateDialogOpen by remember {
@@ -109,13 +109,13 @@ private fun DatePickerFormSample(
                     )
                 },
             ) {
-                HijriDatePicker(state = datePickerState, firstDayOfWeek = DayOfWeek.SUNDAY)
+                HijrahDatePicker(state = datePickerState, firstDayOfWeek = DayOfWeek.SUNDAY)
             }
         }
 
         //--------------------------- Hijri Date Range Picker ---------------------------
 
-        val dateRangePickerState = rememberHijriDateRangePickerState()
+        val dateRangePickerState = rememberHijrahDateRangePickerState()
         var selectDateRangeDialogOpen by remember {
             mutableStateOf(false)
         }
@@ -158,7 +158,7 @@ private fun DatePickerFormSample(
                     )
                 },
             ) {
-                HijriDateRangePicker(state = dateRangePickerState)
+                HijrahDateRangePicker(state = dateRangePickerState)
             }
         }
 
@@ -178,7 +178,7 @@ private fun DatePickerFormSample(
  *
  * - An [OutlinedTextField] shows the currently selected dates formatted as a string.
  * - Clicking the trailing icon opens a [DatePickerDialog] that hosts [HijriMultiDatePicker].
- * - When the user confirms, all selected dates from [rememberHijriMultiDatePickerState]
+ * - When the user confirms, all selected dates from [rememberHijrahMultiDatePickerState]
  *   are formatted with [formatter] and written back to the text field.
  *
  * The selected dates are displayed in ascending order of their epoch day to keep the
@@ -193,7 +193,7 @@ private fun HijriMultiDatePickerSection(
     formatter: HijrahDateTimeFormat,
     modifier: Modifier = Modifier
 ) {
-    val multiDatePickerState = rememberHijriMultiDatePickerState(
+    val multiDatePickerState = rememberHijrahMultiDatePickerState(
         yearRange = 1400..1500,
     )
     var selectMultiDateDialogOpen by remember {

@@ -49,7 +49,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.abdulrahman_b.hijrahdatetime.HijrahDate
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.DateInputValidator
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijriSelectableDates
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijrahSelectableDates
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalPickerFormatter
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalPickerLocale
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.rememberDateInputValidator
@@ -69,7 +69,7 @@ internal fun DateInputContent(
     yearRange: IntRange,
     pattern: String,
     patternDelimiter: Char,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     colors: DatePickerColors
 ) {
     val locale = LocalPickerLocale.current

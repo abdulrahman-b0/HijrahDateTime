@@ -3,17 +3,17 @@ package com.abdulrahman_b.hijrahdatetime.compose.pickers
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import com.abdulrahman_b.hijrahdatetime.HijrahDate
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.rememberHijriDatePickerState
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.rangedatepicker.rememberHijriDateRangePickerState
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.rememberHijrahDatePickerState
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.rangedatepicker.rememberHijrahDateRangePickerState
 
 
 /**
  * An interface that defines the contract for determining whether a Hijri date or a specific year
  * is selectable in a Hijri date picker.
  *
- * An implementation of this class must be created and passed to [rememberHijriDatePickerState] or [rememberHijriDateRangePickerState] respectively.
+ * An implementation of this class must be created and passed to [rememberHijrahDatePickerState] or [rememberHijrahDateRangePickerState] respectively.
  */
-interface HijriSelectableDates {
+interface HijrahSelectableDates {
 
     /**
      * Determines whether the given HijrahDate is selectable.

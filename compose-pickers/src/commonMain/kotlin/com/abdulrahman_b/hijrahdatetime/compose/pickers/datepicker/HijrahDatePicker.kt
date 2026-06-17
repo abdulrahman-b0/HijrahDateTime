@@ -73,8 +73,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.abdulrahman_b.hijrahdatetime.HijrahDate
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijriDatePickerFormatter
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijriSelectableDates
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijrahDatePickerFormatter
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijrahSelectableDates
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalDayOfWeekTextStyle
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalFirstDayOfWeek
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalPickerDecimalStyle
@@ -111,21 +111,21 @@ import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Clock
 
 /**
- * [HijriDatePicker] is a composable function that provides a date picker component for selecting dates
+ * [HijrahDatePicker] is a composable function that provides a date picker component for selecting dates
  * in the Hijri calendar. This date picker allows users to select a date via a calendar UI or switch
  * to a date input mode for manual entry of dates using the keyboard.
  *
  * @param state The state of the date picker, which includes the selected date, displayed month,
- *   display mode, and other relevant information. See [HijriDatePickerState].
+ *   display mode, and other relevant information. See [HijrahDatePickerState].
  * @param modifier The [Modifier] to be applied to this date picker.
  * @param dateFormatter A [DatePickerFormatter] that provides formatting skeletons for dates display.
- *   The default value is created using [HijriDatePickerDefaults.dateFormatter].
+ *   The default value is created using [HijrahDatePickerDefaults.dateFormatter].
  * @param firstDayOfWeek The first day of the week to be displayed in the calendar. The default value
  *   is [DayOfWeek.SATURDAY].
  * @param title A composable function that represents the title to be displayed in the date picker.
- *   The default value is a title provided by [HijriDatePickerDefaults.DatePickerTitle].
+ *   The default value is a title provided by [HijrahDatePickerDefaults.DatePickerTitle].
  * @param headline A composable function that represents the headline to be displayed in the date
- *   picker. The default value is a headline provided by [HijriDatePickerDefaults.DatePickerHeadline].
+ *   picker. The default value is a headline provided by [HijrahDatePickerDefaults.DatePickerHeadline].
  * @param showModeToggle A boolean indicating if this DatePicker should show a mode toggle action that
  *   transforms it into a date input. The default value is true.
  * @param colors [DatePickerColors] that will be used to resolve the colors used for this date picker
@@ -141,20 +141,20 @@ import kotlin.time.Clock
  */
 @ExperimentalMaterial3Api
 @Composable
-fun HijriDatePicker(
-    state: HijriDatePickerState,
+fun HijrahDatePicker(
+    state: HijrahDatePickerState,
     modifier: Modifier = Modifier,
-    dateFormatter: HijriDatePickerFormatter = remember { HijriDatePickerDefaults.dateFormatter() },
+    dateFormatter: HijrahDatePickerFormatter = remember { HijrahDatePickerDefaults.dateFormatter() },
     firstDayOfWeek: DayOfWeek = DayOfWeek.SATURDAY,
     dayOfWeekStyle: NameStyle = NameStyle.ABBREVIATED,
     title: (@Composable () -> Unit)? = {
-        HijriDatePickerDefaults.DatePickerTitle(
+        HijrahDatePickerDefaults.DatePickerTitle(
             displayMode = state.displayMode,
             modifier = Modifier.padding(DatePickerTitlePadding)
         )
     },
     headline: (@Composable () -> Unit)? = {
-        HijriDatePickerDefaults.DatePickerHeadline(
+        HijrahDatePickerDefaults.DatePickerHeadline(
             selectedDate = state.selectedDate,
             displayMode = state.displayMode,
             modifier = Modifier.padding(DatePickerHeadlinePadding)
@@ -219,8 +219,8 @@ fun HijriDatePicker(
  * [HijriMultiDatePicker] is a composable function that provides a date picker component
  * for selecting **multiple** dates in the Hijri calendar.
  *
- * This variant builds on the same visual structure as [HijriDatePicker], but instead of
- * storing a single [HijrahDate], it interacts with [HijriMultiDatePickerState] and allows
+ * This variant builds on the same visual structure as [HijrahDatePicker], but instead of
+ * storing a single [HijrahDate], it interacts with [HijrahMultiDatePickerState] and allows
  * users to toggle an arbitrary set of dates on or off.
  *
  * Unlike the single-date picker, this implementation focuses on the calendar (picker) mode.
@@ -228,19 +228,19 @@ fun HijriDatePicker(
  * less common and more complex to present in a simple interface.
  *
  * @param state The multi-date picker state that holds the set of selected dates, the
- *   displayed month, and the display mode. See [HijriMultiDatePickerState].
+ *   displayed month, and the display mode. See [HijrahMultiDatePickerState].
  * @param modifier The [Modifier] to be applied to this date picker.
- * @param dateFormatter A [HijriDatePickerFormatter] used for formatting dates in headers,
+ * @param dateFormatter A [HijrahDatePickerFormatter] used for formatting dates in headers,
  *   content descriptions, and accessibility labels. Defaults to
- *   [HijriDatePickerDefaults.dateFormatter].
+ *   [HijrahDatePickerDefaults.dateFormatter].
  * @param firstDayOfWeek The first day of the week to display in the calendar grid.
  *   Defaults to [DayOfWeek.SATURDAY].
  * @param dayOfWeekStyle The text style used for day-of-week labels. Defaults to
  *   [java.time.format.TextStyle.SHORT].
  * @param title A composable used as the title of the picker. By default, it uses
- *   [HijriDatePickerDefaults.DatePickerTitle] with the state's [displayMode].
+ *   [HijrahDatePickerDefaults.DatePickerTitle] with the state's [displayMode].
  * @param headline A composable used as the headline section under the title. By default,
- *   it uses [HijriDatePickerDefaults.DatePickerHeadline] and shows the first selected date,
+ *   it uses [HijrahDatePickerDefaults.DatePickerHeadline] and shows the first selected date,
  *   if any.
  * @param showModeToggle Whether to show a mode toggle that switches between picker and
  *   input modes. For multi-select scenarios this is typically `false`, but it can be
@@ -251,19 +251,19 @@ fun HijriDatePicker(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HijriMultiDatePicker(
-    state: HijriMultiDatePickerState,
+    state: HijrahMultiDatePickerState,
     modifier: Modifier = Modifier,
-    dateFormatter: HijriDatePickerFormatter = remember { HijriDatePickerDefaults.dateFormatter() },
+    dateFormatter: HijrahDatePickerFormatter = remember { HijrahDatePickerDefaults.dateFormatter() },
     firstDayOfWeek: DayOfWeek = DayOfWeek.SATURDAY,
     dayOfWeekStyle: NameStyle = NameStyle.ABBREVIATED,
     title: (@Composable () -> Unit)? = {
-        HijriDatePickerDefaults.DatePickerTitle(
+        HijrahDatePickerDefaults.DatePickerTitle(
             displayMode = state.displayMode,
             modifier = Modifier.padding(DatePickerTitlePadding)
         )
     },
     headline: (@Composable () -> Unit)? = {
-        HijriDatePickerDefaults.MultiDatePickerHeadline(
+        HijrahDatePickerDefaults.MultiDatePickerHeadline(
             selectedDates = state.selectedDates,
             displayMode = state.displayMode,
             modifier = Modifier.padding(DatePickerHeadlinePadding)
@@ -405,7 +405,7 @@ private fun SwitchableDateEntryContent(
     onDateSelectionChange: (date: HijrahDate?) -> Unit,
     onDisplayedMonthChange: (month: HijrahYearMonth) -> Unit,
     yearRange: IntRange,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     colors: DatePickerColors
 ) {
     val dateFormatter = LocalPickerFormatter.current
@@ -467,7 +467,7 @@ private fun MultiDatePickerContent(
     onDateToggle: (date: HijrahDate) -> Unit,
     onDisplayedMonthChange: (month: HijrahYearMonth) -> Unit,
     yearRange: IntRange,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     colors: DatePickerColors
 ) {
     val dateFormatter = LocalPickerFormatter.current
@@ -598,7 +598,7 @@ private fun DatePickerContent(
     onDateSelectionChange: (date: HijrahDate) -> Unit,
     onDisplayedMonthChange: (month: HijrahYearMonth) -> Unit,
     yearRange: IntRange,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     colors: DatePickerColors
 ) {
 

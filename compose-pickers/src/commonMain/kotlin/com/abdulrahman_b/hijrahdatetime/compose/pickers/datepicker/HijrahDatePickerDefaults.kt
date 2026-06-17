@@ -40,8 +40,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abdulrahman_b.hijrahdatetime.HijrahDate
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijriDatePickerFormatter
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijriSelectableDates
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijrahDatePickerFormatter
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijrahSelectableDates
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalPickerDecimalStyle
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalPickerFormatter
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalPickerLocale
@@ -61,12 +61,12 @@ import org.jetbrains.compose.resources.stringResource
 
 
 @OptIn(ExperimentalMaterial3Api::class)
-object HijriDatePickerDefaults {
+object HijrahDatePickerDefaults {
 
 
     val YearRange = 1300..1500
 
-    val AllDates = object : HijriSelectableDates {}
+    val AllDates = object : HijrahSelectableDates {}
 
     /**
      * A date format skeleton used to format the date picker's year selection menu button (e.g.
@@ -89,8 +89,8 @@ object HijriDatePickerDefaults {
 
     fun dateFormatter(
         headlineDateSkeleton: String = YEAR_MONTH_WEEKDAY_DAY_SKELETON,
-    ): HijriDatePickerFormatter {
-        return HijriDatePickerFormatter(
+    ): HijrahDatePickerFormatter {
+        return HijrahDatePickerFormatter(
             yearMonthSelectionSkeleton = YEAR_MONTH_SKELETON,
             selectedDateSkeleton = headlineDateSkeleton,
             selectedDateDescriptionSkeleton = YEAR_ABBR_MONTH_DAY_SKELETON,

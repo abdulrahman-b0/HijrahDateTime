@@ -39,7 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import com.abdulrahman_b.hijrahdatetime.HijrahDate
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijriSelectableDates
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijrahSelectableDates
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalFirstDayOfWeek
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalPickerDecimalStyle
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalPickerFormatter
@@ -64,7 +64,7 @@ internal fun HorizontalMonthsPager(
     onDateSelectionChange: (date: HijrahDate) -> Unit,
     onDisplayedMonthChange: (month: HijrahYearMonth) -> Unit,
     yearRange: IntRange,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     colors: DatePickerColors
 ) {
 
@@ -114,7 +114,7 @@ internal fun Month(
     startDate: HijrahDate?,
     endDate: HijrahDate?,
     rangeSelectionInfo: SelectedRangeInfo?,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     colors: DatePickerColors
 ) {
     val dateFormatter = LocalPickerFormatter.current
@@ -262,7 +262,7 @@ internal fun HorizontalMonthsPagerMulti(
     onDateToggle: (date: HijrahDate) -> Unit,
     onDisplayedMonthChange: (month: HijrahYearMonth) -> Unit,
     yearRange: IntRange,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     colors: DatePickerColors
 ) {
 
@@ -324,7 +324,7 @@ internal fun MonthMulti(
     selectedDates: Set<HijrahDate>,
     onDateToggle: (date: HijrahDate) -> Unit,
     today: HijrahDate,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     colors: DatePickerColors
 ) {
     val dateFormatter = LocalPickerFormatter.current

@@ -51,7 +51,7 @@ import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijriSelectableDates
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijrahSelectableDates
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.toLocalString
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.tokens.DatePickerModalTokens
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.yearContainerColor
@@ -101,7 +101,7 @@ internal fun YearPicker(
     currentYear: Int,
     displayedYear: Int,
     onYearSelected: (year: Int) -> Unit,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     yearRange: IntRange,
     colors: DatePickerColors
 ) {

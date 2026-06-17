@@ -46,8 +46,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.abdulrahman_b.hijrahdatetime.HijrahDate
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijriDatePickerFormatter
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijriSelectableDates
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijrahDatePickerFormatter
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijrahSelectableDates
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalDayOfWeekTextStyle
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalFirstDayOfWeek
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalPickerDecimalStyle
@@ -66,7 +66,7 @@ import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.DateEntryCont
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.DatePickerHorizontalPadding
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.DatePickerModeTogglePadding
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.DisplayModeToggleButton
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.HijriDatePickerDefaults
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.HijrahDatePickerDefaults
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.RecommendedSizeForAccessibility
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.tokens.DatePickerModalTokens
 import com.abdulrahman_b.hijrahdatetime.format.DecimalStyle
@@ -91,9 +91,9 @@ import kotlin.time.Clock
  * The date range picker allows users to select a start date and an end date, and it provides visual feedback
  * for the selected range. It also supports input mode for manual date entry.
  *
- * @param state The state of the date range picker, which holds the current selection and display mode. See [rememberHijriDateRangePickerState].
+ * @param state The state of the date range picker, which holds the current selection and display mode. See [rememberHijrahDateRangePickerState].
  * @param modifier The [Modifier] to be applied to this date range picker.
- * @param dateFormatter A [DatePickerFormatter] that provides formatting skeletons for dates display. Defaults to [HijriDatePickerDefaults.dateFormatter].
+ * @param dateFormatter A [DatePickerFormatter] that provides formatting skeletons for dates display. Defaults to [HijrahDatePickerDefaults.dateFormatter].
  * @param title A composable function that defines the title to be displayed in the date range picker. Defaults to a standard title.
  * @param headline A composable function that defines the headline to be displayed in the date range picker. Defaults to a standard headline.
  * @param firstDayOfWeek The first day of the week to be displayed in the calendar. Defaults to [DayOfWeek.SATURDAY].
@@ -105,18 +105,18 @@ import kotlin.time.Clock
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HijriDateRangePicker(
-    state: HijriDateRangePickerState,
+fun HijrahDateRangePicker(
+    state: HijrahDateRangePickerState,
     modifier: Modifier = Modifier,
-    dateFormatter: HijriDatePickerFormatter = remember { HijriDatePickerDefaults.dateFormatter() },
+    dateFormatter: HijrahDatePickerFormatter = remember { HijrahDatePickerDefaults.dateFormatter() },
     title: (@Composable () -> Unit)? = {
-        HijriDateRangePickerDefaults.DateRangePickerTitle(
+        HijrahDateRangePickerDefaults.DateRangePickerTitle(
             displayMode = state.displayMode,
             modifier = Modifier.padding(DateRangePickerTitlePadding)
         )
     },
     headline: (@Composable () -> Unit)? = {
-        HijriDateRangePickerDefaults.HijriDateRangePickerHeadline(
+        HijrahDateRangePickerDefaults.HijriDateRangePickerHeadline(
             selectedStartDate = state.selectedStartDate,
             selectedEndDate = state.selectedEndDate,
             displayMode = state.displayMode,
@@ -198,7 +198,7 @@ private fun SwitchableDateEntryContent(
     onDatesSelectionChange: (startDate: HijrahDate?, endDate: HijrahDate?) -> Unit,
     onDisplayedMonthChange: (month: HijrahYearMonth) -> Unit,
     yearRange: IntRange,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     colors: DatePickerColors
 ) {
 
@@ -242,7 +242,7 @@ private fun DateRangePickerContent(
     onDatesSelectionChange: (startDateMillis: HijrahDate?, endDateMillis: HijrahDate?) -> Unit,
     onDisplayedMonthChange: (monthInMillis: HijrahYearMonth) -> Unit,
     yearRange: IntRange,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     colors: DatePickerColors
 ) {
 
@@ -280,7 +280,7 @@ private fun VerticalMonthsList(
     onDatesSelectionChange: (startDate: HijrahDate?, endDate: HijrahDate?) -> Unit,
     onDisplayedMonthChange: (month: HijrahYearMonth) -> Unit,
     yearRange: IntRange,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     colors: DatePickerColors
 ) {
     val timeZone = LocalTimeZone.current

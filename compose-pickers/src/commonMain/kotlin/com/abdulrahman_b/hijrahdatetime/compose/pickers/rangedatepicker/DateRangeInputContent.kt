@@ -30,7 +30,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.abdulrahman_b.hijrahdatetime.HijrahDate
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijriSelectableDates
+import com.abdulrahman_b.hijrahdatetime.compose.pickers.HijrahSelectableDates
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.LocalPickerLocale
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.DateInputFormat
 import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.DateInputTextField
@@ -54,7 +54,7 @@ internal fun DateRangeInputContent(
     yearRange: IntRange,
     pattern: String,
     patternDelimiter: Char,
-    selectableDates: HijriSelectableDates,
+    selectableDates: HijrahSelectableDates,
     colors: DatePickerColors
 ) {
     // Obtain the DateInputFormat for the default Locale.

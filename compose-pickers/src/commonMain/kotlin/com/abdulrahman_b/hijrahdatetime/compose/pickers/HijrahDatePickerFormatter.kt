@@ -18,7 +18,7 @@ import com.abdulrahman_b.hijrahdatetime.yearmonth.HijrahYearMonth
  * without delimiters.
  */
 @OptIn(ExperimentalMaterial3Api::class)
-class HijriDatePickerFormatter(
+class HijrahDatePickerFormatter(
     internal val yearMonthSelectionSkeleton: String,
     internal val selectedDateSkeleton: String,
     internal val selectedDateDescriptionSkeleton: String,
