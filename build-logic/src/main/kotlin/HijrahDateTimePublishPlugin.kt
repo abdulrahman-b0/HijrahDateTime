@@ -58,6 +58,12 @@ interface HijrahDateTimePublishExtension {
                     }
                 }
 
+                scm {
+                    connection.set("scm:git:https://github.com/abdulrahman-b0/HijrahDateTime.git")
+                    developerConnection.set("scm:git:git@github.com:abdulrahman-b0/HijrahDateTime.git")
+                    url.set("https://github.com/abdulrahman-b0/HijrahDateTime")
+                }
+
             }
         }
 
