@@ -56,7 +56,7 @@ kotlin {
             implementation("com.abdulrahman-b.hijrahdatetime:hijrahdatetime:2.0.0-alpha07")
             
             // Compose Pickers (for UI)
-            implementation("com.abdulrahman-b.hijrahdatetime:compose-pickers:2.0.0-alpha07")
+            implementation("com.abdulrahman-b.hijrahdatetime:hijrahdatetime-compose-pickers:2.0.0-alpha07")
         }
     }
 }
