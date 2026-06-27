@@ -240,6 +240,7 @@ class HijrahMultiDatePickerState internal constructor(
          * - The display mode as a [String].
          * - The year range bounds.
          */
+        @Suppress("UNCHECKED_CAST")
         fun Saver(
             selectableDates: HijrahSelectableDates
         ): Saver<HijrahMultiDatePickerState, *> = listSaver(
