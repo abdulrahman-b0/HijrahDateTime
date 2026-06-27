@@ -162,6 +162,7 @@ val KotlinMultiplatformExtension.jvmCommonMain: KotlinSourceSet
         val jvmCommonMain by sourceSets.registering {
             dependsOn(sourceSets.commonMain.get())
             sourceSets.androidMain.get().dependsOn(this)
+            sourceSets.jvmMain.get().dependsOn(this)
         }
 
         if (extra isNotMarked DEFAULT_HIERARCHY_TEMPLATE_APPLIED)
