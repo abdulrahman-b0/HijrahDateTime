@@ -25,7 +25,6 @@ class MultiplatformLibraryPlugin : Plugin<Project> {
     override fun apply(target: Project) = target.multiplatformLibrary()
 }
 
-@Suppress("UnusedVariable")
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
 private fun Project.multiplatformLibrary() {
 
@@ -50,10 +49,6 @@ private fun Project.multiplatformLibrary() {
             }
             withDeviceTest {
                 instrumentationRunner = ProjectConfig.ANDROID_TEST_INSTRUMENTATION_RUNNER
-            }
-            optimization {
-                consumerKeepRules.publish = true
-                consumerKeepRules.file("consumer-rules.pro")
             }
             compilerOptions {
                 jvmTarget.set(ProjectConfig.ANDROID_JVM_TARGET)
