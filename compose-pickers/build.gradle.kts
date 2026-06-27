@@ -5,7 +5,7 @@ plugins {
 
 kotlin {
 
-    android.namespace = "com.abdulrahman_b.hijrahdatetime.compose.pickers"
+    android.namespace = "com.abdulrahman_b.hijrahdatetime.pickers"
 
     sourceSets {
         commonMain.dependencies {

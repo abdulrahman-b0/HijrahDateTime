@@ -1,0 +1,34 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+package com.abdulrahman_b.hijrahdatetime.pickers
+
+import androidx.compose.material3.ExperimentalMaterial3Api
+import com.abdulrahman_b.hijrahdatetime.HijrahDate
+import com.abdulrahman_b.hijrahdatetime.pickers.datepicker.rememberHijrahDatePickerState
+import com.abdulrahman_b.hijrahdatetime.pickers.rangedatepicker.rememberHijrahDateRangePickerState
+
+
+/**
+ * An interface that defines the contract for determining whether a Hijri date or a specific year
+ * is selectable in a Hijri date picker.
+ *
+ * An implementation of this class must be created and passed to [rememberHijrahDatePickerState] or [rememberHijrahDateRangePickerState] respectively.
+ */
+interface HijrahSelectableDates {
+
+    /**
+     * Determines whether the given HijrahDate is selectable.
+     *
+     * @param date the HijrahDate to evaluate for selection eligibility
+     * @return true if the specified date is selectable, otherwise false
+     */
+    fun isSelectableDate(date: HijrahDate): Boolean = true
+
+    /**
+     * Determines whether the given year is selectable in the calendar.
+     *
+     * @param year the year to be checked for selectability
+     * @return true if the year is selectable, false otherwise
+     */
+    fun isSelectableYear(year: Int): Boolean = true
+
+}

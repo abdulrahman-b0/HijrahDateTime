@@ -21,13 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.abdulrahman.hijrahdatetime.sample.theme.HijriDatePickerTheme
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.HijrahDatePicker
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.HijriMultiDatePicker
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.rememberHijrahDatePickerState
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.datepicker.rememberHijrahMultiDatePickerState
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.rangedatepicker.HijrahDateRangePicker
-import com.abdulrahman_b.hijrahdatetime.compose.pickers.rangedatepicker.rememberHijrahDateRangePickerState
 import com.abdulrahman_b.hijrahdatetime.format.HijrahDateTimeFormat
+import com.abdulrahman_b.hijrahdatetime.pickers.datepicker.HijrahDatePicker
+import com.abdulrahman_b.hijrahdatetime.pickers.datepicker.HijriMultiDatePicker
+import com.abdulrahman_b.hijrahdatetime.pickers.datepicker.rememberHijrahDatePickerState
+import com.abdulrahman_b.hijrahdatetime.pickers.datepicker.rememberHijrahMultiDatePickerState
+import com.abdulrahman_b.hijrahdatetime.pickers.rangedatepicker.HijrahDateRangePicker
+import com.abdulrahman_b.hijrahdatetime.pickers.rangedatepicker.rememberHijrahDateRangePickerState
 import com.abdulrahman_b.hijrahdatetime.toEpochDays
 import hijrahdatetime.sample_shared.generated.resources.Res
 import hijrahdatetime.sample_shared.generated.resources.ic_date_range
@@ -184,7 +184,7 @@ private fun DatePickerFormSample(
  * The selected dates are displayed in ascending order of their epoch day to keep the
  * output stable and easy to read.
  *
- * @param formatter A [DateTimeFormatter] used to format each selected Hijri date.
+ * @param formatter A [HijrahDateTimeFormat] used to format each selected Hijri date.
  * @param modifier Optional [Modifier] for spacing and layout customization.
  */
 @OptIn(ExperimentalMaterial3Api::class)
