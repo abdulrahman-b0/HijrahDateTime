@@ -1,2 +1,2 @@
 ## Contributing
-This repository is not accepting external contributions, but feature requests and bug reports are welcome.
+Contributions are welcome! You can contribute by sending pull requests. Feature requests and bug reports are also welcome.
