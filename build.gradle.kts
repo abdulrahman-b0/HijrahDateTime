@@ -10,7 +10,7 @@ plugins {
 }
 
 rootProject.group = "com.abdulrahman-b.hijrahdatetime"
-rootProject.version = "2.0.0-alpha07"
+rootProject.version = "2.0.0-beta01"
 rootProject.description =
     "HijrahDateTime is a Kotlin Multiplatform library for the Hijrah calendar system. It provides robust data models and functions for handling Hijrah dates and times, alongside a suite of Compose Multiplatform UI pickers, integrating seamlessly with `kotlinx-datetime`."
 
