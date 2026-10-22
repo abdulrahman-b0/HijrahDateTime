@@ -36,10 +36,11 @@ interface HijrahDateTimePublishExtension {
                 version = rootProject.version.toString()
             )
 
+            publishToMavenCentral()
             signAllPublications()
 
             pom {
-                name.set("HijrahDateTime Compose Pickers")
+                name.set(artifactName)
                 description.set(rootProject.description)
                 url.set("https://github.com/abdulrahman-b0/HijrahDateTime")
 
