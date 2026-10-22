@@ -1,6 +1,7 @@
 package com.abdulrahman_b.hijrahdatetime.format
 
 import platform.Foundation.NSDateFormatter
+import platform.Foundation.languageCode
 
 /**
  * A format used for parsing and formatting Hijri date-time values on Apple platforms.
@@ -21,9 +22,9 @@ actual class HijrahDateTimeFormat(val nsFormatter: NSDateFormatter) {
         }
 
         actual fun ofBestPattern(pattern: String, locale: FormatLocale): HijrahDateTimeFormat {
-            return when (locale) {
-                FormatLocales.Arabic -> ofPattern(pattern.replace(",", "،"), locale)
-                else -> ofPattern(pattern, FormatLocales.English)
+            return when (locale.languageCode) {
+                "ar" -> ofPattern(pattern.replace(",", "،"), locale)
+                else -> ofPattern(pattern, locale)
             }
         }
     }

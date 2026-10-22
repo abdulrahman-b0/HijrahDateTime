@@ -36,6 +36,25 @@ class HijrahDateTimeFormatTest {
     }
 
     @Test
+    fun `test ofPattern with Arabic locale`() {
+        // We need to use a pattern that works for Hijri.
+        // Note: java.time.format.DateTimeFormatter.ofPattern(pattern).withChronology(HijrahChronology.INSTANCE)
+        // behaves differently than just ofPattern. But CalendarDateTimeFormat.ofPattern is just a wrapper.
+        // To get Hijri formatting we should ideally use the builder.
+
+        val format = HijrahDateTimeFormat.ofPattern("dd MMM, yyyy", FormatLocales.Arabic)
+
+        val dt = HijrahDate(1445, 9, 1)
+        val formatted = dt.format(format)
+        assertEquals("٠١ رمضان, ١٤٤٥", formatted)
+
+        val parsed = HijrahDate.parse(formatted, format)
+        assertEquals(1445, parsed.year)
+        assertEquals(9, parsed.month.number)
+        assertEquals(1, parsed.day)
+    }
+
+    @Test
     fun `test builder components`() {
         val format = HijrahDateTimeFormatBuilder().apply {
             locale = FormatLocales.English
